@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>كل المقترحات — أرشيف التطوير الكامل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Readex+Pro:wght@400;500;600;700&family=Alexandria:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="final.css" />
+  <style>
+    html, body { height: 100%; }
+    body { margin: 0; background: var(--f-bg); display: flex; flex-direction: column; font-family: var(--f-arab); }
+
+    .arc-top {
+      flex: none; display: flex; align-items: center; gap: 16px;
+      padding: 12px 20px;
+      background: color-mix(in srgb, var(--f-bg) 80%, transparent);
+      -webkit-backdrop-filter: blur(16px) saturate(1.6); backdrop-filter: blur(16px) saturate(1.6);
+      border-bottom: 0.5px solid var(--f-border);
+      z-index: 10;
+    }
+    .arc-top h1 { margin: 0; font-family: var(--f-disp, Alexandria); font-size: 1rem; font-weight: 800; color: var(--f-ink); white-space: nowrap; }
+    .arc-top p { margin: 0; font-size: 0.66rem; color: var(--f-ink-3); }
+
+    .arc-tabs {
+      margin-inline-start: auto;
+      display: flex; gap: 3px; padding: 3px; border-radius: 999px;
+      background: var(--f-surface-2); border: 0.5px solid var(--f-border);
+    }
+    .arc-tab {
+      position: relative; border: 0; cursor: pointer; border-radius: 999px;
+      padding: 7px 16px; background: transparent;
+      font-family: var(--f-arab); font-size: 0.72rem; font-weight: 600; color: var(--f-ink-2);
+      transition: color 200ms;
+      white-space: nowrap;
+    }
+    .arc-tab:hover { color: var(--f-ink); }
+    .arc-tab.is-on {
+      color: var(--f-ink); background: var(--f-surface);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 1px 3px rgba(22,21,19,0.1);
+    }
+    .arc-tab small { font-family: var(--f-mono); font-size: 0.5rem; color: var(--f-ink-3); margin-inline-start: 5px; direction: ltr; }
+
+    .arc-open {
+      flex: none; display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.66rem; font-weight: 700; color: var(--f-ink-2); text-decoration: none;
+      padding: 7px 14px; border-radius: 999px;
+      border: 0.5px solid var(--f-border-2); background: var(--f-surface);
+      transition: color 200ms, transform 320ms var(--f-spring);
+    }
+    .arc-open:hover { color: var(--f-ink); transform: translateY(-1px); }
+    .arc-open .material-symbols-outlined, .arc-open svg { width: 13px; height: 13px; }
+
+    .arc-body { flex: 1; min-height: 0; position: relative; }
+    .arc-frame {
+      position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+      background: var(--f-bg);
+      opacity: 0; pointer-events: none; transition: opacity 250ms;
+    }
+    .arc-frame.is-on { opacity: 1; pointer-events: auto; }
+
+    @media (max-width: 980px) {
+      .arc-top { flex-wrap: wrap; }
+      .arc-tabs { margin-inline-start: 0; flex-wrap: wrap; border-radius: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="arc-top">
+    <div>
+      <h1>كل المقترحات</h1>
+      <p>أرشيف التطوير الكامل في صفحة واحدة — تنقّل بالتبويبات ورشّح بالنجوم ★ داخل كل مختبر</p>
+    </div>
+    <nav class="arc-tabs" id="arcTabs">
+      <button class="arc-tab is-on" data-src="اتجاهات التصميم.html">اتجاهات التصميم<small>10+4</small></button>
+      <button class="arc-tab" data-src="Adoption Bank.html">بنك الاعتماد<small>REAL</small></button>
+      <button class="arc-tab" data-src="Icons &amp; Cards Lab.html">الأيقونات والبطاقات<small>11 موجة</small></button>
+      <button class="arc-tab" data-src="Buttons Lab.html">الأزرار والطقوس<small>K+</small></button>
+      <button class="arc-tab" data-src="Concept Theater.html">مسرح المفاهيم<small>5 مشاهد</small></button>
+      <button class="arc-tab" data-src="Design System.html">نظام التصميم<small>DS</small></button>
+      <button class="arc-tab" data-src="final3d.html">المنصة الحالية<small>FINAL</small></button>
+    </nav>
+    <a class="arc-open" id="arcOpen" href="اتجاهات التصميم.html" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+      فتح مستقل
+    </a>
+  </header>
+
+  <div class="arc-body" id="arcBody"></div>
+
+  <script>
+    (function () {
+      const tabs = [...document.querySelectorAll('.arc-tab')];
+      const body = document.getElementById('arcBody');
+      const open = document.getElementById('arcOpen');
+      const frames = new Map();
+
+      function show(src) {
+        tabs.forEach((t) => t.classList.toggle('is-on', t.dataset.src === src));
+        open.href = src;
+        let f = frames.get(src);
+        if (!f) {
+          f = document.createElement('iframe');
+          f.className = 'arc-frame';
+          f.src = src;
+          f.title = src;
+          body.appendChild(f);
+          frames.set(src, f);
+        }
+        frames.forEach((fr) => fr.classList.toggle('is-on', fr === f));
+        try { localStorage.setItem('tdq-archive-tab', src); } catch (e) {}
+      }
+
+      tabs.forEach((t) => t.addEventListener('click', () => show(t.dataset.src)));
+
+      let initial = tabs[0].dataset.src;
+      try {
+        const saved = localStorage.getItem('tdq-archive-tab');
+        if (saved && tabs.some((t) => t.dataset.src === saved)) initial = saved;
+      } catch (e) {}
+      show(initial);
+    })();
+  </script>
+</body>
+</html>
