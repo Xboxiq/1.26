@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>تدفّق الخير — نظام التصميم</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Readex+Pro:wght@300;400;500;600;700&family=Alexandria:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..600,0..1,0" />
+  <link rel="stylesheet" href="final.css" />
+  <link rel="stylesheet" href="final_elite.css" />
+  <link rel="stylesheet" href="final_chroma.css" />
+  <style>
+    /* ---- styleguide scaffolding only ---- */
+    body { margin: 0; }
+    .ds-wrap { max-width: 1080px; margin: 0 auto; padding: 48px 28px 120px; display: flex; flex-direction: column; gap: 56px; }
+    .ds-hero { display: flex; flex-direction: column; gap: 10px; padding-bottom: 28px; border-bottom: 0.5px solid var(--f-border); }
+    .ds-hero h1 { margin: 0; font-family: var(--f-disp); font-size: 2.4rem; font-weight: 800; letter-spacing: -0.02em; color: var(--f-ink); }
+    .ds-hero p { margin: 0; font-size: 1rem; color: var(--f-ink-2); max-width: 60ch; line-height: 1.8; }
+    .ds-ver { font-family: var(--f-mono); font-size: 0.72rem; color: var(--f-ink-3); }
+    section.ds-sec { display: flex; flex-direction: column; gap: 18px; }
+    .ds-sec > h2 { margin: 0; font-family: var(--f-disp); font-size: 1.3rem; font-weight: 700; color: var(--f-ink); display: flex; align-items: center; gap: 10px; }
+    .ds-sec > h2 .ds-no { font-family: var(--f-mono); font-size: 0.7rem; font-weight: 500; color: var(--f-ink-3); }
+    .ds-sec > p.ds-note { margin: -8px 0 0; font-size: 0.85rem; color: var(--f-ink-3); line-height: 1.7; max-width: 70ch; }
+    .ds-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+    .ds-card { background: var(--f-surface); border: 0.5px solid var(--f-border); border-radius: var(--f-r-lg, 14px); padding: 16px; box-shadow: var(--f-shadow-xs); display: flex; flex-direction: column; gap: 8px; }
+    .ds-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .ds-sw { height: 64px; border-radius: 10px; border: 0.5px solid rgba(0,0,0,0.06); }
+    .ds-sw-name { font-size: 0.78rem; font-weight: 600; color: var(--f-ink); }
+    .ds-sw-val { font-family: var(--f-mono); font-size: 0.66rem; color: var(--f-ink-3); direction: ltr; text-align: end; }
+    .ds-type-row { display: flex; align-items: baseline; gap: 18px; padding: 14px 18px; background: var(--f-surface); border: 0.5px solid var(--f-border); border-radius: 12px; }
+    .ds-type-meta { font-family: var(--f-mono); font-size: 0.64rem; color: var(--f-ink-3); width: 170px; flex: none; direction: ltr; }
+    .ds-ico-cell { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 10px; }
+    .ds-ico-cell svg { color: var(--f-ink-2); }
+    .ds-ico-name { font-family: var(--f-mono); font-size: 0.62rem; color: var(--f-ink-3); direction: ltr; }
+    .ds-code { background: var(--f-surface); border: 0.5px solid var(--f-border); border-radius: 12px; padding: 18px 20px; font-family: var(--f-mono); font-size: 0.74rem; line-height: 1.9; color: var(--f-ink-2); direction: ltr; text-align: left; overflow-x: auto; white-space: pre; }
+    .ds-motion { display: flex; align-items: center; gap: 16px; }
+    .ds-motion-ball { width: 22px; height: 22px; border-radius: 7px; background: var(--f-navy); animation: ds-demo 2.4s var(--f-spring) infinite alternate; }
+    @keyframes ds-demo { from { transform: translateX(0); } to { transform: translateX(-140px); } }
+    .ds-pill-demo { display: flex; gap: 10px; flex-wrap: wrap; }
+    table.ds-tbl { border-collapse: collapse; width: 100%; font-size: 0.82rem; }
+    .ds-tbl th { text-align: start; font-family: var(--f-mono); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; color: var(--f-ink-3); padding: 8px 12px; border-bottom: 0.5px solid var(--f-border); }
+    .ds-tbl td { padding: 10px 12px; border-bottom: 0.5px solid var(--f-border); color: var(--f-ink-2); }
+    .ds-tbl td:first-child { font-family: var(--f-mono); font-size: 0.72rem; color: var(--f-ink); direction: ltr; text-align: end; }
+  </style>
+</head>
+<body class="f-body">
+  <main class="ds-wrap">
+
+    <header class="ds-hero">
+      <span class="ds-ver">TADFUQ DESIGN SYSTEM — v1.0 — 2026</span>
+      <h1>تدفّق الخير</h1>
+      <p>نظام التصميم الرسمي لمنصة خدمات المشتركين. كل ما يلزم لإضافة صفحة أو خدمة جديدة بنفس الروح: الألوان، الخطوط، المواد الزجاجية، الحركة، والأيقونات المرسومة خصيصاً.</p>
+    </header>
+
+    <!-- ============ 01 COLORS ============ -->
+    <section class="ds-sec">
+      <h2><span class="ds-no">01</span> الألوان</h2>
+      <p class="ds-note">قماش دافئ هادئ (روح Notion) + أربعة ألوان أقسام مهدّأة لا تصرخ أبداً. القاعدة: لون القسم يُستعمل بسُلّم شفافية ثابت — 11% تعبئة، 22% حدود، 100% نص/أيقونة فقط.</p>
+      <div class="ds-grid">
+        <div class="ds-card"><div class="ds-sw" style="background:var(--f-bg)"></div><span class="ds-sw-name">القماش</span><span class="ds-sw-val">--f-bg · #fafaf7</span></div>
+        <div class="ds-card"><div class="ds-sw" style="background:var(--f-surface)"></div><span class="ds-sw-name">سطح</span><span class="ds-sw-val">--f-surface · #ffffff</span></div>
+        <div class="ds-card"><div class="ds-sw" style="background:var(--f-surface-2)"></div><span class="ds-sw-name">سطح ٢</span><span class="ds-sw-val">--f-surface-2</span></div>
+        <div class="ds-card"><div class="ds-sw" style="background:var(--f-ink)"></div><span class="ds-sw-name">حبر</span><span class="ds-sw-val">--f-ink · #161513</span></div>
+        <div class="ds-card"><div class="ds-sw" style="background:var(--f-navy)"></div><span class="ds-sw-name">كحلي أساسي</span><span class="ds-sw-val">--f-navy · #1e2a4d</span></div>
+        <div class="ds-card"><div class="ds-sw" style="background:var(--f-gold)"></div><span class="ds-sw-name">ذهبي</span><span class="ds-sw-val">--f-gold · #b8861b</span></div>
+      </div>
+      <div class="ds-grid">
+        <div class="ds-card"><div class="ds-sw" style="background:var(--f-cs)"></div><span class="ds-sw-name">CS الاشتراكات</span><span class="ds-sw-val">--f-cs · #4a6285</span></div>
+        <div class="ds-card"><div class="ds-sw" style="background:var(--f-ct)"></div><span class="ds-sw-name">CT الفنية</span><span class="ds-sw-val">--f-ct · #8a7350</span></div>
+        <div class="ds-card"><div class="ds-sw" style="background:var(--f-cb)"></div><span class="ds-sw-name">CB الفواتير</span><span class="ds-sw-val">--f-cb · #4e7a7d</span></div>
+        <div class="ds-card"><div class="ds-sw" style="background:var(--f-ca)"></div><span class="ds-sw-name">CA الشكاوى</span><span class="ds-sw-val">--f-ca · #8a5560</span></div>
+      </div>
+    </section>
+
+    <!-- ============ 02 TYPE ============ -->
+    <section class="ds-sec">
+      <h2><span class="ds-no">02</span> الخطوط</h2>
+      <p class="ds-note">ثلاثة أصوات: Alexandria للعناوين (حضور)، Readex Pro للنص (قراءة مريحة)، Geist Mono للأكواد والأرقام (دقة).</p>
+      <div class="ds-type-row"><span class="ds-type-meta">Alexandria 800 · 2.2rem · --f-disp</span><span style="font-family:var(--f-disp);font-size:2.2rem;font-weight:800;color:var(--f-ink)">مركز خدمات المشتركين</span></div>
+      <div class="ds-type-row"><span class="ds-type-meta">Alexandria 700 · 1.3rem</span><span style="font-family:var(--f-disp);font-size:1.3rem;font-weight:700;color:var(--f-ink)">عنوان قسم داخل الصفحة</span></div>
+      <div class="ds-type-row"><span class="ds-type-meta">Readex Pro 400 · 0.95rem · --f-arab</span><span style="font-family:var(--f-arab);font-size:0.95rem;color:var(--f-ink-2);line-height:1.8">نص الشرح والفقرات — يُكتب بخط ريدكس برو المصمم للقراءة المريحة على الشاشات، بمسافة سطر ١٫٧٥ وقياس لا يقل عن ١٤ بكسل.</span></div>
+      <div class="ds-type-row"><span class="ds-type-meta">Geist Mono 600 · 0.72rem · --f-mono</span><span style="font-family:var(--f-mono);font-size:0.72rem;font-weight:600;color:var(--f-ink-3);direction:ltr">CS0001 · 25,000 IQD · SLA 7d</span></div>
+    </section>
+
+    <!-- ============ 03 ICONS ============ -->
+    <section class="ds-sec">
+      <h2><span class="ds-no">03</span> الأيقونات المرسومة</h2>
+      <p class="ds-note">مجموعة مرسومة خصيصاً للمنصة — 24×24، خط 1.75، أطراف دائرية. لغة كهربائية صريحة: مقياس، عمود، كابل، برج. تُستعمل داخل بلاطة squircle بلون القسم. Material Symbols تبقى للأفعال العامة فقط (بحث، إغلاق، طباعة).</p>
+      <div class="ds-grid" id="ds-icons-grid"></div>
+    </section>
+
+    <!-- ============ 04 MATERIALS ============ -->
+    <section class="ds-sec">
+      <h2><span class="ds-no">04</span> المواد والأسطح</h2>
+      <p class="ds-note">مصدر ضوء واحد من الأعلى: كل سطح مرفوع يحمل خط specular علوي. ثلاث مواد: ورق (بطاقات)، زجاج مصنفر (شرائط وحلقات)، وقطعة مصنّعة (أزرار).</p>
+      <div class="ds-row">
+        <div class="ds-card" style="width:200px"><span class="ds-sw-name">ورق — البطاقات</span><span class="ds-sw-val">border 0.5px + specular + shadow-xs</span></div>
+        <div class="ds-card" style="width:200px;background:color-mix(in srgb, var(--f-surface) 80%, transparent);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)"><span class="ds-sw-name">زجاج — Spotlight والشرائط</span><span class="ds-sw-val">blur(34px) saturate(1.9)</span></div>
+        <div class="ds-card" style="width:200px;background:linear-gradient(155deg,color-mix(in srgb,var(--f-cs) 9%,var(--f-surface)),var(--f-surface) 72%)"><span class="ds-sw-name">غسلة القسم — البانل المفتوح</span><span class="ds-sw-val">9% → 4% → 0 @155deg</span></div>
+      </div>
+    </section>
+
+    <!-- ============ 05 BUTTONS ============ -->
+    <section class="ds-sec">
+      <h2><span class="ds-no">05</span> الأزرار</h2>
+      <div class="ds-pill-demo">
+        <button class="f-btn f-btn--primary"><span class="material-symbols-outlined" style="font-size:16px">bolt</span> أساسي — Vercel machined</button>
+        <button class="f-btn">ثانوي — hairline</button>
+        <button class="f-btn f-btn--ghost">شبح</button>
+        <button class="f-deck__cta" style="--d-c:var(--f-cb)">كبسولة قسم — Apple glass</button>
+      </div>
+    </section>
+
+    <!-- ============ 06 MOTION ============ -->
+    <section class="ds-sec">
+      <h2><span class="ds-no">06</span> الحركة</h2>
+      <p class="ds-note">كل الحركات بـ spring واحد: cubic-bezier(0.34, 1.3, 0.45, 1). مايكرو 180ms، انتقالات 420ms، تمدد البانلات 620ms. تحترم prefers-reduced-motion دائماً.</p>
+      <div class="ds-card" style="max-width:340px"><div class="ds-motion"><div class="ds-motion-ball"></div><span class="ds-sw-val">--f-spring · 620ms</span></div></div>
+    </section>
+
+    <!-- ============ 07 ADD A SERVICE ============ -->
+    <section class="ds-sec">
+      <h2><span class="ds-no">07</span> إضافة خدمة جديدة</h2>
+      <p class="ds-note">الخدمات بيانات لا واجهات: أضف سطراً واحداً في data.js وستظهر تلقائياً في كل مكان — الأقسام، المحفظة، Spotlight، صفحة الخدمات، وحساب الأجور.</p>
+      <div class="ds-code">// data.js → window.SERVICES
+{
+  code: 'CS0012',          // القسم + رقم تسلسلي
+  section: 'CS',           // CS | CT | CB | CA
+  name: 'اسم الخدمة',
+  sla: 3,                  // أيام الإنجاز
+  popularity: 50,          // 0-100 (ترتيب Spotlight)
+  fixedPrice: 25000,       // أو hasPrice + priceNote
+  icon: 'tdq-meter',       // من ds_icons.js أو Material
+  fees: [                  // اختياري: بنود الأجور للفورمة
+    { label: 'أجور الكشف', amount: 15000 },
+  ],
+}</div>
+      <table class="ds-tbl">
+        <thead><tr><th>الملف</th><th>الدور</th></tr></thead>
+        <tbody>
+          <tr><td>data.js</td><td>الخدمات والأسعار والأقسام — مصدر الحقيقة الوحيد</td></tr>
+          <tr><td>final.css</td><td>التوكنز + المكونات الأساسية</td></tr>
+          <tr><td>final_chroma.css</td><td>انضباط الألوان والتدرجات (Vercel × Apple × Notion)</td></tr>
+          <tr><td>final_trends.css/js</td><td>الطبقة المحيطية: aurora + grain + توهج المؤشر + reveal</td></tr>
+          <tr><td>ds_icons.js</td><td>الأيقونات المرسومة (sprite + TadfuqIcons API)</td></tr>
+          <tr><td>DESIGN_SYSTEM.md</td><td>المرجع الكامل للتسليم — اقرأه أولاً</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <script src="ds_icons.js"></script>
+  <script>
+    // render icon grid
+    const grid = document.getElementById('ds-icons-grid');
+    TadfuqIcons.mount();
+    TadfuqIcons.names.forEach((n) => {
+      const cell = document.createElement('div');
+      cell.className = 'ds-card ds-ico-cell';
+      cell.appendChild(TadfuqIcons.el(n, 26));
+      const label = document.createElement('span');
+      label.className = 'ds-ico-name';
+      label.textContent = n;
+      cell.appendChild(label);
+      grid.appendChild(cell);
+    });
+  </script>
+</body>
+</html>

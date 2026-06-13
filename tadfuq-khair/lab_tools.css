@@ -1,0 +1,57 @@
+/* lab_tools — فهرس علوي + شريط ترشيح للمختبرات */
+html { scroll-behavior: smooth; }
+
+.labnav {
+  position: sticky; top: 0; z-index: 90;
+  display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+  padding: 10px 18px;
+  background: color-mix(in srgb, var(--f-bg) 78%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6); backdrop-filter: blur(16px) saturate(1.6);
+  border-bottom: 0.5px solid var(--f-border);
+  font-family: var(--f-arab);
+}
+.labnav__brand { font-size: 0.7rem; font-weight: 800; color: var(--f-ink-3); margin-inline-end: 4px; }
+.labnav a {
+  font-size: 0.7rem; font-weight: 600; color: var(--f-ink-2); text-decoration: none;
+  padding: 5px 11px; border-radius: 999px;
+  border: 0.5px solid var(--f-border); background: var(--f-surface);
+  transition: color 200ms, border-color 200ms, transform 320ms var(--f-spring);
+}
+.labnav a:hover { color: var(--f-ink); border-color: var(--f-border-2); transform: translateY(-1px); }
+
+.lab-card h3 { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.pickbtn {
+  margin-inline-start: auto; flex: none;
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 0.5px solid var(--f-border-2); background: var(--f-surface);
+  color: var(--f-ink-3); font-size: 0.85rem; line-height: 1; cursor: pointer;
+  transition: transform 320ms var(--f-spring), color 200ms, background 200ms, border-color 200ms;
+}
+.pickbtn:hover { transform: scale(1.15); color: var(--f-ct); border-color: var(--f-ct); }
+.pickbtn.is-on { background: var(--f-ct); border-color: var(--f-ct); color: #fff; }
+
+.labpick {
+  position: fixed; bottom: 14px; inset-inline: 0; margin-inline: auto;
+  width: fit-content; max-width: min(740px, calc(100vw - 32px));
+  z-index: 95; display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; border-radius: 999px;
+  background: color-mix(in srgb, var(--f-surface) 86%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8); backdrop-filter: blur(20px) saturate(1.8);
+  border: 0.5px solid var(--f-border);
+  box-shadow: 0 12px 32px -12px rgba(22,21,19,0.3);
+  font-family: var(--f-arab); font-size: 0.72rem; color: var(--f-ink-2);
+}
+.labpick b { color: var(--f-ink); white-space: nowrap; }
+.labpick__list { max-width: 470px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.labpick__clear {
+  border: 0; background: var(--f-surface-2); color: var(--f-ink-2);
+  border-radius: 999px; padding: 4px 12px; cursor: pointer;
+  font-family: inherit; font-size: 0.66rem; font-weight: 700;
+}
+.labpick__clear:hover { color: var(--f-ink); }
+.labpick__copy {
+  border: 0; background: var(--f-navy); color: #fff;
+  border-radius: 999px; padding: 4px 12px; cursor: pointer;
+  font-family: inherit; font-size: 0.66rem; font-weight: 700;
+}
+.labpick__copy:hover { opacity: 0.9; }

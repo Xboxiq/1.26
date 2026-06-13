@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>اتجاهات التصميم — اختر هوية المنصة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Readex+Pro:wght@400;500;600;700&family=Alexandria:wght@600;700;800&family=Cairo:wght@500;700;800&family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..600,0..1,0" />
+  <link rel="stylesheet" href="final.css" />
+  <link rel="stylesheet" href="lab_tools.css" />
+  <style>
+    body { margin: 0; background: var(--f-bg); }
+    .lab { max-width: 1200px; margin: 0 auto; padding: 40px 26px 150px; font-family: var(--f-arab); }
+    .lab-hero { margin-bottom: 48px; }
+    .lab-hero h1 { margin: 0 0 8px; font-family: var(--f-disp, Alexandria); font-size: 2rem; font-weight: 800; color: var(--f-ink); }
+    .lab-hero p { margin: 0; color: var(--f-ink-3); font-size: 0.88rem; max-width: 68ch; line-height: 1.85; }
+    .lab-hero .hint {
+      margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .lab-hero .hint span {
+      font-size: 0.66rem; font-weight: 700; padding: 5px 12px; border-radius: 999px;
+      background: var(--f-surface); border: 0.5px solid var(--f-border); color: var(--f-ink-2);
+    }
+    .lab-sec-title { margin: 56px 0 4px; font-family: var(--f-disp, Alexandria); font-size: 1.2rem; font-weight: 800; color: var(--f-ink); scroll-margin-top: 72px; }
+    .lab-sec-sub { margin: 0 0 20px; font-size: 0.76rem; color: var(--f-ink-3); line-height: 1.7; }
+    .lab-grid { display: grid; grid-template-columns: 1fr; gap: 22px; }
+    .lab-card {
+      border-radius: 22px; padding: 22px 24px 26px;
+      background: var(--f-surface); border: 0.5px solid var(--f-border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), var(--f-shadow-xs);
+    }
+    .lab-card h3 { margin: 0 0 6px; font-size: 0.95rem; font-weight: 700; color: var(--f-ink); }
+    .lab-card > p { margin: 0 0 14px; font-size: 0.74rem; line-height: 1.85; color: var(--f-ink-2); }
+    .lab-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .lab-tag {
+      font-family: var(--f-mono); font-size: 0.52rem; letter-spacing: 0.08em;
+      color: var(--f-ink-3); padding: 3px 9px; border: 0.5px solid var(--f-border-2); border-radius: 999px;
+    }
+    .lab-tag--ok { color: #166534; border-color: #86efac; background: #f0fdf4; }
+    .lab-tag--warn { color: #92400e; border-color: #fcd34d; background: #fffbeb; }
+    .lab-stage {
+      border-radius: 16px; overflow: hidden; min-height: 220px;
+      border: 0.5px dashed var(--f-border-2); position: relative;
+    }
+
+    /* ===== shared mini-app chrome ===== */
+    .mini { font-family: var(--f-arab); direction: rtl; text-align: start; }
+    .mini__top {
+      display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+      border-bottom: 0.5px solid var(--m-border, var(--f-border));
+    }
+    .mini__brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 0.72rem; }
+    .mini__brand img { width: 22px; height: 22px; border-radius: 6px; }
+    .mini__brand small { display: block; font-size: 0.48rem; font-weight: 600; opacity: 0.55; }
+    .mini__search {
+      margin-inline-start: auto; display: flex; align-items: center; gap: 6px;
+      padding: 5px 12px; border-radius: 999px; font-size: 0.58rem; opacity: 0.7;
+      border: 0.5px solid var(--m-border, var(--f-border));
+    }
+    .mini__body { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+    .mini__depts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .mini__dept {
+      padding: 10px 6px; border-radius: 12px; text-align: center; cursor: pointer;
+      border: 0.5px solid var(--m-border, var(--f-border));
+      transition: transform 320ms var(--f-spring);
+    }
+    .mini__dept:hover { transform: translateY(-2px); }
+    .mini__dept b { display: block; font-size: 0.58rem; font-weight: 700; }
+    .mini__dept small { font-family: var(--f-mono); font-size: 0.46rem; direction: ltr; opacity: 0.6; }
+    .mini__dept-ico {
+      width: 28px; height: 28px; margin: 0 auto 6px; border-radius: 8px;
+      display: grid; place-items: center; font-size: 14px;
+    }
+    .mini__row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .mini__card {
+      padding: 10px; border-radius: 12px; border: 0.5px solid var(--m-border, var(--f-border));
+      cursor: pointer; transition: transform 320ms var(--f-spring);
+    }
+    .mini__card:hover { transform: translateY(-2px); }
+    .mini__card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .mini__card-ico { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center; font-size: 13px; }
+    .mini__card code { font-family: var(--f-mono); font-size: 0.48rem; direction: ltr; opacity: 0.55; }
+    .mini__card h4 { margin: 0; font-size: 0.62rem; font-weight: 700; line-height: 1.45; }
+    .mini__card foot { display: block; margin-top: 6px; font-family: var(--f-mono); font-size: 0.48rem; direction: ltr; opacity: 0.65; }
+    .mini__cta {
+      align-self: flex-start; border: 0; cursor: pointer; padding: 7px 16px; border-radius: 999px;
+      font-family: inherit; font-size: 0.62rem; font-weight: 700;
+      transition: transform 320ms var(--f-spring);
+    }
+    .mini__cta:hover { transform: translateY(-1px); }
+
+    /* D1 — المرجع الحالي */
+    .dir--current { --m-bg: #fafaf7; --m-surface: #fff; --m-ink: #161513; --m-border: rgba(22,21,19,0.1); background: var(--m-bg); color: var(--m-ink); }
+    .dir--current .mini__top { background: color-mix(in srgb, var(--m-surface) 88%, transparent); backdrop-filter: blur(12px); }
+    .dir--current .mini__dept-ico { background: color-mix(in srgb, var(--c) 11%, transparent); color: var(--c); }
+    .dir--current .mini__dept { background: var(--m-surface); }
+    .dir--current .mini__card { background: var(--m-surface); box-shadow: inset 0 1px 0 rgba(255,255,255,0.6); }
+    .dir--current .mini__card-ico { background: color-mix(in srgb, var(--c) 11%, transparent); color: var(--c); }
+    .dir--current .mini__cta { background: #1e2a4d; color: #fff; }
+
+    /* D2 — ديوان رسمي */
+    .dir--diwan { --m-bg: #f4f1ea; --m-surface: #fffdf8; --m-ink: #1a1814; --m-border: #c8bfb0; background: var(--m-bg); color: var(--m-ink); font-family: Cairo, var(--f-arab); }
+    .dir--diwan .mini__top { background: #1e2a4d; color: #fff; border-color: #151f38; }
+    .dir--diwan .mini__search { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); color: #fff; }
+    .dir--diwan .mini__dept { background: var(--m-surface); border-width: 1px; border-radius: 4px; }
+    .dir--diwan .mini__dept-ico { border-radius: 4px; background: var(--c); color: #fff; }
+    .dir--diwan .mini__card { border-radius: 4px; border-width: 1px; }
+    .dir--diwan .mini__card-ico { border-radius: 4px; background: var(--c); color: #fff; }
+    .dir--diwan .mini__cta { background: #8b1a1a; color: #fff; border-radius: 4px; }
+
+    /* D3 — هدوء Notion */
+    .dir--notion { --m-bg: #fff; --m-surface: #fff; --m-ink: #37352f; --m-border: rgba(55,53,47,0.09); background: var(--m-bg); color: var(--m-ink); }
+    .dir--notion .mini__top { background: #fff; box-shadow: none; }
+    .dir--notion .mini__dept { background: transparent; border: none; box-shadow: none; }
+    .dir--notion .mini__dept:hover { background: rgba(55,53,47,0.04); }
+    .dir--notion .mini__dept-ico { background: rgba(55,53,47,0.06); color: var(--c); border-radius: 6px; }
+    .dir--notion .mini__card { background: transparent; border: none; box-shadow: inset 0 0 0 1px var(--m-border); border-radius: 6px; }
+    .dir--notion .mini__card-ico { background: rgba(55,53,47,0.06); color: var(--c); border-radius: 4px; }
+    .dir--notion .mini__cta { background: #37352f; color: #fff; border-radius: 6px; }
+
+    /* D4 — ثلج Apple */
+    .dir--apple { --m-bg: #f5f5f7; --m-surface: rgba(255,255,255,0.72); --m-ink: #1d1d1f; --m-border: rgba(0,0,0,0.06); background: linear-gradient(180deg, #f5f5f7, #e8e8ed); color: var(--m-ink); }
+    .dir--apple .mini__top { background: var(--m-surface); backdrop-filter: blur(24px) saturate(1.8); }
+    .dir--apple .mini__dept { background: var(--m-surface); backdrop-filter: blur(16px); border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .dir--apple .mini__dept-ico { border-radius: 50%; background: linear-gradient(135deg, color-mix(in srgb, var(--c) 30%, #fff), color-mix(in srgb, var(--c) 8%, #fff)); }
+    .dir--apple .mini__card { background: var(--m-surface); backdrop-filter: blur(16px); border-radius: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: none; }
+    .dir--apple .mini__card-ico { border-radius: 50%; }
+    .dir--apple .mini__cta { background: #0071e3; color: #fff; border-radius: 999px; padding: 8px 20px; }
+
+    /* D5 — تباين Vercel */
+    .dir--vercel { --m-bg: #000; --m-surface: #0a0a0a; --m-ink: #ededed; --m-border: #333; background: var(--m-bg); color: var(--m-ink); }
+    .dir--vercel .mini__top { background: #000; border-color: #222; }
+    .dir--vercel .mini__search { background: #111; border-color: #333; }
+    .dir--vercel .mini__dept { background: #0a0a0a; border-radius: 8px; }
+    .dir--vercel .mini__dept:hover { border-color: #fff; }
+    .dir--vercel .mini__dept-ico { background: #fff; color: #000; border-radius: 4px; }
+    .dir--vercel .mini__card { background: #0a0a0a; border-radius: 8px; }
+    .dir--vercel .mini__card-ico { background: #fff; color: #000; border-radius: 4px; }
+    .dir--vercel .mini__cta { background: #fff; color: #000; border-radius: 6px; }
+
+    /* D6 — شبكة هندسية */
+    .dir--grid {
+      --m-bg: #0c1524; --m-surface: #111d30; --m-ink: #c8dff5; --m-border: rgba(56,189,248,0.22);
+      background: var(--m-bg) linear-gradient(rgba(56,189,248,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(56,189,248,0.06) 1px, transparent 1px);
+      background-size: 20px 20px; color: var(--m-ink); font-family: var(--f-mono);
+    }
+    .dir--grid .mini__top { background: rgba(12,21,36,0.9); border-color: rgba(56,189,248,0.3); }
+    .dir--grid .mini__brand, .dir--grid .mini__dept b, .dir--grid .mini__card h4 { font-family: IBM Plex Sans Arabic, var(--f-arab); }
+    .dir--grid .mini__dept { background: rgba(17,29,48,0.8); border-radius: 2px; border-color: rgba(56,189,248,0.25); }
+    .dir--grid .mini__dept-ico { border-radius: 2px; border: 1px solid var(--c); color: var(--c); background: transparent; }
+    .dir--grid .mini__card { border-radius: 2px; background: rgba(17,29,48,0.85); }
+    .dir--grid .mini__card-ico { border: 1px solid var(--c); color: var(--c); background: transparent; border-radius: 2px; }
+    .dir--grid .mini__cta { background: transparent; color: #38bdf8; border: 1px solid #38bdf8; border-radius: 2px; }
+
+    /* D7 — تراث عراقي */
+    .dir--heritage {
+      --m-bg: #f3ebe0; --m-surface: #faf6f0; --m-ink: #2c1810; --m-border: #c4a882;
+      background: var(--m-bg);
+      background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23b8861b' fill-opacity='0.07'%3E%3Cpath d='M0 20h40M20 0v40M10 10l20 20M30 10L10 30'/%3E%3C/g%3E%3C/svg%3E");
+      color: var(--m-ink);
+    }
+    .dir--heritage .mini__top { background: linear-gradient(180deg, #2c1810, #3d2418); color: #f3ebe0; border-color: #5c3d28; }
+    .dir--heritage .mini__search { border-color: rgba(243,235,224,0.2); color: #f3ebe0; }
+    .dir--heritage .mini__dept { background: var(--m-surface); border-color: #c4a882; border-radius: 0; clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%); }
+    .dir--heritage .mini__dept-ico { background: linear-gradient(135deg, #b8861b, #8a6520); color: #fff; border-radius: 0; }
+    .dir--heritage .mini__card { background: var(--m-surface); border-color: #c4a882; border-radius: 0; }
+    .dir--heritage .mini__card-ico { background: #0e7490; color: #fff; border-radius: 0; }
+    .dir--heritage .mini__cta { background: linear-gradient(180deg, #b8861b, #8a6520); color: #fff; border-radius: 0; }
+
+    /* D8 — غرفة عمليات */
+    .dir--ops { --m-bg: #0b0f14; --m-surface: #121820; --m-ink: #e2e8f0; --m-border: #1e293b; background: var(--m-bg); color: var(--m-ink); }
+    .dir--ops .mini__top { background: #0f1419; border-color: #1e293b; }
+    .dir--ops .mini__body::before {
+      content: "LIVE"; position: absolute; top: 52px; inset-inline-start: 14px;
+      font-family: var(--f-mono); font-size: 0.46rem; color: #22c55e;
+      padding: 2px 6px; border: 1px solid #22c55e; border-radius: 3px;
+      animation: ops-blink 2s step-end infinite;
+    }
+    @keyframes ops-blink { 50% { opacity: 0.4; } }
+    @media (prefers-reduced-motion: reduce) { .dir--ops .mini__body::before { animation: none; } }
+    .dir--ops .mini__stage-wrap { position: relative; }
+    .dir--ops .mini__dept { background: #121820; border-color: #1e293b; }
+    .dir--ops .mini__dept.is-hot { border-color: #22c55e; box-shadow: 0 0 12px rgba(34,197,94,0.15); }
+    .dir--ops .mini__dept-ico { background: rgba(34,197,94,0.12); color: #22c55e; }
+    .dir--ops .mini__card { background: #121820; }
+    .dir--ops .mini__card-ico { background: rgba(56,189,248,0.12); color: #38bdf8; }
+    .dir--ops .mini__cta { background: #22c55e; color: #000; border-radius: 4px; font-family: var(--f-mono); }
+
+    /* D9 — ورق رسمي */
+    .dir--paper {
+      --m-bg: #f0ebe3; --m-surface: #fffef9; --m-ink: #1a1a1a; --m-border: #999;
+      background: var(--m-bg); color: var(--m-ink);
+      background-image: repeating-linear-gradient(transparent, transparent 27px, rgba(0,0,0,0.04) 27px, rgba(0,0,0,0.04) 28px);
+    }
+    .dir--paper .mini__top { background: var(--m-surface); border-bottom: 2px solid #1a1a1a; }
+    .dir--paper .mini__dept { background: var(--m-surface); border: 1px solid #999; border-radius: 0; box-shadow: 2px 2px 0 #ccc; }
+    .dir--paper .mini__dept-ico { border: 1px solid #666; border-radius: 0; background: #fff; color: #333; }
+    .dir--paper .mini__card { background: var(--m-surface); border: 1px solid #999; border-radius: 0; box-shadow: 2px 2px 0 #ddd; }
+    .dir--paper .mini__card-ico { border: 1px dashed #999; border-radius: 0; }
+    .dir--paper .mini__cta { background: #fff; color: #8b1a1a; border: 2px solid #8b1a1a; border-radius: 0; font-weight: 800; }
+
+    /* D10 — كثافة مؤسسية */
+    .dir--dense { --m-bg: #eceef2; --m-surface: #fff; --m-ink: #1c2430; --m-border: #c5cad3; background: var(--m-bg); color: var(--m-ink); font-size: 0.9em; }
+    .dir--dense .mini__top { background: #1c2430; color: #fff; padding: 6px 10px; border: none; }
+    .dir--dense .mini__brand { font-size: 0.64rem; }
+    .dir--dense .mini__search { display: none; }
+    .dir--dense .mini__body { padding: 8px; gap: 6px; }
+    .dir--dense .mini__depts { gap: 4px; }
+    .dir--dense .mini__dept { padding: 6px 4px; border-radius: 4px; }
+    .dir--dense .mini__dept b { font-size: 0.5rem; }
+    .dir--dense .mini__dept-ico { width: 20px; height: 20px; font-size: 11px; margin-bottom: 3px; border-radius: 3px; background: color-mix(in srgb, var(--c) 15%, #fff); color: var(--c); }
+    .dir--dense .mini__row { gap: 4px; }
+    .dir--dense .mini__card { padding: 6px 8px; border-radius: 4px; }
+    .dir--dense .mini__card h4 { font-size: 0.54rem; }
+    .dir--dense .mini__card-ico { width: 18px; height: 18px; font-size: 10px; }
+    .dir--dense .mini__cta { padding: 4px 10px; font-size: 0.54rem; border-radius: 3px; background: #2563eb; color: #fff; }
+
+    /* compare strip */
+    .compare-bar {
+      position: sticky; bottom: 70px; z-index: 80;
+      margin: 40px 0 0; padding: 14px 18px; border-radius: 16px;
+      background: color-mix(in srgb, var(--f-surface) 90%, transparent);
+      backdrop-filter: blur(16px); border: 0.5px solid var(--f-border);
+      display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+      font-size: 0.72rem; color: var(--f-ink-2);
+    }
+    .compare-bar a {
+      color: var(--f-ink); font-weight: 700; text-decoration: none;
+      padding: 6px 14px; border-radius: 999px; border: 0.5px solid var(--f-border-2); background: var(--f-surface);
+      transition: transform 320ms var(--f-spring);
+    }
+    .compare-bar a:hover { transform: translateY(-1px); }
+  </style>
+</head>
+<body>
+  <div class="lab">
+    <header class="lab-hero">
+      <h1>اتجاهات التصميم</h1>
+      <p>عشرة اتجاهات بصرية كاملة لمنصة تدفّق الخير — كل اتجاه يعرض شريط علوي، أقسام، بطاقات خدمة، وزر فعل. مرّر وقارن، ثم رشّح بالنجمة ☆ ما يعجبك. القائمة تُحفظ تلقائياً وأرسلها لي لأدمجها في <code>final3d.html</code>.</p>
+      <div class="hint">
+        <span>☆ ترشيح متعدد</span>
+        <span>يمكن دمج عناصر من اتجاهات مختلفة</span>
+        <span>المعاينة = نفس بيانات CS/CT الحقيقية</span>
+      </div>
+    </header>
+
+    <h2 class="lab-sec-title" id="sec-current">المعتمد حالياً</h2>
+    <p class="lab-sec-sub">النسخة التي تعمل عليها المنصة الآن — ورق دافئ، زجاج خفيف، حركة spring.</p>
+    <div class="lab-grid">
+      <article class="lab-card">
+        <h3>D1 — المرجع الحالي</h3>
+        <div class="lab-meta">
+          <span class="lab-tag lab-tag--ok">معتمد</span>
+          <span class="lab-tag">warm paper</span>
+          <span class="lab-tag">glass</span>
+          <span class="lab-tag">spring</span>
+        </div>
+        <p>التوازن الحالي بين الرسمية والحداثة. مناسب للاستخدام اليومي الطويل. الأقسام بألوان هادئة 11%/22%/100%.</p>
+        <div class="lab-stage dir--current mini" data-dir="current">
+          <div class="mini__top"><div class="mini__brand"><img src="assets/logo.png" alt="" /><span>تدفّق الخير<small>RASAFA · CS</small></span></div><div class="mini__search"><span class="material-symbols-outlined" style="font-size:14px">search</span> ابحث… ⌘K</div></div>
+          <div class="mini__body mini__stage-wrap" id="preview-current"></div>
+        </div>
+      </article>
+    </div>
+
+    <h2 class="lab-sec-title" id="sec-formal">رسمي وحكومي</h2>
+    <p class="lab-sec-sub">للموظفين الذين يتعاملون مع أوراق رسمية يومياً — يعكس طابع الدوائر الحكومية.</p>
+    <div class="lab-grid">
+      <article class="lab-card">
+        <h3>D2 — ديوان رسمي</h3>
+        <div class="lab-meta"><span class="lab-tag">Cairo</span><span class="lab-tag">navy header</span><span class="lab-tag">stamp red</span><span class="lab-tag">زوايا حادة</span></div>
+        <p>مستوحى من نسخة v2/ديوان. شريط كحلي ثابت، زوايا مربعة، أحمر ختم للإجراءات الحرجة. يبعث ثقة مؤسسية فورية.</p>
+        <div class="lab-stage dir--diwan mini"><div class="mini__top"><div class="mini__brand"><img src="assets/logo.png" alt="" /><span>ديوان خدمات المشتركين<small>وزارة الكهرباء</small></span></div><div class="mini__search"><span class="material-symbols-outlined" style="font-size:14px">search</span> بحث</div></div><div class="mini__body" id="preview-diwan"></div></div>
+      </article>
+      <article class="lab-card">
+        <h3>D9 — ورق رسمي</h3>
+        <div class="lab-meta"><span class="lab-tag">paper lines</span><span class="lab-tag">stamp</span><span class="lab-tag">ظل يدوي</span></div>
+        <p>كأنك تعمل على استمارة ورقية رسمية. خطوط مسطرة، حدود سوداء، ظلال offset. مثالي لصفحة الفورمة والطباعة.</p>
+        <div class="lab-stage dir--paper mini"><div class="mini__top"><div class="mini__brand"><span>استمارة طلب خدمة<small>نموذج CS0001</small></span></div></div><div class="mini__body" id="preview-paper"></div></div>
+      </article>
+    </div>
+
+    <h2 class="lab-sec-title" id="sec-modern">حديث ونظيف</h2>
+    <p class="lab-sec-sub">اتجاهات عالمية معروفة — سهلة القراءة، أقل إرهاقاً بصرياً.</p>
+    <div class="lab-grid">
+      <article class="lab-card">
+        <h3>D3 — هدوء Notion</h3>
+        <div class="lab-meta"><span class="lab-tag">minimal</span><span class="lab-tag">no shadows</span><span class="lab-tag">calm</span></div>
+        <p>خلفية بيضاء نقية، حدود خفيفة جداً، بدون زخرفة. التركيز على المحتوى والنص. ممتاز للموظفين الجدد.</p>
+        <div class="lab-stage dir--notion mini"><div class="mini__top"><div class="mini__brand"><img src="assets/logo.png" alt="" /><span>تدفّق الخير</span></div><div class="mini__search">⌘K</div></div><div class="mini__body" id="preview-notion"></div></div>
+      </article>
+      <article class="lab-card">
+        <h3>D4 — ثلج Apple</h3>
+        <div class="lab-meta"><span class="lab-tag">frosted</span><span class="lab-tag">large radius</span><span class="lab-tag">premium</span></div>
+        <p>زجاج ضبابي، انحناءات كبيرة، ظلال ناعمة. يشعر المستخدم بجودة عالية — مناسب للعروض والإدارة العليا.</p>
+        <div class="lab-stage dir--apple mini"><div class="mini__top"><div class="mini__brand"><img src="assets/logo.png" alt="" /><span>تدفّق الخير</span></div><div class="mini__search">بحث</div></div><div class="mini__body" id="preview-apple"></div></div>
+      </article>
+      <article class="lab-card">
+        <h3>D5 — تباين Vercel</h3>
+        <div class="lab-meta"><span class="lab-tag">dark</span><span class="lab-tag">mono</span><span class="lab-tag">sharp</span></div>
+        <p>أسود/أبيض صارم، زوايا 8px، بدون تدرجات. عصري وواضح — يميز المنصة عن الأنظمة الحكومية التقليدية.</p>
+        <div class="lab-stage dir--vercel mini"><div class="mini__top"><div class="mini__brand"><span>تدفّق الخير</span></div><div class="mini__search">⌘K</div></div><div class="mini__body" id="preview-vercel"></div></div>
+      </article>
+    </div>
+
+    <h2 class="lab-sec-title" id="sec-domain">من عالم الكهرباء</h2>
+    <p class="lab-sec-sub">هوية بصرية مرتبطة بطبيعة العمل — شبكات، عدادات، محطات.</p>
+    <div class="lab-grid">
+      <article class="lab-card">
+        <h3>D6 — شبكة هندسية</h3>
+        <div class="lab-meta"><span class="lab-tag">blueprint</span><span class="lab-tag">cyan grid</span><span class="lab-tag">technical</span></div>
+        <p>خلفية مخطط هندسي، خطوط شبكة، ألوان سماوية تقنية. يعكس طبيعة العمل الفني والميداني. مثالي لقسم CT.</p>
+        <div class="lab-stage dir--grid mini"><div class="mini__top"><div class="mini__brand"><span>GRID · تدفّق الخير</span></div><div class="mini__search">SCAN</div></div><div class="mini__body" id="preview-grid"></div></div>
+      </article>
+      <article class="lab-card">
+        <h3>D7 — تراث عراقي</h3>
+        <div class="lab-meta"><span class="lab-tag">geometric</span><span class="lab-tag">gold/bronze</span><span class="lab-tag">heritage</span></div>
+        <p>زخارف هندسية عراقية خفيفة، ذهبي وبرونز، أرضية دافئة. يعطي هوية محلية مميزة دون فقدان الاحترافية.</p>
+        <div class="lab-stage dir--heritage mini"><div class="mini__top"><div class="mini__brand"><span>تدفّق الخير<small>جمهورية العراق</small></span></div><div class="mini__search">بحث</div></div><div class="mini__body" id="preview-heritage"></div></div>
+      </article>
+      <article class="lab-card">
+        <h3>D8 — غرفة عمليات</h3>
+        <div class="lab-meta"><span class="lab-tag">dark ops</span><span class="lab-tag">live status</span><span class="lab-tag">KPI dense</span></div>
+        <p>وضع داكن لغرفة التحكم — مؤشر LIVE، ألوان حالة (أخضر/أزرق). للمشرفين وفرق الطوارئ ومتابعة الحالات العاجلة.</p>
+        <div class="lab-stage dir--ops mini"><div class="mini__top"><div class="mini__brand"><span>OPS · مركز الرصافة</span></div><div class="mini__search">84 حالة</div></div><div class="mini__body mini__stage-wrap" id="preview-ops"></div></div>
+      </article>
+    </div>
+
+    <h2 class="lab-sec-title" id="sec-enterprise">مؤسسي وكثيف</h2>
+    <p class="lab-sec-sub">للموظفين الخبراء الذين يريدون أقصى معلومات في أقل مساحة.</p>
+    <div class="lab-grid">
+      <article class="lab-card">
+        <h3>D10 — كثافة مؤسسية</h3>
+        <div class="lab-meta"><span class="lab-tag">compact</span><span class="lab-tag">SAP-like</span><span class="lab-tag">data-first</span></div>
+        <p>خطوط صغيرة، مسافات ضيقة، جداول كثيفة. يعرض 40% محتوى إضافي على نفس الشاشة. للمراكز ذات الضغط العالي.</p>
+        <div class="lab-stage dir--dense mini"><div class="mini__top"><div class="mini__brand"><span>تدفّق الخير · RS-014</span></div></div><div class="mini__body" id="preview-dense"></div></div>
+      </article>
+    </div>
+
+    <h2 class="lab-sec-title" id="sec-mix">دمج مقترح</h2>
+    <p class="lab-sec-sub">تركيبات شائعة يطلبها الفرق — يمكنك اختيار عناصر منفصلة بدل اتجاه كامل.</p>
+    <div class="lab-grid">
+      <article class="lab-card">
+        <h3>M1 — هدوء + تراث</h3>
+        <p>هيكل Notion (D3) + ألوان تراث عراقي (D7) + أيقونات حالية. هادئ لكن بروح محلية.</p>
+        <div class="lab-meta"><span class="lab-tag">D3 + D7</span></div>
+      </article>
+      <article class="lab-card">
+        <h3>M2 — رسمي + ورق</h3>
+        <p>شريط ديوان (D2) + فورمات ورقية (D9) + بطاقات المرجع الحالي (D1). الأفضل للطباعة والأرشفة.</p>
+        <div class="lab-meta"><span class="lab-tag">D2 + D9 + D1</span></div>
+      </article>
+      <article class="lab-card">
+        <h3>M3 — عمليات ليلية</h3>
+        <p>غرفة عمليات (D8) للمشرف + وضع نهاري D1 للموظف العادي. تبديل تلقائي حسب الدور.</p>
+        <div class="lab-meta"><span class="lab-tag">D8 + D1</span><span class="lab-tag lab-tag--warn">يتطلب أدوار</span></div>
+      </article>
+      <article class="lab-card">
+        <h3>M4 — هندسي للفنيين</h3>
+        <p>قسم CT فقط بشبكة هندسية (D6)، باقي الأقسام بالمرجع (D1). تمييز بصري حسب نوع العمل.</p>
+        <div class="lab-meta"><span class="lab-tag">D6 per-dept</span></div>
+      </article>
+    </div>
+
+    <div class="compare-bar">
+      <span>قارن مع المنصة الحالية:</span>
+      <a href="final3d.html" target="_blank" rel="noopener">فتح final3d</a>
+      <a href="compare.html" target="_blank" rel="noopener">مقارنة التصاميم</a>
+      <a href="كل المقترحات.html" target="_blank" rel="noopener">كل المقترحات</a>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const DEPTS = [
+        { code: 'CS', name: 'اشتراكات', c: '#4a6285', ico: 'apartment' },
+        { code: 'CT', name: 'فنية', c: '#8a7350', ico: 'electrical_services' },
+        { code: 'CB', name: 'فواتير', c: '#4e7a7d', ico: 'receipt_long' },
+        { code: 'CA', name: 'شكاوى', c: '#8a5560', ico: 'report' },
+      ];
+      const CARDS = [
+        { code: 'CS0001', name: 'عمل اشتراك جديد', c: '#4a6285', ico: 'add_home', fee: 'من 15,000' },
+        { code: 'CT0009', name: 'فحص مقياس / تبديل', c: '#8a7350', ico: 'fact_check', fee: '12,500+' },
+      ];
+
+      function render(id, opts) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const hot = opts && opts.hot;
+        el.innerHTML =
+          '<div class="mini__depts">' +
+          DEPTS.map((d, i) =>
+            '<div class="mini__dept' + (hot && i === 1 ? ' is-hot' : '') + '" style="--c:' + d.c + '">' +
+            '<div class="mini__dept-ico"><span class="material-symbols-outlined">' + d.ico + '</span></div>' +
+            '<b>' + d.name + '</b><small>' + d.code + '</small></div>'
+          ).join('') +
+          '</div><div class="mini__row">' +
+          CARDS.map(c =>
+            '<div class="mini__card" style="--c:' + c.c + '">' +
+            '<div class="mini__card-top"><div class="mini__card-ico"><span class="material-symbols-outlined">' + c.ico + '</span></div><code>' + c.code + '</code></div>' +
+            '<h4>' + c.name + '</h4><foot>' + c.fee + ' د.ع</foot></div>'
+          ).join('') +
+          '</div><button type="button" class="mini__cta">ابدأ خدمة سريعة</button>';
+      }
+
+      ['current', 'diwan', 'notion', 'apple', 'vercel', 'grid', 'heritage', 'paper', 'dense'].forEach((k) => render('preview-' + k));
+      render('preview-ops', { hot: true });
+    })();
+  </script>
+  <script src="lab_tools.js"></script>
+</body>
+</html>

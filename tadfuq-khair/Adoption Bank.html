@@ -1,0 +1,2924 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>بنك الاعتماد — نسخ قابلة للتطبيق على التصميم الأصلي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Readex+Pro:wght@400;500;600;700&family=Alexandria:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..600,0..1,0" />
+  <link rel="stylesheet" href="final.css" />
+  <link rel="stylesheet" href="lab_tools.css" />
+  <style>
+    body { margin: 0; background: var(--f-bg); }
+    .lab { max-width: 1180px; margin: 0 auto; padding: 40px 26px 150px; font-family: var(--f-arab); }
+    .lab-hero h1 { margin: 0 0 6px; font-family: var(--f-disp, Alexandria); font-size: 1.9rem; font-weight: 800; color: var(--f-ink); }
+    .lab-hero p { margin: 0; color: var(--f-ink-3); font-size: 0.88rem; max-width: 62ch; line-height: 1.8; }
+    .lab-sec-title { margin: 64px 0 4px; font-family: var(--f-disp, Alexandria); font-size: 1.25rem; font-weight: 800; color: var(--f-ink); }
+    .lab-sec-sub { margin: 0 0 20px; font-size: 0.78rem; color: var(--f-ink-3); }
+    .lab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 18px; }
+    @media (max-width: 560px) { .lab-grid { grid-template-columns: 1fr; } }
+    .lab-card {
+      border-radius: 20px; padding: 20px 22px 26px;
+      background: var(--f-surface); border: 0.5px solid var(--f-border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), var(--f-shadow-xs);
+    }
+    .lab-card h3 { margin: 0 0 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 0.92rem; font-weight: 700; color: var(--f-ink); }
+    .lab-tag { font-family: var(--f-mono); font-size: 0.52rem; letter-spacing: 0.12em; color: var(--f-ink-3); padding: 3px 8px; border: 0.5px solid var(--f-border-2); border-radius: 999px; }
+    .lab-card > p { margin: 0 0 18px; font-size: 0.72rem; line-height: 1.8; color: var(--f-ink-2); }
+    .lab-stage { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; min-height: 120px; padding: 22px 14px; border-radius: 14px; background: var(--f-bg); border: 0.5px dashed var(--f-border-2); }
+
+    /* ======== الأساس المشترك: بطاقة الخدمة (نسخة fs-card الفعلية) ======== */
+    .pk-card {
+      position: relative; display: flex; flex-direction: column; gap: 10px;
+      width: 250px; min-height: 142px; padding: 16px; border-radius: 16px;
+      text-align: start; cursor: pointer; box-sizing: border-box;
+      background: var(--f-surface); border: 0.5px solid var(--f-border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), var(--f-shadow-xs);
+      font-family: var(--f-arab);
+      transition: transform 480ms var(--f-spring), border-color 300ms, box-shadow 300ms;
+    }
+    .pk-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--c-c) 32%, var(--f-border)); }
+    .pk-card__top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .pk-card__ico {
+      width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center;
+      color: var(--c-c); background: color-mix(in srgb, var(--c-c) 11%, transparent);
+    }
+    .pk-card__code { font-family: var(--f-mono); font-size: 0.66rem; color: var(--f-ink-3); direction: ltr; }
+    .pk-card__name { margin: 0; font-size: 0.9rem; font-weight: 700; color: var(--f-ink); line-height: 1.5; flex: 1; }
+    .pk-card__foot { display: flex; align-items: center; gap: 10px; font-size: 0.64rem; color: var(--f-ink-3); }
+    .pk-card__fee { color: var(--f-ink-2); font-weight: 600; font-family: var(--f-mono); font-size: 0.62rem; direction: ltr; }
+    .pk-card__go { margin-inline-start: auto; color: var(--c-c); opacity: 0; transition: transform 380ms var(--f-spring), opacity 250ms; }
+    .pk-card:hover .pk-card__go { opacity: 1; transform: translateX(-4px); }
+    .pk-card__go .material-symbols-outlined { font-size: 16px; }
+
+    /* A1 — الشطف الحامل للرمز */
+    .pk-card--cham { border-radius: 16px 0 16px 16px; clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 0 100%); border: 0; box-shadow: inset 0 0 0 0.5px var(--f-border-2); }
+    .pk-card--cham::before {
+      content: ""; position: absolute; top: 0; inset-inline-end: 0; width: 30px; height: 30px;
+      background: linear-gradient(225deg, color-mix(in srgb, var(--c-c) 86%, #000) 50%, transparent 50%);
+      transition: width 380ms var(--f-spring), height 380ms var(--f-spring);
+    }
+    .pk-card--cham:hover::before { width: 40px; height: 40px; }
+    .pk-card--cham .pk-card__code { position: absolute; top: 6px; inset-inline-end: 4px; font-size: 0.46rem; font-weight: 700; color: #fff; transform: rotate(-45deg); z-index: 1; transition: top 380ms, inset-inline-end 380ms; }
+    .pk-card--cham:hover .pk-card__code { top: 9px; inset-inline-end: 7px; }
+
+    /* A2 — موشور الزاوية الزجاجي */
+    .pk-card--prism { overflow: hidden; }
+    .pk-card--prism .pk-prism {
+      position: absolute; top: -30px; inset-inline-start: -30px; width: 96px; height: 96px;
+      transform: rotate(45deg); pointer-events: none;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--c-c) 24%, transparent), color-mix(in srgb, var(--c-c) 4%, transparent) 65%, transparent);
+      -webkit-backdrop-filter: blur(5px) saturate(1.6); backdrop-filter: blur(5px) saturate(1.6);
+      border-bottom: 0.5px solid color-mix(in srgb, var(--c-c) 32%, transparent);
+      transition: transform 600ms var(--f-spring);
+    }
+    .pk-card--prism:hover .pk-prism { transform: rotate(45deg) translate(12px, 12px) scale(1.1); }
+
+    /* A3 — نبضة الجهد في التذييل */
+    .pk-card--volt .pk-volt { display: block; width: 100%; height: 22px; overflow: visible; margin: -4px 0; }
+    .pk-card--volt .pk-volt path { fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .pk-card--volt .pk-volt .b { stroke: color-mix(in srgb, var(--f-ink) 9%, transparent); }
+    .pk-card--volt .pk-volt .l {
+      stroke: var(--c-c); stroke-dasharray: 100; stroke-dashoffset: 100;
+      filter: drop-shadow(0 0 3px color-mix(in srgb, var(--c-c) 55%, transparent));
+      transition: stroke-dashoffset 850ms var(--f-ease);
+    }
+    .pk-card--volt:hover .pk-volt .l { stroke-dashoffset: 0; }
+    @media (prefers-reduced-motion: reduce) { .pk-card--volt .pk-volt .l { transition: none; stroke-dashoffset: 0; opacity: 0.5; } }
+
+    /* A4 — حافة التيار SIGNATURE */
+    .pk-card--edge::after {
+      content: ""; position: absolute; inset-block: 14px; inset-inline-start: -0.5px; width: 2.5px; border-radius: 99px;
+      background: linear-gradient(180deg, transparent, var(--c-c) 30% 70%, transparent);
+      opacity: 0.5; transform: scaleY(0.5);
+      transition: transform 480ms var(--f-spring), opacity 300ms, box-shadow 300ms;
+    }
+    .pk-card--edge:hover::after { transform: none; opacity: 1; box-shadow: 0 0 9px color-mix(in srgb, var(--c-c) 55%, transparent); }
+
+    /* ======== B — بلاطات الأقسام ======== */
+    .pk-dept {
+      position: relative; width: 132px; padding: 18px 14px 15px; border-radius: 18px; cursor: pointer;
+      display: grid; justify-items: center; gap: 9px; text-align: center; box-sizing: border-box;
+      background: var(--f-surface); border: 0.5px solid var(--f-border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), var(--f-shadow-xs);
+      font-family: var(--f-arab);
+      transition: transform 480ms var(--f-spring), border-color 300ms;
+    }
+    .pk-dept:hover { transform: translateY(-3px); }
+    .pk-dept b { font-size: 0.74rem; font-weight: 700; color: var(--f-ink); }
+    .pk-dept small { font-family: var(--f-mono); font-size: 0.52rem; color: var(--f-ink-3); direction: ltr; }
+    /* B1 — حلقة الطاقة (المعتمدة حالياً كمرجع) */
+    .pk-ring { position: relative; width: 54px; height: 54px; display: grid; place-items: center; color: var(--c-c); }
+    .pk-ring svg.rg { position: absolute; inset: -2px; width: calc(100% + 4px); height: calc(100% + 4px); }
+    .pk-ring .tr { fill: none; stroke: color-mix(in srgb, var(--c-c) 18%, transparent); stroke-width: 1.5; }
+    .pk-ring .pr {
+      fill: none; stroke: var(--c-c); stroke-width: 1.75; stroke-linecap: round;
+      stroke-dasharray: 158; stroke-dashoffset: 118;
+      transform: rotate(-90deg); transform-origin: center;
+      transition: stroke-dashoffset 700ms var(--f-ease);
+    }
+    .pk-dept:hover .pk-ring .pr, .pk-dept.is-on .pk-ring .pr { stroke-dashoffset: 0; }
+    .pk-glass {
+      width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+      background: linear-gradient(155deg, rgba(255,255,255,0.85), color-mix(in srgb, var(--c-c) 9%, transparent));
+      box-shadow: inset 0 1px 1.5px rgba(255,255,255,0.95), inset 0 -5px 9px -5px color-mix(in srgb, var(--c-c) 26%, transparent), 0 1px 2px rgba(22,21,19,0.06);
+    }
+    /* B2 — القطع الماسي */
+    .pk-facet {
+      position: relative; width: 54px; height: 54px; display: grid; place-items: center; color: var(--c-c);
+      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0) 40%), color-mix(in srgb, var(--c-c) 11%, var(--f-surface));
+      clip-path: polygon(26% 0, 100% 0, 100% 74%, 74% 100%, 0 100%, 0 26%);
+      border: 0.5px solid color-mix(in srgb, var(--c-c) 24%, transparent);
+      transition: transform 380ms var(--f-spring);
+    }
+    .pk-dept:hover .pk-facet { transform: scale(1.06) rotate(-2deg); }
+    .pk-facet::after { content: ""; position: absolute; top: 0; inset-inline-end: 0; width: 14px; height: 14px; background: linear-gradient(225deg, color-mix(in srgb, var(--c-c) 85%, #000) 50%, transparent 50%); }
+    /* B3 — المدار */
+    .pk-orb { position: relative; width: 54px; height: 54px; border-radius: 38%; display: grid; place-items: center; color: var(--c-c); background: color-mix(in srgb, var(--c-c) 10%, transparent); border: 0.5px solid color-mix(in srgb, var(--c-c) 20%, transparent); }
+    @supports (corner-shape: squircle) { .pk-orb { corner-shape: squircle; } }
+    .pk-orb i { position: absolute; inset: 0; pointer-events: none; }
+    .pk-orb i::before {
+      content: ""; position: absolute; left: 0; top: 0; width: 4.5px; height: 4.5px; border-radius: 50%;
+      background: var(--c-c); box-shadow: 0 0 6px var(--c-c);
+      offset-path: circle(24px at 27px 27px); offset-distance: 0%;
+      opacity: 0; animation: pk-orb-run 1.6s linear infinite paused;
+      transition: opacity 250ms;
+    }
+    .pk-dept:hover .pk-orb i::before { opacity: 1; animation-play-state: running; }
+    @keyframes pk-orb-run { to { offset-distance: 100%; } }
+    @media (prefers-reduced-motion: reduce) { .pk-orb i::before { animation: none; } }
+
+    /* ======== C — صف الخدمة ======== */
+    .pk-row {
+      position: relative; width: 360px; max-width: 100%; overflow: hidden; box-sizing: border-box;
+      display: flex; align-items: center; gap: 12px;
+      padding: 13px 20px 13px 15px; border-radius: 14px; cursor: pointer;
+      background: var(--f-surface); border: 0.5px solid var(--f-border);
+      font-family: var(--f-arab);
+      transition: border-color 300ms, transform 480ms var(--f-spring);
+    }
+    .pk-row:hover { border-color: color-mix(in srgb, var(--c-c) 32%, var(--f-border)); }
+    .pk-row b { font-size: 0.8rem; font-weight: 700; color: var(--f-ink); }
+    .pk-row small { display: block; font-size: 0.6rem; color: var(--f-ink-3); margin-top: 2px; }
+    .pk-row .val { margin-inline-start: auto; font-family: var(--f-mono); font-size: 0.64rem; color: var(--c-c); direction: ltr; }
+    /* C1 — المسطرة الحية */
+    .pk-row--ruler .ticks {
+      position: absolute; inset-block: 0; inset-inline-start: 0; width: 7px;
+      background: repeating-linear-gradient(180deg, color-mix(in srgb, var(--c-c) 60%, transparent) 0 1.5px, transparent 1.5px 7px);
+      -webkit-mask-image: linear-gradient(180deg, transparent, #000 18% 82%, transparent);
+      mask-image: linear-gradient(180deg, transparent, #000 18% 82%, transparent);
+      transform: scaleY(0.55); opacity: 0.45;
+      transition: transform 480ms var(--f-spring), opacity 300ms, width 300ms;
+    }
+    .pk-row--ruler:hover .ticks { transform: none; opacity: 1; width: 10px; }
+    /* C2 — مجرى التيار */
+    .pk-row--flow .wire { position: absolute; inset-block-end: 0; inset-inline: 14px; height: 14px; overflow: visible; pointer-events: none; }
+    .pk-row--flow .wire path { fill: none; stroke: var(--c-c); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: 4 7; opacity: 0; transition: opacity 350ms; }
+    .pk-row--flow:hover .wire path { opacity: 0.75; animation: pk-flow 0.9s linear infinite; }
+    @keyframes pk-flow { to { stroke-dashoffset: -11; } }
+    @media (prefers-reduced-motion: reduce) { .pk-row--flow:hover .wire path { animation: none; } }
+    /* ======== د — تقنيات عرض البطاقة ======== */
+    /* D1 — طبقات خلفية */
+    .pk-strata { position: relative; }
+    .pk-strata::before, .pk-strata::after {
+      content: ""; position: absolute; inset: 0; border-radius: 16px; z-index: -1;
+      background: var(--f-surface); border: 0.5px solid var(--f-border);
+      transition: transform 520ms var(--f-spring), opacity 300ms;
+      opacity: 0;
+    }
+    .pk-strata:hover { transform: translateY(-5px); }
+    .pk-strata:hover::before { opacity: 1; transform: translateY(7px) scale(0.965); }
+    .pk-strata:hover::after { opacity: 0.55; transform: translateY(13px) scale(0.93); }
+    /* D2 — شعرة الفجر (Vercel hairline) */
+    .pk-aurora { overflow: hidden; }
+    .pk-aurora::before {
+      content: ""; position: absolute; top: 0; inset-inline: 0; height: 1.5px;
+      background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--c-c) 80%, #fff 10%) 35% 65%, transparent);
+      background-size: 220% 100%; background-position: 150% 0;
+      opacity: 0; transition: opacity 250ms;
+    }
+    .pk-aurora:hover::before { opacity: 1; animation: pk-hairline 1.7s var(--f-ease) infinite; }
+    @keyframes pk-hairline { from { background-position: 150% 0; } to { background-position: -150% 0; } }
+    @media (prefers-reduced-motion: reduce) { .pk-aurora:hover::before { animation: none; background-position: 50% 0; } }
+    /* D3 — ضغطة iOS */
+    .pk-press { transition: transform 200ms var(--f-ease), box-shadow 200ms, border-color 300ms; }
+    .pk-press.is-down {
+      transform: scale(0.965);
+      box-shadow: inset 0 2px 8px rgba(22,21,19,0.1), inset 0 1px 0 rgba(255,255,255,0.3);
+    }
+    .pk-press.is-up { animation: pk-pop 480ms var(--f-spring); }
+    @keyframes pk-pop { 0% { transform: scale(0.965); } 55% { transform: scale(1.018); } 100% { transform: none; } }
+    /* D4 — العد الصاعد */
+    .pk-count .pk-card__fee { min-width: 74px; text-align: end; font-variant-numeric: tabular-nums; }
+
+    /* ======== هـ — الأيقونات: رسم وحركة ======== */
+    .pk-ink { width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center; color: var(--c-c); background: color-mix(in srgb, var(--c-c) 10%, transparent); border: 0.5px solid color-mix(in srgb, var(--c-c) 20%, transparent); cursor: pointer; }
+    /* E1 — الرسم الذاتي */
+    .pk-draw path { fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100; stroke-dashoffset: 0; }
+    .pk-ink:hover .pk-draw path { animation: pk-redraw 950ms var(--f-ease) forwards; }
+    .pk-ink:hover .pk-draw path:nth-child(2) { animation-delay: 120ms; }
+    .pk-ink:hover .pk-draw path:nth-child(3) { animation-delay: 240ms; }
+    @keyframes pk-redraw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+    @media (prefers-reduced-motion: reduce) { .pk-ink:hover .pk-draw path { animation: none; } }
+    /* E2 — الإمالة الثلاثية */
+    .pk-tilt { transform-style: preserve-3d; will-change: transform; transition: transform 480ms var(--f-spring); }
+    .pk-tilt svg { transform: translateZ(14px); }
+    /* E3 — العصر والمط */
+    .pk-ink.is-boing { animation: pk-boing 600ms var(--f-ease); }
+    @keyframes pk-boing {
+      0% { transform: scale(1, 1); }
+      22% { transform: scale(1.16, 0.84); }
+      45% { transform: scale(0.88, 1.12); }
+      68% { transform: scale(1.06, 0.94); }
+      100% { transform: scale(1, 1); }
+    }
+    /* E4 — مسح الفجر الزاوي */
+    @property --pk-a { syntax: "<angle>"; inherits: false; initial-value: 145deg; }
+    .pk-sweep {
+      background: linear-gradient(var(--pk-a), color-mix(in srgb, var(--c-c) 20%, transparent), color-mix(in srgb, var(--c-c) 5%, transparent) 60%);
+      transition: --pk-a 800ms var(--f-ease), transform 380ms var(--f-spring);
+    }
+    .pk-sweep:hover { --pk-a: 505deg; transform: scale(1.06); }
+
+    /* ======== و — التوافقات اللونية ======== */
+    .pk-ladder { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+    .pk-ladder__row { display: flex; align-items: center; gap: 8px; }
+    .pk-ladder__name { width: 74px; font-size: 0.66rem; font-weight: 700; color: var(--f-ink-2); }
+    .pk-ladder__cells { flex: 1; display: flex; gap: 4px; }
+    .pk-cell {
+      flex: 1; height: 34px; border-radius: 8px; position: relative; cursor: pointer;
+      border: 0.5px solid color-mix(in srgb, var(--f-ink) 8%, transparent);
+      transition: transform 320ms var(--f-spring);
+    }
+    .pk-cell:hover { transform: translateY(-2px); }
+    .pk-cell span {
+      position: absolute; inset-block-end: 3px; inset-inline-start: 6px;
+      font-family: var(--f-mono); font-size: 0.46rem; color: color-mix(in srgb, var(--f-ink) 50%, transparent);
+    }
+    .pk-cell--deep span { color: rgba(255,255,255,0.75); }
+    .pk-pair { display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 14px; width: 178px; box-sizing: border-box; font-family: var(--f-arab); border: 0.5px solid; }
+    .pk-pair b { font-size: 0.72rem; font-weight: 700; }
+    .pk-pair small { font-size: 0.56rem; opacity: 0.75; }
+    .pk-pair .chip { align-self: flex-start; font-family: var(--f-mono); font-size: 0.52rem; padding: 3px 9px; border-radius: 999px; color: #fff; direction: ltr; }
+    /* وضع منتصف الليل */
+    .pk-night {
+      --n-bg: #161618; --n-surface: #1f1f22; --n-border: rgba(255,255,255,0.09); --n-ink: #f0eee9; --n-ink3: rgba(240,238,233,0.45);
+      width: 250px; min-height: 142px; padding: 16px; border-radius: 16px; box-sizing: border-box;
+      display: flex; flex-direction: column; gap: 10px; cursor: pointer; text-align: start;
+      background: var(--n-surface); border: 0.5px solid var(--n-border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 14px 30px -18px rgba(0,0,0,0.7);
+      font-family: var(--f-arab);
+      transition: transform 480ms var(--f-spring), border-color 300ms;
+    }
+    .pk-night:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--c-c) 45%, var(--n-border)); }
+    .pk-night .pk-card__ico { background: color-mix(in srgb, var(--c-c) 22%, transparent); color: color-mix(in srgb, var(--c-c) 70%, #fff); }
+    .pk-night .pk-card__name { color: var(--n-ink); }
+    .pk-night .pk-card__code, .pk-night .pk-card__foot { color: var(--n-ink3); }
+    .pk-night .pk-card__fee { color: color-mix(in srgb, var(--c-c) 60%, #fff); }
+    .lab-stage--night { background: #161618; border-color: rgba(255,255,255,0.1); }
+    /* ======== ز — الدمج الأسمى: زجاج × رسم ذاتي ======== */
+    .pk-lens {
+      position: relative; width: 64px; height: 64px; border-radius: 50%; cursor: pointer;
+      display: grid; place-items: center; color: var(--c-c); overflow: hidden;
+      background:
+        radial-gradient(circle at 32% 24%, rgba(255,255,255,0.95), rgba(255,255,255,0.25) 42%, transparent 60%),
+        linear-gradient(160deg, color-mix(in srgb, var(--c-c) 13%, #fff 30%), color-mix(in srgb, var(--c-c) 7%, var(--f-surface)));
+      box-shadow:
+        inset 0 1px 1.5px rgba(255,255,255,0.95),
+        inset 0 -7px 12px -6px color-mix(in srgb, var(--c-c) 30%, transparent),
+        inset 0 0 0 0.5px color-mix(in srgb, var(--c-c) 22%, transparent),
+        0 2px 4px rgba(22,21,19,0.07);
+      transition: transform 420ms var(--f-spring);
+    }
+    .pk-lens:hover, .pk-card--lens:hover .pk-lens { transform: scale(1.07); }
+    .pk-lens::after {
+      content: ""; position: absolute; inset: -20%;
+      background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,0.85) 49%, rgba(255,255,255,0.2) 53%, transparent 62%);
+      transform: translateX(130%); pointer-events: none;
+    }
+    .pk-lens:hover::after, .pk-card--lens:hover .pk-lens::after { animation: pk-glare 900ms var(--f-ease) 620ms forwards; }
+    @keyframes pk-glare { from { transform: translateX(130%); } to { transform: translateX(-130%); } }
+    .pk-lens .pk-draw path { stroke-width: 1.9; }
+    .pk-lens:hover .pk-draw path, .pk-card--lens:hover .pk-lens .pk-draw path { animation: pk-redraw 750ms var(--f-ease) forwards; }
+    .pk-lens:hover .pk-draw path:nth-child(2), .pk-card--lens:hover .pk-lens .pk-draw path:nth-child(2) { animation-delay: 110ms; }
+    .pk-lens:hover .pk-draw path:nth-child(3), .pk-card--lens:hover .pk-lens .pk-draw path:nth-child(3) { animation-delay: 220ms; }
+    @media (prefers-reduced-motion: reduce) {
+      .pk-lens::after, .pk-lens .pk-draw path { animation: none !important; }
+    }
+    .pk-card--lens .pk-lens { width: 46px; height: 46px; }
+    .pk-card--lens .pk-lens .pk-draw { width: 20px; height: 20px; }
+
+    /* ======== ح — أزرار جديدة ======== */
+    /* H1 — القوس الراسم */
+    .btn-arc {
+      position: relative; display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 26px; border-radius: 999px; border: 0; cursor: pointer;
+      background: color-mix(in srgb, var(--ar-c, var(--f-navy)) 6%, var(--f-surface));
+      color: var(--f-ink); font-family: var(--f-arab); font-size: 0.85rem; font-weight: 700;
+      transition: color 300ms 250ms, background 400ms 250ms, transform 320ms var(--f-spring);
+    }
+    .btn-arc:active { transform: scale(0.96); }
+    .btn-arc svg.arc { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .btn-arc svg.arc rect {
+      fill: none; stroke: var(--ar-c, var(--f-navy)); stroke-width: 1.5;
+      stroke-dasharray: 100; stroke-dashoffset: 100; stroke-linecap: round;
+      transition: stroke-dashoffset 650ms var(--f-ease);
+    }
+    .btn-arc:hover svg.arc rect { stroke-dashoffset: 0; }
+    .btn-arc:hover { background: var(--ar-c, var(--f-navy)); color: #fff; }
+    .btn-arc .material-symbols-outlined { font-size: 17px; }
+    /* H2 — عدسة تتبع المؤشر */
+    .btn-lens {
+      position: relative; display: inline-flex; align-items: center; gap: 8px; overflow: hidden;
+      padding: 13px 26px; border-radius: 999px; cursor: pointer;
+      border: 0.5px solid color-mix(in srgb, var(--f-ink) 14%, transparent);
+      background: linear-gradient(160deg, rgba(255,255,255,0.8), color-mix(in srgb, var(--f-navy) 6%, var(--f-surface)));
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), 0 1px 2px rgba(22,21,19,0.06);
+      color: var(--f-ink); font-family: var(--f-arab); font-size: 0.85rem; font-weight: 700;
+      transition: transform 320ms var(--f-spring);
+    }
+    .btn-lens:active { transform: scale(0.96); }
+    .btn-lens::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0;
+      background: radial-gradient(90px circle at var(--mx, 50%) 0%, rgba(255,255,255,0.95), transparent 65%);
+      transition: opacity 250ms;
+    }
+    .btn-lens:hover::before { opacity: 1; }
+    /* H3 — اللفّة */
+    .btn-roll {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 26px; border-radius: 14px; cursor: pointer;
+      border: 0.5px solid var(--f-border-2); background: var(--f-surface); color: var(--f-ink);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), var(--f-shadow-xs);
+      font-family: var(--f-arab); font-size: 0.85rem; font-weight: 700;
+      transition: transform 320ms var(--f-spring), border-color 300ms;
+    }
+    .btn-roll:hover { border-color: color-mix(in srgb, var(--rl2-c, var(--f-ct)) 40%, var(--f-border)); }
+    .btn-roll:active { transform: scale(0.96); }
+    .btn-roll__win { position: relative; height: 1.3em; overflow: hidden; }
+    .btn-roll__stack { display: flex; flex-direction: column; transition: transform 480ms var(--f-spring); }
+    .btn-roll:hover .btn-roll__stack { transform: translateY(-1.3em); }
+    .btn-roll__stack span { height: 1.3em; line-height: 1.3em; white-space: nowrap; }
+    .btn-roll__stack span:last-child { color: var(--rl2-c, var(--f-ct)); }
+
+    /* ======== ط — العرض الساحر ======== */
+    /* T1 — المعرض المتنفس */
+    .pk-gal { display: flex; gap: 8px; width: 100%; max-width: 560px; height: 190px; }
+    .pk-pane {
+      position: relative; flex: 1; min-width: 0; border-radius: 18px; cursor: pointer; overflow: hidden;
+      border: 0.5px solid color-mix(in srgb, var(--c-c) 20%, var(--f-border));
+      background: linear-gradient(180deg, color-mix(in srgb, var(--c-c) 8%, var(--f-surface)), color-mix(in srgb, var(--c-c) 4%, var(--f-surface)));
+      display: flex; flex-direction: column; justify-content: flex-end; padding: 14px; box-sizing: border-box;
+      transition: flex 580ms var(--f-spring), border-color 300ms;
+      font-family: var(--f-arab);
+    }
+    .pk-gal:has(.pk-pane:hover) .pk-pane:hover { flex: 3.2; border-color: color-mix(in srgb, var(--c-c) 45%, var(--f-border)); }
+    .pk-pane__ico {
+      position: absolute; top: 14px; inset-inline-start: 14px;
+      width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center;
+      color: var(--c-c); background: color-mix(in srgb, var(--c-c) 13%, transparent);
+    }
+    .pk-pane b { font-size: 0.78rem; font-weight: 700; color: var(--f-ink); white-space: nowrap; }
+    .pk-pane small { font-family: var(--f-mono); font-size: 0.52rem; color: var(--f-ink-3); direction: ltr; }
+    .pk-pane__more {
+      max-height: 0; opacity: 0; overflow: hidden;
+      font-size: 0.62rem; color: var(--f-ink-2); line-height: 1.7;
+      transition: max-height 580ms var(--f-spring), opacity 350ms 150ms;
+    }
+    .pk-pane:hover .pk-pane__more { max-height: 70px; opacity: 1; }
+    /* T2 — المروحة */
+    .pk-fan { position: relative; width: 270px; height: 185px; }
+    .pk-fan .pk-card { position: absolute; inset-inline-start: 10px; top: 6px; width: 240px; transition: transform 580ms var(--f-spring), box-shadow 400ms; transform-origin: bottom center; }
+    .pk-fan .pk-card:nth-child(1) { z-index: 3; }
+    .pk-fan .pk-card:nth-child(2) { z-index: 2; transform: rotate(2.5deg) translateY(7px); }
+    .pk-fan .pk-card:nth-child(3) { z-index: 1; transform: rotate(-2.5deg) translateY(13px); }
+    .pk-fan:hover .pk-card:nth-child(1) { transform: translateY(-12px); box-shadow: 0 18px 34px -20px rgba(22,21,19,0.3); }
+    .pk-fan:hover .pk-card:nth-child(2) { transform: rotate(7deg) translate(-34px, 4px); }
+    .pk-fan:hover .pk-card:nth-child(3) { transform: rotate(-7deg) translate(34px, 4px); }
+
+    /* ======== ي — أنماط لونية بديلة ======== */
+    .pk-pal {
+      width: 100%; max-width: 480px; border-radius: 18px; padding: 18px; box-sizing: border-box;
+      background: var(--p-bg); border: 0.5px solid var(--p-line);
+      font-family: var(--f-arab); display: flex; flex-direction: column; gap: 13px;
+      transition: transform 480ms var(--f-spring);
+    }
+    .pk-pal:hover { transform: translateY(-3px); }
+    .pk-pal__head { display: flex; align-items: baseline; justify-content: space-between; }
+    .pk-pal__head b { font-size: 0.88rem; font-weight: 800; color: var(--p-ink); }
+    .pk-pal__head span { font-family: var(--f-mono); font-size: 0.52rem; color: var(--p-ink3); direction: ltr; }
+    .pk-pal__dots { display: flex; gap: 7px; }
+    .pk-pal__dot { flex: 1; height: 30px; border-radius: 9px; position: relative; }
+    .pk-pal__dot i {
+      position: absolute; inset-block-end: -16px; inset-inline-start: 2px;
+      font-style: normal; font-family: var(--f-mono); font-size: 0.45rem; color: var(--p-ink3); direction: ltr;
+    }
+    .pk-pal__demo {
+      margin-top: 12px; display: flex; align-items: center; gap: 11px;
+      padding: 13px 15px; border-radius: 13px;
+      background: var(--p-surface); border: 0.5px solid var(--p-line);
+    }
+    .pk-pal__demo .ic { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; color: var(--p-a); background: color-mix(in srgb, var(--p-a) 12%, transparent); }
+    .pk-pal__demo b { font-size: 0.74rem; color: var(--p-ink); }
+    .pk-pal__demo small { display: block; font-size: 0.56rem; color: var(--p-ink3); margin-top: 2px; }
+    .pk-pal__demo .act {
+      margin-inline-start: auto; padding: 7px 16px; border-radius: 999px; border: 0;
+      font-family: var(--f-arab); font-size: 0.62rem; font-weight: 700; color: #fff; cursor: pointer;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--p-a) 85%, #fff 6%), color-mix(in srgb, var(--p-a) 92%, #000));
+    }
+    /* ======== ك — بطاقات بمستوى جديد ======== */
+    /* K1 — التذكرة الرسمية */
+    .tkt {
+      position: relative; display: flex; width: 330px; max-width: 100%; cursor: pointer;
+      font-family: var(--f-arab); text-align: start;
+      filter: drop-shadow(0 2px 3px rgba(22,21,19,0.08)) drop-shadow(0 12px 24px rgba(22,21,19,0.07));
+      transition: transform 480ms var(--f-spring), filter 400ms;
+      border: 0; background: none; padding: 0;
+    }
+    .tkt:hover { transform: translateY(-3px); filter: drop-shadow(0 4px 5px rgba(22,21,19,0.1)) drop-shadow(0 20px 34px rgba(22,21,19,0.12)); }
+    .tkt__main {
+      flex: 1; padding: 16px 18px; border-radius: 16px 4px 4px 16px;
+      background: var(--f-surface);
+      -webkit-mask: radial-gradient(circle 7px at calc(0% - 0px) 0%, transparent 0, transparent 0) , linear-gradient(#000 0 0);
+      display: flex; flex-direction: column; gap: 9px;
+    }
+    .tkt__perf {
+      width: 0; border-inline-start: 1.5px dashed color-mix(in srgb, var(--f-ink) 18%, transparent);
+      position: relative; margin-block: 7px;
+    }
+    .tkt__perf::before, .tkt__perf::after {
+      content: ""; position: absolute; inset-inline-start: -7px; width: 13px; height: 13px; border-radius: 50%;
+      background: var(--f-bg);
+      box-shadow: inset 0 1px 2px rgba(22,21,19,0.12);
+    }
+    .tkt__perf::before { top: -14px; }
+    .tkt__perf::after { bottom: -14px; }
+    .tkt__stub {
+      width: 88px; flex: none; border-radius: 4px 16px 16px 4px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--c-c) 10%, var(--f-surface)), color-mix(in srgb, var(--c-c) 6%, var(--f-surface)));
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+      padding: 12px 8px; box-sizing: border-box;
+      transition: transform 480ms var(--f-spring);
+      transform-origin: right center;
+    }
+    .tkt:hover .tkt__stub { transform: rotate(-2.2deg); }
+    .tkt__main, .tkt__stub { border: 0.5px solid var(--f-border); }
+    .tkt__head { display: flex; align-items: center; gap: 10px; }
+    .tkt__ico { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: var(--c-c); background: color-mix(in srgb, var(--c-c) 11%, transparent); flex: none; }
+    .tkt__head b { font-size: 0.85rem; font-weight: 700; color: var(--f-ink); line-height: 1.45; }
+    .tkt__meta { display: flex; gap: 12px; font-size: 0.62rem; color: var(--f-ink-3); }
+    .tkt__rail {
+      margin-top: auto; height: 14px; border-radius: 4px; opacity: 0.5;
+      background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--f-ink) 55%, transparent) 0 1.5px, transparent 1.5px 4px, color-mix(in srgb, var(--f-ink) 55%, transparent) 4px 6.5px, transparent 6.5px 12px);
+    }
+    .tkt__stub b { font-family: var(--f-mono); font-size: 0.62rem; font-weight: 600; color: var(--c-c); direction: ltr; }
+    .tkt__stub small { font-size: 0.5rem; color: var(--f-ink-3); }
+    .tkt__stub .fee { font-family: var(--f-mono); font-size: 0.78rem; font-weight: 700; color: var(--f-ink); direction: ltr; }
+
+    /* K2 — الملف الرسمي */
+    .dos { position: relative; width: 270px; cursor: pointer; font-family: var(--f-arab); border: 0; background: none; padding: 0; text-align: start; }
+    .dos__tab {
+      position: relative; z-index: 0; width: 110px; height: 26px; margin-inline-start: 14px;
+      border-radius: 11px 11px 0 0;
+      background: color-mix(in srgb, var(--c-c) 16%, var(--f-surface));
+      border: 0.5px solid color-mix(in srgb, var(--c-c) 26%, var(--f-border)); border-bottom: 0;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      font-family: var(--f-mono); font-size: 0.56rem; font-weight: 600; color: color-mix(in srgb, var(--c-c) 70%, var(--f-ink)); direction: ltr;
+    }
+    .dos__body {
+      position: relative; z-index: 2; border-radius: 16px; overflow: hidden;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--c-c) 9%, var(--f-surface)), color-mix(in srgb, var(--c-c) 5%, var(--f-surface)));
+      border: 0.5px solid color-mix(in srgb, var(--c-c) 22%, var(--f-border));
+      box-shadow: var(--f-shadow-xs);
+      padding: 14px 16px 16px; min-height: 118px; box-sizing: border-box;
+      display: flex; flex-direction: column;
+    }
+    .dos__paper {
+      position: absolute; inset-inline: 10px; top: 8px; z-index: 1; border-radius: 10px 10px 0 0;
+      background: #fffefb; border: 0.5px solid var(--f-border-2); border-bottom: 0;
+      height: 30px; padding: 8px 14px 0; box-sizing: border-box;
+      font-size: 0.6rem; color: var(--f-ink-3); white-space: nowrap; overflow: hidden;
+      box-shadow: 0 -4px 12px -6px rgba(22,21,19,0.18);
+      transition: transform 520ms var(--f-spring);
+    }
+    .dos:hover .dos__paper { transform: translateY(-22px); }
+    .dos__paper b { font-family: var(--f-mono); color: var(--f-ink-2); direction: ltr; }
+    .dos__head { display: flex; align-items: center; gap: 10px; }
+    .dos__ico { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; color: var(--c-c); background: rgba(255,255,255,0.75); box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(22,21,19,0.06); flex: none; }
+    .dos__head b { font-size: 0.84rem; font-weight: 700; color: var(--f-ink); line-height: 1.45; }
+    .dos__foot { margin-top: auto; padding-top: 12px; display: flex; gap: 12px; font-size: 0.62rem; color: color-mix(in srgb, var(--c-c) 45%, var(--f-ink-3)); }
+
+    /* K3 — الختم البارز */
+    .emb {
+      position: relative; width: 270px; min-height: 150px; padding: 18px; box-sizing: border-box;
+      border-radius: 18px; cursor: pointer; overflow: hidden; text-align: start;
+      background: linear-gradient(165deg, #fbfaf7, #f1efe9);
+      border: 0.5px solid var(--f-border-2);
+      box-shadow: inset 0 1px 0 #fff, var(--f-shadow-xs);
+      font-family: var(--f-arab); display: flex; flex-direction: column; gap: 8px;
+      transition: transform 480ms var(--f-spring);
+    }
+    .emb:hover { transform: translateY(-3px); }
+    .emb__mark {
+      position: absolute; inset-inline-end: -18px; inset-block-end: -18px; pointer-events: none;
+      color: #eae7e0;
+      filter: drop-shadow(0 1px 0 rgba(255,255,255,0.9)) drop-shadow(0 -1px 1px rgba(22,21,19,0.18));
+      transition: color 500ms, transform 600ms var(--f-spring);
+    }
+    .emb:hover .emb__mark { color: color-mix(in srgb, var(--c-c) 14%, #eae7e0); transform: rotate(-5deg) scale(1.05); }
+    .emb__code { font-family: var(--f-mono); font-size: 0.6rem; color: var(--f-ink-3); direction: ltr; }
+    .emb b.name { font-size: 0.88rem; font-weight: 700; color: var(--f-ink); line-height: 1.5; max-width: 75%; }
+    .emb__seal {
+      margin-top: auto; align-self: flex-start;
+      width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+      font-family: var(--f-mono); font-size: 0.56rem; font-weight: 700; color: #fff; direction: ltr;
+      background: radial-gradient(circle at 34% 28%, color-mix(in srgb, var(--c-c) 72%, #fff 14%), color-mix(in srgb, var(--c-c) 88%, #000) 72%);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.45), inset 0 -2px 4px rgba(0,0,0,0.25), 0 2px 5px -1px color-mix(in srgb, var(--c-c) 45%, transparent);
+      transition: transform 480ms var(--f-spring);
+    }
+    .emb:hover .emb__seal { transform: scale(1.12) rotate(-8deg); }
+
+    /* ======== ل — القوس الراسم: أنماط + ليكويد جلاس ======== */
+    .lab-stage--aur {
+      position: relative; overflow: hidden;
+      background:
+        radial-gradient(220px circle at 18% 30%, color-mix(in srgb, #6d5a93 22%, transparent), transparent 70%),
+        radial-gradient(260px circle at 82% 25%, color-mix(in srgb, #3f7782 20%, transparent), transparent 70%),
+        radial-gradient(240px circle at 50% 95%, color-mix(in srgb, #ad5c3f 16%, transparent), transparent 70%),
+        var(--f-bg);
+    }
+    .btn-arc--liquid {
+      background: rgba(255, 255, 255, 0.34);
+      -webkit-backdrop-filter: blur(14px) saturate(1.8); backdrop-filter: blur(14px) saturate(1.8);
+      box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.9),
+        inset 0 -6px 12px -6px color-mix(in srgb, var(--ar-c) 24%, transparent),
+        inset 0 0 0 0.5px rgba(255,255,255,0.45),
+        0 2px 6px rgba(22,21,19,0.07);
+    }
+    .btn-arc--liquid::after {
+      content: ""; position: absolute; inset: -30%; pointer-events: none; opacity: 0;
+      background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.8) 50%, transparent 60%);
+      transform: translateX(120%);
+    }
+    .btn-arc--liquid:hover::after { opacity: 1; animation: pk-glare 850ms var(--f-ease) 600ms forwards; }
+    .btn-arc--liquid:hover {
+      background: color-mix(in srgb, var(--ar-c) 82%, transparent);
+      -webkit-backdrop-filter: blur(14px) saturate(1.8); backdrop-filter: blur(14px) saturate(1.8);
+    }
+
+    /* ======== م — الأيقونات الجانبية ======== */
+    .sb-demo {
+      width: 196px; padding: 9px; border-radius: 18px; box-sizing: border-box;
+      background: var(--f-surface); border: 0.5px solid var(--f-border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), var(--f-shadow-xs);
+      display: flex; flex-direction: column; gap: 3px; font-family: var(--f-arab);
+    }
+    .sb-it {
+      position: relative; display: flex; align-items: center; gap: 10px; overflow: hidden;
+      padding: 9px 11px; border-radius: 12px; border: 0; background: none; cursor: pointer;
+      font-family: var(--f-arab); font-size: 0.74rem; font-weight: 600; color: var(--f-ink-2);
+      transition: color 250ms;
+    }
+    .sb-it:hover { color: var(--f-ink); }
+    .sb-it .ic { position: relative; z-index: 1; width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; color: inherit; transition: color 250ms, background 300ms, transform 420ms var(--f-spring); }
+    .sb-it span.lb { position: relative; z-index: 1; }
+    .sb-it .n { position: relative; z-index: 1; margin-inline-start: auto; font-family: var(--f-mono); font-size: 0.52rem; color: var(--f-ink-3); direction: ltr; }
+    /* M1 — الملء السائل */
+    .sb-it--liq::before {
+      content: ""; position: absolute; inset: 0; z-index: 0;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--c-c) 7%, transparent), color-mix(in srgb, var(--c-c) 13%, transparent));
+      border-radius: inherit;
+      transform: translateY(101%); transition: transform 480ms var(--f-spring);
+    }
+    .sb-it--liq:hover::before, .sb-it--liq.is-on::before { transform: none; }
+    .sb-it--liq.is-on { color: color-mix(in srgb, var(--c-c) 60%, var(--f-ink)); }
+    .sb-it--liq.is-on .ic { color: var(--c-c); }
+    /* M2 — النبضة الجانبية */
+    .sb-it--pip::before {
+      content: ""; position: absolute; inset-inline-start: 0; inset-block: 50%; z-index: 1;
+      width: 3px; border-radius: 99px; background: var(--c-c);
+      transition: inset-block 420ms var(--f-spring);
+    }
+    .sb-it--pip.is-on::before { inset-block: 22%; }
+    .sb-it--pip.is-on { color: var(--f-ink); }
+    .sb-it--pip.is-on .ic {
+      color: var(--c-c); background: color-mix(in srgb, var(--c-c) 12%, transparent);
+      transform: scale(1.08);
+    }
+    .sb-it--pip.is-on .ic { animation: pk-pip-pop 480ms var(--f-spring); }
+    @keyframes pk-pip-pop { 0% { transform: scale(0.86); } 60% { transform: scale(1.14); } 100% { transform: scale(1.08); } }
+    /* ======== ن — لوحة التوزيع الحية ======== */
+    .lab-card--wide { grid-column: 1 / -1; }
+    .swb {
+      width: 100%; border-radius: 24px; padding: 30px 30px 24px; box-sizing: border-box;
+      background:
+        radial-gradient(420px circle at 85% -20%, color-mix(in srgb, var(--f-navy) 5%, transparent), transparent 70%),
+        var(--f-surface);
+      border: 0.5px solid var(--f-border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), var(--f-shadow-sm);
+      font-family: var(--f-arab);
+    }
+    .swb__bus { position: relative; height: 2px; margin: 10px 26px 0; border-radius: 99px; background: color-mix(in srgb, var(--f-ink) 10%, transparent); }
+    .swb__bus::after {
+      content: ""; position: absolute; inset: 0; border-radius: inherit;
+      background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--f-ink) 26%, transparent) 0 5px, transparent 5px 12px);
+      animation: swb-flow 1.4s linear infinite; opacity: 0.5;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 12% 88%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 12% 88%, transparent);
+    }
+    @keyframes swb-flow { to { background-position: -17px 0; } }
+    @media (prefers-reduced-motion: reduce) { .swb__bus::after { animation: none; } }
+    .swb__sts { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .swb-st { position: relative; display: grid; justify-items: center; gap: 7px; padding-top: 34px; border: 0; background: none; cursor: pointer; font-family: var(--f-arab); }
+    .swb-st__wire {
+      position: absolute; top: -10px; left: 50%; width: 2px; height: 40px; transform: translateX(-50%);
+      background: color-mix(in srgb, var(--f-ink) 10%, transparent); border-radius: 99px; overflow: hidden;
+    }
+    .swb-st__wire::after {
+      content: ""; position: absolute; inset: 0;
+      background: repeating-linear-gradient(180deg, var(--c-c) 0 4px, transparent 4px 9px);
+      opacity: 0; animation: swb-drop 0.8s linear infinite paused;
+    }
+    .swb-st.is-on .swb-st__wire::after { opacity: 1; animation-play-state: running; }
+    @keyframes swb-drop { to { background-position: 0 13px; } }
+    @media (prefers-reduced-motion: reduce) { .swb-st__wire::after { animation: none; } }
+    .swb-st__node { position: relative; width: 62px; height: 62px; display: grid; place-items: center; color: var(--c-c); }
+    .swb-st__node svg.rg { position: absolute; inset: -2px; width: calc(100% + 4px); height: calc(100% + 4px); }
+    .swb-st__node .tr { fill: none; stroke: color-mix(in srgb, var(--c-c) 18%, transparent); stroke-width: 1.5; }
+    .swb-st__node .pr {
+      fill: none; stroke: var(--c-c); stroke-width: 2; stroke-linecap: round;
+      stroke-dasharray: 180; stroke-dashoffset: 180;
+      transform: rotate(-90deg); transform-origin: center;
+      transition: stroke-dashoffset 700ms var(--f-ease);
+    }
+    .swb-st:hover .swb-st__node .pr { stroke-dashoffset: 96; }
+    .swb-st.is-on .swb-st__node .pr { stroke-dashoffset: 0; }
+    .swb-st__glass {
+      width: 47px; height: 47px; border-radius: 50%; display: grid; place-items: center;
+      background: linear-gradient(155deg, rgba(255,255,255,0.88), color-mix(in srgb, var(--c-c) 9%, transparent));
+      box-shadow: inset 0 1px 1.5px rgba(255,255,255,0.95), inset 0 -5px 9px -5px color-mix(in srgb, var(--c-c) 28%, transparent), 0 1px 2px rgba(22,21,19,0.06);
+      transition: transform 420ms var(--f-spring);
+    }
+    .swb-st:hover .swb-st__glass { transform: scale(1.06); }
+    .swb-st.is-on .swb-st__glass { transform: scale(1.1); }
+    .swb-st b { font-size: 0.8rem; font-weight: 700; color: var(--f-ink-2); transition: color 250ms; }
+    .swb-st.is-on b { color: var(--f-ink); }
+    .swb-st small { font-family: var(--f-mono); font-size: 0.54rem; color: var(--f-ink-3); direction: ltr; }
+    .swb__panel {
+      margin-top: 22px; border-radius: 18px; padding: 18px 20px; min-height: 96px; box-sizing: border-box;
+      background: color-mix(in srgb, var(--sw-c, var(--f-cs)) 6%, var(--f-bg));
+      border: 0.5px solid color-mix(in srgb, var(--sw-c, var(--f-cs)) 22%, transparent);
+      transition: background 450ms, border-color 450ms;
+    }
+    .swb__panel-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 13px; }
+    .swb__panel-head b { font-size: 0.85rem; font-weight: 800; color: var(--f-ink); }
+    .swb__panel-head span { font-size: 0.62rem; color: var(--f-ink-3); }
+    .swb__panel-head a { margin-inline-start: auto; font-size: 0.64rem; font-weight: 700; color: var(--sw-c, var(--f-cs)); text-decoration: none; cursor: pointer; }
+    .swb__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .swb-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 14px; border-radius: 999px; cursor: pointer;
+      background: var(--f-surface); border: 0.5px solid var(--f-border-2);
+      font-family: var(--f-arab); font-size: 0.7rem; font-weight: 600; color: var(--f-ink);
+      opacity: 0; transform: translateY(7px);
+      animation: swb-chip-in 480ms var(--f-spring) forwards; animation-delay: var(--d, 0ms);
+      transition: border-color 250ms, transform 320ms var(--f-spring);
+    }
+    .swb-chip:hover { border-color: color-mix(in srgb, var(--sw-c, var(--f-cs)) 45%, var(--f-border)); transform: translateY(-1px); }
+    @keyframes swb-chip-in { to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) { .swb-chip { animation-duration: 1ms; } }
+    .swb-chip i { font-style: normal; font-family: var(--f-mono); font-size: 0.52rem; color: var(--f-ink-3); direction: ltr; }
+    .swb-chip .fee { font-family: var(--f-mono); font-size: 0.54rem; color: var(--sw-c, var(--f-cs)); direction: ltr; }
+    @media (max-width: 760px) {
+      .swb__sts { grid-template-columns: repeat(2, 1fr); row-gap: 18px; }
+      .swb__bus { display: none; }
+      .swb-st__wire { display: none; }
+      .swb-st { padding-top: 0; }
+    }
+    /* ======== س — استراتيجية الألوان التطبيقية ======== */
+    .pal-switch {
+      display: flex; gap: 3px; padding: 3px; border-radius: 999px; margin-bottom: 16px;
+      background: var(--f-surface-2); border: 0.5px solid var(--f-border); width: fit-content;
+    }
+    .pal-switch button {
+      border: 0; cursor: pointer; border-radius: 999px; padding: 7px 16px; background: transparent;
+      font-family: var(--f-arab); font-size: 0.7rem; font-weight: 700; color: var(--f-ink-2);
+      transition: color 200ms;
+    }
+    .pal-switch button.is-on { color: var(--f-ink); background: var(--f-surface); box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 1px 3px rgba(22,21,19,0.1); }
+    .pal-app {
+      width: 100%; border-radius: 20px; overflow: hidden; box-sizing: border-box;
+      border: 0.5px solid var(--t-line);
+      background: var(--t-bg);
+      display: grid; grid-template-columns: 168px 1fr;
+      font-family: var(--f-arab);
+      transition: background 500ms, border-color 500ms;
+    }
+    .pal-app__side {
+      background: var(--t-surface); border-inline-end: 0.5px solid var(--t-line);
+      padding: 14px 10px; display: flex; flex-direction: column; gap: 3px;
+      transition: background 500ms, border-color 500ms;
+    }
+    .pal-app__brand { font-family: var(--f-disp, Alexandria); font-size: 0.72rem; font-weight: 800; color: var(--t-ink); padding: 0 8px 10px; transition: color 500ms; }
+    .pal-app__it {
+      display: flex; align-items: center; gap: 8px; padding: 7px 9px; border-radius: 9px;
+      font-size: 0.62rem; font-weight: 600; color: var(--t-ink3); transition: color 500ms, background 500ms;
+    }
+    .pal-app__it .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.6; }
+    .pal-app__it.is-on { color: var(--t-ink); background: color-mix(in srgb, var(--t-a) 10%, transparent); }
+    .pal-app__it.is-on .dot { background: var(--t-a); opacity: 1; }
+    .pal-app__main { padding: 16px 18px; display: flex; flex-direction: column; gap: 13px; }
+    .pal-app__bar { display: flex; align-items: center; gap: 10px; }
+    .pal-app__bar b { font-size: 0.8rem; font-weight: 800; color: var(--t-ink); transition: color 500ms; }
+    .pal-app__cta {
+      margin-inline-start: auto; border: 0; cursor: pointer; border-radius: 999px; padding: 8px 18px;
+      font-family: var(--f-arab); font-size: 0.62rem; font-weight: 700; color: #fff;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--t-a) 85%, #fff 6%), color-mix(in srgb, var(--t-a) 92%, #000));
+      transition: background 500ms;
+    }
+    .pal-app__depts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
+    .pal-dept {
+      border-radius: 13px; padding: 11px 12px; display: grid; gap: 5px;
+      background: color-mix(in srgb, var(--d-c) 8%, var(--t-surface));
+      border: 0.5px solid color-mix(in srgb, var(--d-c) 22%, transparent);
+      transition: background 500ms, border-color 500ms;
+    }
+    .pal-dept .sw { width: 22px; height: 22px; border-radius: 7px; background: color-mix(in srgb, var(--d-c) 14%, transparent); display: grid; place-items: center; }
+    .pal-dept .sw i { width: 9px; height: 9px; border-radius: 50%; background: var(--d-c); transition: background 500ms; }
+    .pal-dept b { font-size: 0.62rem; font-weight: 700; color: var(--t-ink); transition: color 500ms; }
+    .pal-dept small { font-family: var(--f-mono); font-size: 0.46rem; color: var(--t-ink3); direction: ltr; }
+    .pal-app__row {
+      display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 12px;
+      background: var(--t-surface); border: 0.5px solid var(--t-line);
+      transition: background 500ms, border-color 500ms;
+    }
+    .pal-app__row b { font-size: 0.66rem; color: var(--t-ink); transition: color 500ms; }
+    .pal-app__row small { font-size: 0.52rem; color: var(--t-ink3); }
+    .pal-app__row .st {
+      margin-inline-start: auto; font-size: 0.52rem; font-weight: 700; padding: 3px 10px; border-radius: 999px;
+      color: var(--st-c); background: color-mix(in srgb, var(--st-c) 11%, transparent); border: 0.5px solid color-mix(in srgb, var(--st-c) 26%, transparent);
+    }
+    .pal-map { margin-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 9px; }
+    .pal-map__it {
+      display: flex; align-items: flex-start; gap: 9px; padding: 11px 13px; border-radius: 12px;
+      background: var(--f-bg); border: 0.5px dashed var(--f-border-2);
+      font-size: 0.6rem; color: var(--f-ink-2); line-height: 1.7;
+    }
+    .pal-map__it b { display: block; font-size: 0.64rem; color: var(--f-ink); }
+    .pal-map__it .k { flex: none; width: 26px; height: 26px; border-radius: 8px; margin-top: 2px; }
+    @media (max-width: 700px) { .pal-app { grid-template-columns: 1fr; } .pal-app__side { flex-direction: row; overflow-x: auto; } }
+    /* ======== ع — التجربة الدلالية + قوانين UX ======== */
+    .sem-note {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px;
+    }
+    .sem-note span {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 0.62rem; color: var(--f-ink-2); padding: 6px 12px;
+      border-radius: 999px; background: var(--f-bg); border: 0.5px solid var(--f-border-2);
+    }
+    .sem-note i { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+    .uxd { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; }
+    @media (max-width: 620px) { .uxd { grid-template-columns: 1fr; } }
+    .uxd__half {
+      border-radius: 14px; padding: 13px 14px; box-sizing: border-box;
+      background: var(--f-bg); border: 0.5px solid var(--f-border-2);
+      display: flex; flex-direction: column; gap: 9px; min-height: 120px;
+    }
+    .uxd__half > small { font-size: 0.56rem; font-weight: 700; color: var(--f-ink-3); letter-spacing: 0.04em; }
+    .uxd__half--good { border-color: color-mix(in srgb, var(--f-ok, #3a7a55) 35%, var(--f-border-2)); }
+    .uxd__half--good > small { color: #3a7a55; }
+    .uxd-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+    .uxd-chip {
+      font-size: 0.54rem; font-weight: 600; color: var(--f-ink-2);
+      padding: 4px 9px; border-radius: 999px; background: var(--f-surface); border: 0.5px solid var(--f-border);
+    }
+    .uxd-depts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .uxd-dept {
+      border: 0.5px solid color-mix(in srgb, var(--c-c) 24%, transparent); cursor: pointer;
+      background: color-mix(in srgb, var(--c-c) 8%, var(--f-surface));
+      border-radius: 9px; padding: 7px 4px; text-align: center;
+      font-family: var(--f-arab); font-size: 0.56rem; font-weight: 700; color: var(--f-ink);
+      transition: transform 320ms var(--f-spring), border-color 250ms;
+    }
+    .uxd-dept:hover { transform: translateY(-1px); }
+    .uxd-dept.is-on { border-color: var(--c-c); }
+    .uxd-out { min-height: 26px; display: flex; flex-wrap: wrap; gap: 5px; }
+    .uxd-out .uxd-chip { opacity: 0; transform: translateY(5px); animation: swb-chip-in 420ms var(--f-spring) forwards; animation-delay: var(--d, 0ms); }
+    .uxd-btn {
+      border: 0.5px solid var(--f-border-2); background: var(--f-surface); color: var(--f-ink);
+      border-radius: 10px; cursor: pointer; font-family: var(--f-arab); font-weight: 700;
+      transition: transform 200ms var(--f-ease), background 250ms, color 250ms;
+    }
+    .uxd-btn:active { transform: scale(0.95); }
+    .uxd-btn--xs { font-size: 0.5rem; padding: 3px 8px; }
+    .uxd-btn--lg { font-size: 0.66rem; min-height: 44px; padding: 0 18px; border-radius: 12px; }
+    .uxd-loud { display: flex; gap: 6px; flex-wrap: wrap; }
+    .uxd-loud .uxd-btn { color: #fff; border: 0; font-size: 0.6rem; padding: 9px 14px; }
+    .uxd-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .uxd-fb { font-family: var(--f-mono); font-size: 0.56rem; color: var(--f-ink-3); direction: ltr; min-width: 64px; }
+    .uxd-btn.is-ok { background: color-mix(in srgb, #3a7a55 12%, var(--f-surface)); color: #3a7a55; border-color: color-mix(in srgb, #3a7a55 35%, transparent); }
+    /* ======== ف — الخلاصة الإبداعية ======== */
+    /* Q1 — أيقونات تروي معناها */
+    .qik {
+      width: 64px; height: 64px; border-radius: 18px; display: grid; place-items: center; cursor: pointer;
+      color: var(--c-c); background: color-mix(in srgb, var(--c-c) 9%, var(--f-surface));
+      border: 0.5px solid color-mix(in srgb, var(--c-c) 20%, transparent);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+      transition: transform 420ms var(--f-spring);
+    }
+    .qik:hover { transform: translateY(-2px); }
+    .qik svg { overflow: visible; }
+    .qik path, .qik line, .qik circle.s, .qik rect.s { fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    /* العدّاد: الإبرة تمسح عند المرور */
+    .qik--meter .needle { transform-origin: 13px 15px; transform: rotate(-52deg); transition: transform 900ms var(--f-spring); }
+    .qik--meter:hover .needle { transform: rotate(38deg); }
+    .qik--meter .tick { opacity: 0.45; }
+    /* العامود: شرارة تسري في الكابل */
+    .qik--pole .spark {
+      fill: var(--c-c); stroke: none;
+      offset-path: path('M3 8 C 9 12, 17 12, 23 8'); offset-distance: 0%;
+      opacity: 0; transition: opacity 200ms;
+    }
+    .qik--pole:hover .spark { opacity: 1; animation: qik-spark 1.1s var(--f-ease) infinite; }
+    @keyframes qik-spark { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+    @media (prefers-reduced-motion: reduce) { .qik--pole:hover .spark { animation: none; opacity: 0; } }
+    /* الفاتورة: الختم يهبط */
+    .qik--bill .stamp { transform-origin: 17px 17px; transform: scale(2.1) rotate(14deg); opacity: 0; transition: transform 480ms var(--f-spring), opacity 300ms; }
+    .qik--bill:hover .stamp { transform: none; opacity: 1; }
+    .qik--bill .stamp circle { fill: color-mix(in srgb, var(--c-c) 16%, transparent); stroke: currentColor; stroke-width: 1.4; }
+
+    /* Q2 — بطاقة المقياس الحي */
+    .gau-card {
+      width: 270px; padding: 17px; border-radius: 18px; cursor: pointer; box-sizing: border-box; text-align: start;
+      background: var(--f-surface); border: 0.5px solid var(--f-border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), var(--f-shadow-xs);
+      font-family: var(--f-arab); display: flex; gap: 14px; align-items: center;
+      transition: transform 480ms var(--f-spring), border-color 300ms;
+    }
+    .gau-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--c-c) 30%, var(--f-border)); }
+    .gau { position: relative; width: 74px; height: 64px; flex: none; }
+    .gau svg { display: block; overflow: visible; }
+    .gau .arc-t { fill: none; stroke: color-mix(in srgb, var(--c-c) 16%, transparent); stroke-width: 6; stroke-linecap: round; }
+    .gau .arc-v {
+      fill: none; stroke: var(--c-c); stroke-width: 6; stroke-linecap: round;
+      stroke-dasharray: 100; stroke-dashoffset: 100;
+      transition: stroke-dashoffset 950ms var(--f-ease);
+    }
+    .gau-card:hover .gau .arc-v { stroke-dashoffset: 28; }
+    .gau b {
+      position: absolute; inset-inline: 0; bottom: 4px; text-align: center;
+      font-family: var(--f-mono); font-size: 0.72rem; font-weight: 700; color: var(--f-ink); direction: ltr;
+    }
+    .gau-card__txt b { display: block; font-size: 0.84rem; font-weight: 700; color: var(--f-ink); }
+    .gau-card__txt small { display: block; margin-top: 4px; font-size: 0.62rem; color: var(--f-ink-3); line-height: 1.7; }
+    .gau-card__txt .cd { font-family: var(--f-mono); font-size: 0.56rem; color: var(--c-c); direction: ltr; }
+
+    /* Q3 — سكة الحالة الزجاجية */
+    .rail { width: 100%; max-width: 520px; font-family: var(--f-arab); }
+    .rail__track { position: relative; height: 44px; }
+    .rail__line {
+      position: absolute; inset-inline: 22px; top: 50%; height: 3px; transform: translateY(-50%);
+      border-radius: 99px; background: color-mix(in srgb, var(--f-ink) 10%, transparent);
+    }
+    .rail__fill {
+      position: absolute; inset-inline-start: 22px; top: 50%; height: 3px; transform: translateY(-50%);
+      border-radius: 99px; background: var(--rail-c, var(--f-cs));
+      width: 0; transition: width 560ms var(--f-spring), background 400ms;
+    }
+    .rail__knob {
+      position: absolute; top: 50%; width: 30px; height: 30px;
+      transform: translate(50%, -50%);
+      inset-inline-start: 22px;
+      border-radius: 50%;
+      background: linear-gradient(155deg, rgba(255,255,255,0.95), rgba(255,255,255,0.55));
+      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+      border: 0.5px solid rgba(255,255,255,0.8);
+      box-shadow: 0 4px 10px -3px rgba(22,21,19,0.3), inset 0 1px 1px #fff, inset 0 0 0 0.5px color-mix(in srgb, var(--rail-c, var(--f-cs)) 30%, transparent);
+      transition: inset-inline-start 560ms var(--f-spring);
+      display: grid; place-items: center;
+    }
+    .rail__knob::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--rail-c, var(--f-cs)); transition: background 400ms; }
+    .rail__sts { position: relative; display: flex; justify-content: space-between; padding: 0 6px; }
+    .rail-st { display: grid; justify-items: center; gap: 5px; border: 0; background: none; cursor: pointer; font-family: var(--f-arab); width: 84px; }
+    .rail-st i {
+      width: 11px; height: 11px; border-radius: 50%; font-style: normal;
+      background: var(--f-surface); border: 1.75px solid color-mix(in srgb, var(--f-ink) 22%, transparent);
+      transition: border-color 300ms, background 300ms, transform 420ms var(--f-spring);
+    }
+    .rail-st.is-done i { background: var(--rail-c, var(--f-cs)); border-color: var(--rail-c, var(--f-cs)); }
+    .rail-st.is-cur i { border-color: var(--rail-c, var(--f-cs)); transform: scale(1.25); }
+    .rail-st b { font-size: 0.62rem; font-weight: 700; color: var(--f-ink-3); transition: color 250ms; }
+    .rail-st.is-done b, .rail-st.is-cur b { color: var(--f-ink); }
+    .rail-st small { font-family: var(--f-mono); font-size: 0.48rem; color: var(--f-ink-3); direction: ltr; }
+
+    /* Q4 — جدول نوشن */
+    .ntb { width: 100%; border-radius: 16px; overflow: hidden; border: 0.5px solid var(--f-border); background: var(--f-surface); font-family: var(--f-arab); }
+    .ntb__row { display: grid; grid-template-columns: 1.6fr 0.9fr 0.9fr 0.8fr 0.4fr; gap: 8px; align-items: center; padding: 10px 16px; border-top: 0.5px solid var(--f-border); position: relative; cursor: pointer; transition: background 200ms; }
+    .ntb__row:first-child { border-top: 0; background: var(--f-bg); cursor: default; }
+    .ntb__row:not(:first-child):hover { background: color-mix(in srgb, var(--f-ink) 2.5%, var(--f-surface)); }
+    .ntb__row:first-child span { font-size: 0.56rem; font-weight: 700; color: var(--f-ink-3); letter-spacing: 0.03em; }
+    .ntb__name { display: flex; align-items: center; gap: 8px; font-size: 0.7rem; font-weight: 700; color: var(--f-ink); }
+    .ntb__name .ic { width: 24px; height: 24px; border-radius: 7px; display: grid; place-items: center; color: var(--c-c); background: color-mix(in srgb, var(--c-c) 11%, transparent); flex: none; }
+    .ntb__chip { justify-self: start; font-size: 0.56rem; font-weight: 700; color: var(--c-c); padding: 3px 10px; border-radius: 999px; background: color-mix(in srgb, var(--c-c) 10%, transparent); }
+    .ntb__sla { display: flex; align-items: center; gap: 6px; font-family: var(--f-mono); font-size: 0.56rem; color: var(--f-ink-2); direction: ltr; }
+    .ntb__sla i { width: 44px; height: 4px; border-radius: 99px; background: color-mix(in srgb, var(--f-ink) 9%, transparent); position: relative; overflow: hidden; }
+    .ntb__sla i::after { content: ""; position: absolute; inset-block: 0; inset-inline-start: 0; width: var(--p, 50%); border-radius: 99px; background: var(--c-c); }
+    .ntb__fee { font-family: var(--f-mono); font-size: 0.6rem; color: var(--f-ink-2); direction: ltr; }
+    .ntb__open { justify-self: end; font-size: 0.56rem; font-weight: 700; color: var(--c-c); opacity: 0; transform: translateX(4px); transition: opacity 200ms, transform 320ms var(--f-spring); }
+    .ntb__row:hover .ntb__open { opacity: 1; transform: none; }
+
+    /* Q5 — نبض فيرسيل */
+    .vfeed { width: 100%; max-width: 520px; border-radius: 16px; border: 0.5px solid var(--f-border); background: var(--f-surface); overflow: hidden; font-family: var(--f-arab); }
+    .vf-row { display: flex; align-items: center; gap: 11px; padding: 12px 16px; border-top: 0.5px solid var(--f-border); }
+    .vf-row:first-child { border-top: 0; }
+    .vf-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+    .vf-dot--ok { background: oklch(0.62 0.14 150); }
+    .vf-dot--run { background: oklch(0.7 0.13 75); animation: vf-pulse 1.6s var(--f-ease) infinite; }
+    .vf-dot--err { background: oklch(0.55 0.18 25); }
+    @keyframes vf-pulse { 50% { opacity: 0.35; } }
+    @media (prefers-reduced-motion: reduce) { .vf-dot--run { animation: none; } }
+    .vf-row b { font-size: 0.7rem; font-weight: 700; color: var(--f-ink); }
+    .vf-row small { display: block; font-family: var(--f-mono); font-size: 0.52rem; color: var(--f-ink-3); direction: ltr; margin-top: 2px; }
+    .vf-pipe { margin-inline-start: auto; display: flex; gap: 4px; }
+    .vf-pipe i { width: 18px; height: 5px; border-radius: 99px; background: color-mix(in srgb, var(--f-ink) 9%, transparent); }
+    .vf-pipe i.on { background: oklch(0.62 0.14 150); }
+    .vf-row--run .vf-pipe i:nth-child(2) { animation: vf-seg 1.6s var(--f-ease) infinite; }
+    @keyframes vf-seg { 0%, 100% { background: color-mix(in srgb, var(--f-ink) 9%, transparent); } 50% { background: oklch(0.7 0.13 75); } }
+    @media (prefers-reduced-motion: reduce) { .vf-row--run .vf-pipe i:nth-child(2) { animation: none; } }
+    .vf-time { font-family: var(--f-mono); font-size: 0.5rem; color: var(--f-ink-3); direction: ltr; min-width: 30px; text-align: end; }
+    /* ======== ص — الفخر الرسمي — أيقونات + بطاقات بروح الهوية ======== */
+    .lab-stage--brand {
+      background:
+        radial-gradient(220px circle at 18% 30%, color-mix(in srgb, #232350 16%, transparent), transparent 70%),
+        radial-gradient(260px circle at 82% 90%, color-mix(in srgb, #c1121f 10%, transparent), transparent 70%),
+        var(--f-bg);
+    }
+
+    /* R1 — الشارات الدلالية (4 أقسام) */
+    .sig {
+      position: relative; width: 90px; height: 90px; cursor: pointer;
+      display: grid; place-items: center;
+    }
+    .sig__ring { position: absolute; inset: 0; pointer-events: none; }
+    .sig__ring circle.t { fill: none; stroke: color-mix(in srgb, var(--c-c) 18%, transparent); stroke-width: 1.25; }
+    .sig__ring circle.p {
+      fill: none; stroke: var(--c-c); stroke-width: 1.5; stroke-linecap: round;
+      stroke-dasharray: 100; stroke-dashoffset: 70;
+      transform: rotate(-90deg); transform-origin: center;
+      transition: stroke-dashoffset 800ms var(--f-ease);
+    }
+    .sig:hover .sig__ring circle.p { stroke-dashoffset: 0; }
+    .sig__core {
+      width: 64px; height: 64px; border-radius: 50%; position: relative;
+      background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.85), rgba(255,255,255,0.2) 38%, transparent 60%), color-mix(in srgb, var(--c-c) 7%, var(--f-surface));
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.85), inset 0 -7px 11px -6px color-mix(in srgb, var(--c-c) 35%, transparent), inset 0 0 0 0.5px color-mix(in srgb, var(--c-c) 30%, transparent);
+      display: grid; place-items: center; color: var(--c-c);
+      transition: transform 460ms var(--f-spring);
+    }
+    .sig:hover .sig__core { transform: scale(1.04); }
+    .sig__core svg path, .sig__core svg line, .sig__core svg circle.s, .sig__core svg rect.s {
+      fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .sig__core svg circle.f { fill: currentColor; stroke: none; }
+    /* CS — التوقيع (أول علاقة) */
+    .sig--cs path.sig-line { stroke-dasharray: 100; stroke-dashoffset: 100; transition: stroke-dashoffset 1100ms var(--f-ease); }
+    .sig:hover .sig--cs path.sig-line { stroke-dashoffset: 0; }
+    /* CT — المفك (أدوات) */
+    .sig--ct g.tool { transform-origin: 18px 18px; transition: transform 700ms var(--f-spring); }
+    .sig:hover .sig--ct g.tool { transform: rotate(-25deg); }
+    /* CB — الميزان (عملة) */
+    .sig--cb g.scale-bar { transform-origin: 18px 14px; transition: transform 720ms var(--f-spring); }
+    .sig:hover .sig--cb g.scale-bar { transform: rotate(-7deg); }
+    /* CA — الإنذار (جرس) */
+    .sig--ca g.bell { transform-origin: 18px 8px; animation: sig-bell-rest 1ms; }
+    .sig:hover .sig--ca g.bell { animation: sig-bell 750ms var(--f-ease); }
+    @keyframes sig-bell { 0%, 100% { transform: rotate(0); } 20% { transform: rotate(-13deg); } 50% { transform: rotate(11deg); } 75% { transform: rotate(-6deg); } }
+    @media (prefers-reduced-motion: reduce) { .sig:hover * { animation: none !important; transition: none !important; transform: none !important; } }
+
+    /* R2 — بطاقة البراءة الرسمية */
+    .crt {
+      position: relative; width: 290px; min-height: 168px; border-radius: 18px; overflow: hidden; cursor: pointer; box-sizing: border-box;
+      background:
+        radial-gradient(160% 80% at 50% 0%, color-mix(in srgb, var(--c-c) 8%, transparent), transparent 60%),
+        var(--f-surface);
+      border: 0.5px solid var(--f-border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), var(--f-shadow-xs);
+      padding: 20px 22px 18px;
+      display: flex; flex-direction: column; gap: 7px; text-align: start;
+      font-family: var(--f-arab);
+      transition: transform 480ms var(--f-spring), border-color 300ms;
+    }
+    .crt:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--c-c) 38%, var(--f-border)); }
+    .crt::before {
+      content: ""; position: absolute; inset-inline: 0; top: 0; height: 3px;
+      background: linear-gradient(90deg, #232350, var(--c-c) 55%, #f4c430);
+      opacity: 0; transition: opacity 350ms;
+    }
+    .crt:hover::before { opacity: 1; }
+    .crt__rule {
+      position: absolute; inset-inline: 20px; top: 56px; height: 1.5px; border-radius: 99px;
+      background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--c-c) 35%, transparent) 30% 70%, transparent);
+      opacity: 0.45;
+    }
+    .crt__head { display: flex; align-items: center; gap: 11px; }
+    .crt__mark {
+      width: 36px; height: 36px; border-radius: 11px; display: grid; place-items: center; color: var(--c-c);
+      background: color-mix(in srgb, var(--c-c) 11%, transparent); flex: none;
+    }
+    .crt__code { font-family: var(--f-mono); font-size: 0.6rem; color: var(--c-c); direction: ltr; }
+    .crt__name { margin: 26px 0 0; font-family: var(--f-disp, Alexandria); font-size: 0.92rem; font-weight: 800; color: var(--f-ink); line-height: 1.5; }
+    .crt__meta { margin-top: auto; display: flex; align-items: center; gap: 12px; font-size: 0.62rem; color: var(--f-ink-3); padding-top: 14px; }
+    .crt__meta b { color: var(--f-ink-2); font-family: var(--f-mono); direction: ltr; }
+    .crt__seal {
+      position: absolute; inset-inline-end: 18px; inset-block-end: 18px; width: 42px; height: 42px;
+      pointer-events: none; opacity: 0.55;
+      transition: opacity 400ms, transform 600ms var(--f-spring);
+    }
+    .crt:hover .crt__seal { opacity: 0.95; transform: rotate(-6deg) scale(1.05); }
+    .crt__seal circle.w {
+      fill: color-mix(in srgb, #c1121f 12%, transparent);
+      stroke: #c1121f; stroke-width: 0.8;
+    }
+    .crt__seal text {
+      font-family: var(--f-disp, Alexandria); font-size: 7px; font-weight: 800; fill: #c1121f; letter-spacing: 0.5px;
+    }
+
+    /* R3 — فأس لوحة البرائة (envelope card) */
+    .env {
+      position: relative; width: 280px; height: 178px; cursor: pointer; perspective: 1000px;
+      font-family: var(--f-arab);
+    }
+    .env__body {
+      position: relative; width: 100%; height: 100%; transform-style: preserve-3d;
+      transition: transform 600ms var(--f-spring);
+    }
+    .env:hover .env__body { transform: rotateX(-3deg) translateY(-4px); }
+    .env__paper {
+      position: absolute; inset: 18px 14px 14px;
+      background: #fffefb; border: 0.5px solid var(--f-border-2); border-radius: 6px;
+      transform: translateY(0); transition: transform 600ms var(--f-spring); z-index: 1;
+      padding: 16px 18px; display: flex; flex-direction: column; gap: 6px;
+      box-shadow: 0 2px 6px -2px rgba(22,21,19,0.1);
+    }
+    .env:hover .env__paper { transform: translateY(-22px); }
+    .env__paper b.cd { font-family: var(--f-mono); font-size: 0.6rem; color: var(--c-c); direction: ltr; }
+    .env__paper b.nm { font-size: 0.86rem; font-weight: 700; color: var(--f-ink); line-height: 1.5; }
+    .env__paper .ln { height: 1px; background: var(--f-border); margin: 2px 0; }
+    .env__paper small { font-size: 0.62rem; color: var(--f-ink-3); }
+    .env__back {
+      position: absolute; inset: 0; border-radius: 14px; z-index: 0;
+      background: linear-gradient(160deg, color-mix(in srgb, var(--c-c) 18%, var(--f-surface)), color-mix(in srgb, var(--c-c) 8%, var(--f-surface)));
+      border: 0.5px solid color-mix(in srgb, var(--c-c) 26%, var(--f-border));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+    }
+    .env__back::before, .env__back::after {
+      content: ""; position: absolute; inset-block: 0; width: 50%;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--c-c) 22%, transparent) 50%, transparent 50%);
+    }
+    .env__back::before { inset-inline-start: 0; }
+    .env__back::after { inset-inline-end: 0; background: linear-gradient(225deg, color-mix(in srgb, var(--c-c) 22%, transparent) 50%, transparent 50%); }
+    .env__flap {
+      position: absolute; inset-inline: 0; top: 0; height: 60%; z-index: 2;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--c-c) 24%, var(--f-surface)), color-mix(in srgb, var(--c-c) 14%, var(--f-surface)));
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      border-bottom: 0.5px solid color-mix(in srgb, var(--c-c) 30%, transparent);
+      transform-origin: top; transition: transform 720ms var(--f-spring);
+      box-shadow: 0 8px 14px -10px rgba(22,21,19,0.25);
+    }
+    .env:hover .env__flap { transform: rotateX(-170deg); }
+    .env__wax {
+      position: absolute; inset-inline-start: 50%; top: 56%; width: 32px; height: 32px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%; z-index: 3; display: grid; place-items: center;
+      background: radial-gradient(circle at 30% 28%, color-mix(in srgb, #c1121f 80%, #fff 12%), #c1121f 70%);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), inset 0 -3px 5px rgba(0,0,0,0.3), 0 1px 3px rgba(193,18,31,0.35);
+      color: #fff5d6; font-family: var(--f-disp, Alexandria); font-size: 0.62rem; font-weight: 800;
+      transition: transform 540ms var(--f-spring) 80ms, opacity 300ms;
+    }
+    .env:hover .env__wax { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+    /* ======== ق — بطاقات تكسر المستطيل ======== */
+    /* W1 — ساعة أبل التعقيدية */
+    .wch {
+      position: relative; width: 250px; height: 250px; cursor: pointer; box-sizing: border-box;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 30% 28%, rgba(255,255,255,0.55), transparent 50%),
+        radial-gradient(circle at 65% 75%, color-mix(in srgb, var(--c-c) 22%, transparent), transparent 60%),
+        var(--f-surface);
+      border: 0.5px solid var(--f-border);
+      box-shadow: inset 0 1px 1.5px rgba(255,255,255,0.85), inset 0 -10px 22px -10px color-mix(in srgb, var(--c-c) 20%, transparent), 0 6px 22px -10px rgba(22,21,19,0.18);
+      font-family: var(--f-arab);
+      transition: transform 480ms var(--f-spring);
+    }
+    .wch:hover { transform: translateY(-3px) scale(1.02); }
+    .wch svg.ring { position: absolute; inset: 8px; width: calc(100% - 16px); height: calc(100% - 16px); pointer-events: none; }
+    .wch .ring-t { fill: none; stroke: color-mix(in srgb, var(--f-ink) 8%, transparent); stroke-width: 5; }
+    .wch .ring-p {
+      fill: none; stroke: var(--c-c); stroke-width: 5; stroke-linecap: round;
+      stroke-dasharray: 100; stroke-dashoffset: 100;
+      transform: rotate(-90deg); transform-origin: center;
+      transition: stroke-dashoffset 1100ms var(--f-ease);
+    }
+    .wch:hover .ring-p { stroke-dashoffset: 28; }
+    .wch__face {
+      position: absolute; inset: 30px; border-radius: 50%; box-sizing: border-box;
+      display: grid; place-items: center; gap: 6px;
+      background: color-mix(in srgb, var(--c-c) 5%, var(--f-bg));
+      border: 0.5px solid color-mix(in srgb, var(--c-c) 14%, transparent);
+      text-align: center; padding: 14px;
+    }
+    .wch__cd { font-family: var(--f-mono); font-size: 0.56rem; color: var(--c-c); letter-spacing: 0.05em; direction: ltr; }
+    .wch__nm { font-family: var(--f-disp, Alexandria); font-size: 0.92rem; font-weight: 800; color: var(--f-ink); line-height: 1.4; max-width: 11ch; }
+    .wch__fee { font-family: var(--f-mono); font-size: 1.4rem; font-weight: 700; color: var(--f-ink); direction: ltr; line-height: 1; }
+    .wch__sub { font-size: 0.56rem; color: var(--f-ink-3); }
+    .wch__pip {
+      position: absolute; inset-block-end: 16px; inset-inline-start: 50%; transform: translateX(50%);
+      display: flex; gap: 5px;
+    }
+    .wch__pip i { width: 5px; height: 5px; border-radius: 50%; background: color-mix(in srgb, var(--f-ink) 11%, transparent); }
+    .wch__pip i.on { background: var(--c-c); box-shadow: 0 0 5px color-mix(in srgb, var(--c-c) 60%, transparent); }
+
+    /* W2 — وحدة دائرة مطبوعة */
+    .pcb {
+      position: relative; width: 290px; padding: 14px; border-radius: 14px; cursor: pointer; overflow: hidden; box-sizing: border-box;
+      background: linear-gradient(160deg, #1b3b3d, #11272a);
+      border: 0.5px solid #2a5a5e;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 14px 26px -16px rgba(0,0,0,0.5);
+      font-family: var(--f-arab); color: #cfeae3;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .pcb__traces { position: absolute; inset: 0; pointer-events: none; opacity: 0.7; }
+    .pcb__traces path { fill: none; stroke: #4dbf9e; stroke-width: 0.8; stroke-dasharray: 100; stroke-dashoffset: 100; transition: stroke-dashoffset 1400ms var(--f-ease); }
+    .pcb:hover .pcb__traces path { stroke-dashoffset: 0; }
+    .pcb__traces .pad { fill: #d4af37; stroke: none; opacity: 0; transition: opacity 250ms 600ms; }
+    .pcb:hover .pcb__traces .pad { opacity: 1; }
+    .pcb__head { position: relative; display: flex; align-items: center; gap: 11px; z-index: 2; }
+    .pcb__chip {
+      width: 36px; height: 36px; border-radius: 6px; display: grid; place-items: center; color: #fff5d6;
+      background: linear-gradient(180deg, #2d2d36, #1a1a22);
+      border: 0.5px solid #3a3a45;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), inset 0 -1px 0 rgba(0,0,0,0.4);
+      flex: none;
+      position: relative;
+    }
+    .pcb__chip::before, .pcb__chip::after { content: ""; position: absolute; inset-inline: -5px; height: 2px; background: linear-gradient(90deg, #5a5a65, #2a2a35); }
+    .pcb__chip::before { top: 7px; box-shadow: 0 8px #5a5a65, 0 16px #5a5a65; }
+    .pcb__chip::after { bottom: 7px; box-shadow: 0 -8px #5a5a65, 0 -16px #5a5a65; }
+    .pcb__cd { font-family: var(--f-mono); font-size: 0.6rem; font-weight: 600; color: #d4af37; direction: ltr; letter-spacing: 0.05em; }
+    .pcb__nm { position: relative; z-index: 2; font-family: var(--f-disp, Alexandria); font-size: 0.9rem; font-weight: 800; color: #fff; line-height: 1.4; }
+    .pcb__meta { position: relative; z-index: 2; display: flex; gap: 14px; font-family: var(--f-mono); font-size: 0.6rem; color: #94c4ba; direction: ltr; padding-top: 6px; border-top: 0.5px solid rgba(255,255,255,0.08); }
+    .pcb__meta b { color: #d4af37; }
+
+    /* W3 — البولارويد اللحظي */
+    .pol {
+      position: relative; width: 230px; padding: 14px 14px 50px; border-radius: 4px; cursor: pointer; box-sizing: border-box;
+      background: #fffefb; border: 0.5px solid var(--f-border-2);
+      box-shadow: 0 1px 1px rgba(22,21,19,0.04), 0 14px 26px -16px rgba(22,21,19,0.28);
+      font-family: var(--f-arab); text-align: start;
+      transform: rotate(-1.5deg); transform-origin: bottom center;
+      transition: transform 480ms var(--f-spring);
+    }
+    .pol:hover { transform: rotate(0) translateY(-4px); }
+    .pol__shot {
+      width: 100%; aspect-ratio: 1.05/1; border-radius: 2px; box-sizing: border-box; overflow: hidden;
+      background:
+        radial-gradient(160px circle at 22% 18%, rgba(255,255,255,0.5), transparent 60%),
+        linear-gradient(180deg, color-mix(in srgb, var(--c-c) 28%, var(--f-surface)), color-mix(in srgb, var(--c-c) 18%, var(--f-surface)));
+      display: grid; place-items: center; color: color-mix(in srgb, var(--c-c) 70%, #fff);
+      position: relative;
+    }
+    .pol__shot::before {
+      content: ""; position: absolute; inset: 0;
+      background:
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.06) 0 2px, transparent 2px 8px);
+      pointer-events: none;
+    }
+    .pol__shot svg { width: 56px; height: 56px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+    .pol__cap {
+      position: absolute; inset-inline: 18px; inset-block-end: 14px;
+      font-family: "Caveat", "Comic Sans MS", cursive;
+      font-size: 1.05rem; color: #2a2823; line-height: 1.2;
+    }
+    .pol__cap small { display: block; font-family: var(--f-mono); font-size: 0.52rem; color: var(--f-ink-3); margin-top: 3px; direction: ltr; }
+
+    /* W4 — عمود فيرسيل */
+    .pod {
+      position: relative; width: 90px; height: 230px; border-radius: 999px; cursor: pointer; overflow: hidden; box-sizing: border-box;
+      background: var(--f-surface); border: 0.5px solid var(--f-border);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), var(--f-shadow-xs);
+      display: flex; flex-direction: column; align-items: center; padding: 16px 0;
+      font-family: var(--f-arab);
+      transition: transform 480ms var(--f-spring), border-color 300ms;
+    }
+    .pod:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--c-c) 35%, var(--f-border)); }
+    .pod__cap {
+      position: absolute; inset-inline: 8px; top: 8px; height: 6px; border-radius: 99px;
+      background: linear-gradient(90deg, transparent, var(--c-c) 30% 70%, transparent);
+      opacity: 0.65;
+    }
+    .pod__ico {
+      width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: var(--c-c);
+      background: color-mix(in srgb, var(--c-c) 11%, transparent);
+      border: 0.5px solid color-mix(in srgb, var(--c-c) 22%, transparent);
+      margin-top: 6px;
+    }
+    .pod__vrt {
+      writing-mode: vertical-rl; transform: rotate(180deg);
+      margin-top: 14px; font-family: var(--f-disp, Alexandria); font-size: 0.7rem; font-weight: 800; color: var(--f-ink); letter-spacing: 0.03em;
+    }
+    .pod__cd { margin-top: auto; font-family: var(--f-mono); font-size: 0.54rem; color: var(--f-ink-3); direction: ltr; }
+    .pod__bot {
+      position: absolute; inset-inline: 0; bottom: 0; height: 38px;
+      background: color-mix(in srgb, var(--c-c) 8%, var(--f-bg));
+      border-top: 0.5px solid color-mix(in srgb, var(--c-c) 18%, var(--f-border));
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      font-family: var(--f-mono); font-size: 0.58rem; color: var(--c-c); direction: ltr;
+    }
+    .pod__bot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--c-c); box-shadow: 0 0 5px var(--c-c); }
+
+    /* أيقونات Q1+ — دورة جديدة */
+    .qik2 .ab .bead { transition: transform 600ms var(--f-spring); }
+    .qik2--abacus:hover .b1 { transform: translateX(-7px); }
+    .qik2--abacus:hover .b2 { transform: translateX(7px); }
+    .qik2--abacus:hover .b3 { transform: translateX(-4px); }
+    .qik2--siren .pulse { transform-origin: center; transform: scale(0.3); opacity: 0; }
+    .qik2--siren:hover .pulse { animation: qik-siren 1.4s var(--f-ease) infinite; }
+    .qik2--siren:hover .pulse:nth-child(2) { animation-delay: 0.45s; }
+    @keyframes qik-siren { 0% { transform: scale(0.3); opacity: 0.8; } 100% { transform: scale(1.6); opacity: 0; } }
+    .qik2--key .key { transition: transform 700ms var(--f-spring); }
+    .qik2--key:hover .key { transform: translateX(8px) rotate(15deg); }
+    .qik2--receipt path.tear { stroke-dasharray: 100; stroke-dashoffset: 0; }
+    .qik2--receipt:hover path.tear { animation: qik-tear 900ms var(--f-ease) forwards; }
+    @keyframes qik-tear { 0% { stroke-dashoffset: 100; } 100% { stroke-dashoffset: 0; } }
+    @media (prefers-reduced-motion: reduce) { .qik2:hover * { animation: none !important; transition: none !important; transform: none !important; } }
+    /* ======== ر — التحفة — صقل نهائي ======== */
+    .lab-stage--show {
+      background:
+        radial-gradient(360px circle at 20% 20%, color-mix(in srgb, var(--c-c, var(--f-cs)) 12%, transparent), transparent 70%),
+        radial-gradient(280px circle at 85% 85%, color-mix(in srgb, var(--f-navy) 8%, transparent), transparent 70%),
+        var(--f-bg);
+    }
+
+    /* Y1 — بطاقة التحفة: ساعة + توقيع + جدار توهج */
+    .mst {
+      position: relative; width: 280px; min-height: 200px; padding: 22px 22px 20px; border-radius: 22px;
+      cursor: pointer; box-sizing: border-box; text-align: start; overflow: hidden;
+      background:
+        radial-gradient(140% 60% at 50% -10%, color-mix(in srgb, var(--c-c) 16%, transparent), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.55));
+      -webkit-backdrop-filter: blur(14px) saturate(1.6); backdrop-filter: blur(14px) saturate(1.6);
+      border: 0.5px solid rgba(255,255,255,0.7);
+      box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.9),
+        inset 0 0 0 0.5px color-mix(in srgb, var(--c-c) 16%, transparent),
+        0 1px 2px rgba(22,21,19,0.04),
+        0 14px 30px -18px color-mix(in srgb, var(--c-c) 28%, transparent);
+      font-family: var(--f-arab);
+      transition: transform 480ms var(--f-spring), box-shadow 400ms;
+    }
+    .mst:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.95),
+        inset 0 0 0 0.5px color-mix(in srgb, var(--c-c) 28%, transparent),
+        0 4px 6px rgba(22,21,19,0.06),
+        0 24px 42px -20px color-mix(in srgb, var(--c-c) 42%, transparent);
+    }
+    .mst__ribbon {
+      position: absolute; inset-inline: 0; top: 0; height: 2.5px;
+      background: linear-gradient(90deg, transparent 6%, #232350 18% 35%, var(--c-c) 50%, #d4af37 65% 82%, transparent 94%);
+      opacity: 0.85;
+    }
+    .mst__head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .mst__seal { position: relative; width: 48px; height: 48px; }
+    .mst__seal svg.tr { position: absolute; inset: 0; }
+    .mst__seal .tr-t { fill: none; stroke: color-mix(in srgb, var(--c-c) 18%, transparent); stroke-width: 2.5; }
+    .mst__seal .tr-p {
+      fill: none; stroke: var(--c-c); stroke-width: 2.5; stroke-linecap: round;
+      stroke-dasharray: 100; stroke-dashoffset: 100;
+      transform: rotate(-90deg); transform-origin: center;
+      transition: stroke-dashoffset 950ms var(--f-ease);
+    }
+    .mst:hover .mst__seal .tr-p { stroke-dashoffset: 24; }
+    .mst__seal-c {
+      position: absolute; inset: 7px; border-radius: 50%; display: grid; place-items: center; color: var(--c-c);
+      background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.9), rgba(255,255,255,0.3) 50%, transparent 65%), color-mix(in srgb, var(--c-c) 8%, var(--f-surface));
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.9), inset 0 -3px 5px -3px color-mix(in srgb, var(--c-c) 30%, transparent);
+    }
+    .mst__cd {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: var(--f-mono); font-size: 0.6rem; font-weight: 600; color: var(--c-c); direction: ltr;
+      padding: 4px 11px; border-radius: 999px;
+      background: color-mix(in srgb, var(--c-c) 9%, var(--f-surface));
+      border: 0.5px solid color-mix(in srgb, var(--c-c) 22%, transparent);
+    }
+    .mst__nm { margin: 16px 0 12px; font-family: var(--f-disp, Alexandria); font-size: 1.02rem; font-weight: 800; color: var(--f-ink); line-height: 1.45; }
+    .mst__rule {
+      position: relative; height: 1px;
+      background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--f-ink) 14%, transparent) 30% 70%, transparent);
+    }
+    .mst__rule::after {
+      content: ""; position: absolute; inset-inline-start: 0; top: 50%; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--c-c); transform: translateY(-50%);
+      box-shadow: 0 0 8px color-mix(in srgb, var(--c-c) 55%, transparent);
+    }
+    .mst__meta { display: flex; align-items: baseline; gap: 12px; margin-top: 14px; font-size: 0.62rem; color: var(--f-ink-3); }
+    .mst__meta b { color: var(--f-ink); font-family: var(--f-mono); font-size: 0.7rem; direction: ltr; }
+    .mst__meta .fee { font-family: var(--f-mono); font-size: 1.05rem; font-weight: 700; color: var(--f-ink); direction: ltr; line-height: 1; margin-inline-start: auto; }
+    .mst__sig {
+      position: absolute; inset-inline-end: 22px; inset-block-end: 18px;
+      font-family: "Caveat", "Comic Sans MS", cursive; font-size: 0.95rem; color: color-mix(in srgb, var(--c-c) 60%, var(--f-ink)); opacity: 0.55;
+      pointer-events: none;
+    }
+
+    /* Y2 — بطاقة الجدار الثلاثي (parallax depth) */
+    .par {
+      position: relative; width: 280px; height: 196px; border-radius: 22px; cursor: pointer; box-sizing: border-box;
+      background: linear-gradient(180deg, #fff, color-mix(in srgb, var(--c-c) 5%, #fff));
+      border: 0.5px solid var(--f-border);
+      box-shadow: var(--f-shadow-xs), 0 14px 30px -18px rgba(22,21,19,0.18);
+      overflow: hidden;
+      perspective: 800px;
+      transition: transform 480ms var(--f-spring), box-shadow 400ms;
+    }
+    .par:hover { transform: translateY(-3px); box-shadow: var(--f-shadow-xs), 0 24px 40px -20px rgba(22,21,19,0.25); }
+    .par__layer { position: absolute; inset: 0; transition: transform 380ms var(--f-spring); pointer-events: none; }
+    .par__bg {
+      background:
+        radial-gradient(120% 80% at 80% 110%, color-mix(in srgb, var(--c-c) 24%, transparent), transparent 60%),
+        radial-gradient(80% 60% at 0% -10%, color-mix(in srgb, var(--f-navy) 12%, transparent), transparent 60%);
+    }
+    .par__grid {
+      background-image:
+        linear-gradient(0deg, color-mix(in srgb, var(--c-c) 16%, transparent) 0.5px, transparent 0.5px),
+        linear-gradient(90deg, color-mix(in srgb, var(--c-c) 16%, transparent) 0.5px, transparent 0.5px);
+      background-size: 22px 22px;
+      -webkit-mask-image: radial-gradient(120% 80% at 50% 60%, #000 30%, transparent 70%);
+      mask-image: radial-gradient(120% 80% at 50% 60%, #000 30%, transparent 70%);
+      opacity: 0.45;
+    }
+    .par__txt { position: relative; z-index: 2; padding: 22px; display: flex; flex-direction: column; height: 100%; box-sizing: border-box; font-family: var(--f-arab); pointer-events: none; }
+    .par__cd { font-family: var(--f-mono); font-size: 0.6rem; font-weight: 600; color: var(--c-c); direction: ltr; }
+    .par__nm { margin: 8px 0 0; font-family: var(--f-disp, Alexandria); font-size: 1.05rem; font-weight: 800; color: var(--f-ink); line-height: 1.4; }
+    .par__ico {
+      position: absolute; inset-inline-end: 20px; inset-block-end: 22px; z-index: 3;
+      width: 56px; height: 56px; border-radius: 18px; display: grid; place-items: center; color: var(--c-c);
+      background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.95), rgba(255,255,255,0.5) 50%, transparent 70%), color-mix(in srgb, var(--c-c) 12%, var(--f-surface));
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.95), inset 0 -5px 9px -5px color-mix(in srgb, var(--c-c) 35%, transparent), inset 0 0 0 0.5px color-mix(in srgb, var(--c-c) 28%, transparent), 0 4px 9px -4px color-mix(in srgb, var(--c-c) 40%, transparent);
+      transition: transform 380ms var(--f-spring);
+    }
+    .par__meta { margin-top: auto; display: flex; gap: 12px; font-size: 0.62rem; color: var(--f-ink-3); }
+    .par__meta b { color: var(--f-ink-2); font-family: var(--f-mono); direction: ltr; }
+
+    /* Y3 — بطاقة المحفورة (engraved — فئة جديدة) */
+    .eng {
+      position: relative; width: 280px; padding: 22px; border-radius: 22px; cursor: pointer; box-sizing: border-box; text-align: start;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--c-c) 7%, var(--f-bg)), color-mix(in srgb, var(--c-c) 4%, var(--f-bg)));
+      border: 0.5px solid color-mix(in srgb, var(--c-c) 16%, var(--f-border));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -1px 0 color-mix(in srgb, var(--c-c) 8%, transparent), var(--f-shadow-xs);
+      font-family: var(--f-arab);
+      transition: transform 480ms var(--f-spring);
+    }
+    .eng:hover { transform: translateY(-3px); }
+    .eng__cd {
+      font-family: var(--f-mono); font-size: 0.6rem; font-weight: 700; color: color-mix(in srgb, var(--c-c) 75%, transparent); direction: ltr;
+      text-shadow:
+        0 1px 0 rgba(255,255,255,0.7),
+        0 -0.5px 0 rgba(0,0,0,0.08);
+      letter-spacing: 0.06em;
+    }
+    .eng__nm {
+      margin: 12px 0 6px;
+      font-family: var(--f-disp, Alexandria); font-size: 1.4rem; font-weight: 800; color: color-mix(in srgb, var(--c-c) 28%, var(--f-ink));
+      line-height: 1.3;
+      text-shadow:
+        0 1px 1px rgba(255,255,255,0.85),
+        0 -0.5px 0 color-mix(in srgb, var(--c-c) 28%, transparent);
+    }
+    .eng__divider {
+      margin: 14px 0; height: 1px;
+      background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--c-c) 38%, transparent) 30% 70%, transparent);
+      box-shadow: 0 1px 0 rgba(255,255,255,0.7);
+    }
+    .eng__bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+    .eng__bottom small { font-size: 0.62rem; color: var(--f-ink-3); }
+    .eng__bottom b {
+      font-family: var(--f-mono); font-size: 1.15rem; font-weight: 800; color: var(--f-ink); direction: ltr; line-height: 1;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.85);
+    }
+    /* ======== ش — للموظف — بسيط وسريع ======== */
+    /* Z1 — البطاقة العملية */
+    .wrk {
+      width: 280px; padding: 14px 16px; border-radius: 12px; cursor: pointer; box-sizing: border-box; text-align: start;
+      background: var(--f-surface); border: 0.5px solid var(--f-border);
+      box-shadow: 0 1px 1px rgba(22,21,19,0.03);
+      font-family: var(--f-arab);
+      display: flex; flex-direction: column; gap: 7px;
+      transition: border-color 200ms, background 200ms;
+    }
+    .wrk:hover { border-color: color-mix(in srgb, var(--c-c) 38%, var(--f-border)); background: color-mix(in srgb, var(--c-c) 3%, var(--f-surface)); }
+    .wrk__top { display: flex; align-items: center; gap: 9px; }
+    .wrk__ico {
+      width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; color: var(--c-c);
+      background: color-mix(in srgb, var(--c-c) 10%, transparent); flex: none;
+    }
+    .wrk__cd { font-family: var(--f-mono); font-size: 0.62rem; font-weight: 600; color: var(--f-ink-3); direction: ltr; }
+    .wrk__nm { margin: 0; font-size: 0.86rem; font-weight: 700; color: var(--f-ink); line-height: 1.5; }
+    .wrk__foot { display: flex; gap: 16px; font-size: 0.66rem; color: var(--f-ink-3); padding-top: 6px; border-top: 0.5px solid var(--f-border); }
+    .wrk__foot b { color: var(--f-ink-2); font-family: var(--f-mono); direction: ltr; }
+
+    /* Z2 — الصف السريع */
+    .qlst { width: 100%; max-width: 480px; border-radius: 10px; border: 0.5px solid var(--f-border); background: var(--f-surface); overflow: hidden; font-family: var(--f-arab); }
+    .qrow {
+      display: grid; grid-template-columns: auto 1fr auto auto;
+      gap: 12px; align-items: center; padding: 10px 14px; cursor: pointer;
+      border-top: 0.5px solid var(--f-border);
+      transition: background 150ms;
+    }
+    .qrow:first-child { border-top: 0; }
+    .qrow:hover { background: color-mix(in srgb, var(--c-c) 4%, var(--f-surface)); }
+    .qrow__cd { font-family: var(--f-mono); font-size: 0.62rem; font-weight: 600; color: var(--c-c); direction: ltr; min-width: 56px; }
+    .qrow__nm { font-size: 0.76rem; font-weight: 600; color: var(--f-ink); }
+    .qrow__sla { font-family: var(--f-mono); font-size: 0.6rem; color: var(--f-ink-3); direction: ltr; }
+    .qrow__fee { font-family: var(--f-mono); font-size: 0.66rem; font-weight: 700; color: var(--f-ink-2); direction: ltr; min-width: 56px; text-align: end; }
+
+    /* Z3 — البلاطة الصلبة */
+    .tile {
+      width: 170px; padding: 14px; border-radius: 10px; cursor: pointer; box-sizing: border-box; text-align: start;
+      background: var(--f-surface); border-inline-start: 3px solid var(--c-c); border: 0.5px solid var(--f-border); border-inline-start-width: 3px;
+      box-shadow: 0 1px 1px rgba(22,21,19,0.03);
+      font-family: var(--f-arab);
+      display: flex; flex-direction: column; gap: 8px;
+      transition: background 150ms;
+    }
+    .tile:hover { background: color-mix(in srgb, var(--c-c) 3%, var(--f-surface)); }
+    .tile__cd { font-family: var(--f-mono); font-size: 0.58rem; font-weight: 600; color: var(--c-c); direction: ltr; }
+    .tile__nm { margin: 0; font-size: 0.78rem; font-weight: 700; color: var(--f-ink); line-height: 1.45; }
+    .tile__fee { font-family: var(--f-mono); font-size: 0.68rem; font-weight: 600; color: var(--f-ink-2); direction: ltr; margin-top: auto; padding-top: 5px; border-top: 0.5px dashed var(--f-border); }
+  </style>
+</head>
+<body>
+  <main class="lab">
+    <header class="lab-hero">
+      <h1>بنك الاعتماد</h1>
+      <p>كل فكرة هنا مبنية على <b>العناصر الفعلية</b> للمنصة — بطاقة الخدمة، بلاطات الأقسام، صفوف القوائم — بنفس البيانات والمقاسات الحقيقية. رشّح بالنجوم ★ ما تريد اعتماده، وأنقله للتصميم الأصلي كما هو.</p>
+    </header>
+
+    <h2 class="lab-sec-title">أ — بطاقة الخدمة (fs-card)</h2>
+    <p class="lab-sec-sub">الأساس هو البطاقة الحالية في صفحة الخدمات — وأربع لمسات قابلة للتطبيق فوراً عليها.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>A0 — الحالية <span class="lab-tag">BASELINE</span></h3>
+        <p>المرجع: البطاقة كما هي اليوم في المنصة — أيقونة ملونة بلون القسم، كود، اسم، SLA وأجور، وسهم يظهر عند المرور.</p>
+        <div class="lab-stage">
+          <button class="pk-card" style="--c-c: var(--f-cs)">
+            <span class="pk-card__top"><span class="pk-card__ico"><svg class="ds-ico" width="20" height="20"><use href="#tdq-subscriptions"/></svg></span><span class="pk-card__code">CS0001</span></span>
+            <h4 class="pk-card__name">عمل الاشتراكات الجديدة</h4>
+            <span class="pk-card__foot"><span>SLA 14ي</span><span class="pk-card__fee">15,000 IQD</span><span class="pk-card__go"><span class="material-symbols-outlined">arrow_back</span></span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>A1 — الشطف الحامل <span class="lab-tag">CHAMFER CODE</span></h3>
+        <p>الكود يترك سطر الرأس ويُحفر على شطف الزاوية بميل ٤٥− — هوية هندسية والمساحة الداخلية تتفرغ للاسم. الشطف يتوسع بـ spring عند المرور.</p>
+        <div class="lab-stage">
+          <button class="pk-card pk-card--cham" style="--c-c: var(--f-cb)">
+            <span class="pk-card__code">CB0006</span>
+            <span class="pk-card__top"><span class="pk-card__ico"><svg class="ds-ico" width="20" height="20"><use href="#tdq-billing"/></svg></span></span>
+            <h4 class="pk-card__name">تسوية مالية / تقسيط</h4>
+            <span class="pk-card__foot"><span>SLA 7ي</span><span class="pk-card__fee">حسب المبلغ</span><span class="pk-card__go"><span class="material-symbols-outlined">arrow_back</span></span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>A2 — موشور الزاوية <span class="lab-tag">PRISM CORNER</span></h3>
+        <p>إسفين زجاجي حقيقي يكسر لون القسم عند الزاوية وينزلق للداخل عند المرور — حضور لوني هادئ بلا تدرج فاقع.</p>
+        <div class="lab-stage">
+          <button class="pk-card pk-card--prism" style="--c-c: var(--f-ct)">
+            <span class="pk-prism"></span>
+            <span class="pk-card__top"><span class="pk-card__ico"><svg class="ds-ico" width="20" height="20"><use href="#tdq-meter"/></svg></span><span class="pk-card__code">CT0009</span></span>
+            <h4 class="pk-card__name">فحص مقياس / تبديل / صيانة</h4>
+            <span class="pk-card__foot"><span>SLA 5ي</span><span class="pk-card__fee">من 12,500</span><span class="pk-card__go"><span class="material-symbols-outlined">arrow_back</span></span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>A3 — نبضة الجهد <span class="lab-tag">VOLT PULSE</span></h3>
+        <p>خط فاصل بين الاسم والتذييل يتحول عند المرور إلى موجة جهد تُرسم بتوهج لون القسم — توقيع كهربائي بحركة واحدة فقط.</p>
+        <div class="lab-stage">
+          <button class="pk-card pk-card--volt" style="--c-c: var(--f-ct)">
+            <span class="pk-card__top"><span class="pk-card__ico"><svg class="ds-ico" width="20" height="20"><use href="#tdq-meter"/></svg></span><span class="pk-card__code">CT0004</span></span>
+            <h4 class="pk-card__name">تجزئة اشتراك — ٣ فاز</h4>
+            <svg class="pk-volt" viewBox="0 0 218 20" preserveAspectRatio="none"><path class="b" d="M1 11 H217"/><path class="l" d="M1 11 H76 L84 11 90 2 98 18 105 5 111 11 H217" pathLength="100"/></svg>
+            <span class="pk-card__foot"><span>SLA 10ي</span><span class="pk-card__fee">حسب الكشف</span><span class="pk-card__go"><span class="material-symbols-outlined">arrow_back</span></span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>A4 — حافة التيار <span class="lab-tag">SIGNATURE EDGE</span></h3>
+        <p>خيط ضوء بلون القسم على حافة البداية، نائم في الوضع الهادئ ويمتد ويتوهج عند المرور — أخف تدخل ممكن وأوضح انتماء للقسم.</p>
+        <div class="lab-stage">
+          <button class="pk-card pk-card--edge" style="--c-c: var(--f-ca)">
+            <span class="pk-card__top"><span class="pk-card__ico"><svg class="ds-ico" width="20" height="20"><use href="#tdq-stamp"/></svg></span><span class="pk-card__code">CA0002</span></span>
+            <h4 class="pk-card__name">إبلاغ عن حالات خطر</h4>
+            <span class="pk-card__foot"><span>فوري</span><span class="pk-card__fee">بدون أجور</span><span class="pk-card__go"><span class="material-symbols-outlined">arrow_back</span></span></span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ب — بلاطات الأقسام الأربعة</h2>
+    <p class="lab-sec-sub">نفس البلاطة، ثلاث معالجات للأيقونة: الحلقة المعتمدة، القطع الماسي، والمدار.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>B1 — حلقة الطاقة + زجاج <span class="lab-tag">ENERGY RING</span></h3>
+        <p>المعتمدة حالياً (المرجع): قرص زجاجي داخل حلقة تكتمل عند المرور.</p>
+        <div class="lab-stage">
+          <button class="pk-dept" style="--c-c: var(--f-cs)"><span class="pk-ring"><svg class="rg" viewBox="0 0 58 58"><circle class="tr" cx="29" cy="29" r="26"/><circle class="pr" cx="29" cy="29" r="26" pathLength="158"/></svg><span class="pk-glass"><svg class="ds-ico" width="19" height="19"><use href="#tdq-subscriptions"/></svg></span></span><b>الاشتراكات</b><small>CS · 11</small></button>
+          <button class="pk-dept" style="--c-c: var(--f-ct)"><span class="pk-ring"><svg class="rg" viewBox="0 0 58 58"><circle class="tr" cx="29" cy="29" r="26"/><circle class="pr" cx="29" cy="29" r="26" pathLength="158"/></svg><span class="pk-glass"><svg class="ds-ico" width="19" height="19"><use href="#tdq-technical"/></svg></span></span><b>الفنية</b><small>CT · 9</small></button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>B2 — القطع الماسي <span class="lab-tag">FACET</span></h3>
+        <p>بديل هندسي: بلاطة بقصّتين ٤٥° وركن ممتلئ بلون القسم — حِرفية ساعات أكثر من نعومة iOS.</p>
+        <div class="lab-stage">
+          <button class="pk-dept" style="--c-c: var(--f-cb)"><span class="pk-facet"><svg class="ds-ico" width="20" height="20"><use href="#tdq-billing"/></svg></span><b>الفواتير</b><small>CB · 6</small></button>
+          <button class="pk-dept" style="--c-c: var(--f-ca)"><span class="pk-facet"><svg class="ds-ico" width="20" height="20"><use href="#tdq-stamp"/></svg></span><b>الإدارية</b><small>CA · 4</small></button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>B3 — المدار <span class="lab-tag">ORBIT</span></h3>
+        <p>سكويركل هادئ يطلق إلكتروناً متوهجاً يدور حول الأيقونة عند المرور — طاقة حية بلا أي تغيير في البلاطة نفسها.</p>
+        <div class="lab-stage">
+          <button class="pk-dept" style="--c-c: var(--f-cs)"><span class="pk-orb"><i></i><svg class="ds-ico" width="20" height="20"><use href="#tdq-subscriptions"/></svg></span><b>الاشتراكات</b><small>CS · 11</small></button>
+          <button class="pk-dept" style="--c-c: var(--f-ct)"><span class="pk-orb"><i></i><svg class="ds-ico" width="20" height="20"><use href="#tdq-technical"/></svg></span><b>الفنية</b><small>CT · 9</small></button>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ج — صفوف القوائم (الحالات والأجور)</h2>
+    <p class="lab-sec-sub">معالجتان لحافة الصف — تصلحان لقوائم الحالات وجدول الأجور والنتائج.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>C1 — المسطرة الحية <span class="lab-tag">RULER EDGE</span></h3>
+        <p>علامات قياس مليمترية على حافة البداية تتمدد وتشتد عند المرور — لغة «الدقة الهندسية» لصفوف البيانات.</p>
+        <div class="lab-stage" style="flex-direction: column; gap: 10px">
+          <div class="pk-row pk-row--ruler" style="--c-c: var(--f-ct)"><span class="ticks"></span><span><b>فحص مقياس — ٣ أطوار</b><small>موقع العمل · فنية</small></span><span class="val">37,500</span></div>
+          <div class="pk-row pk-row--ruler" style="--c-c: var(--f-cs)"><span class="ticks"></span><span><b>اشتراك جديد — منزلي</b><small>الكرادة · قيد الكشف</small></span><span class="val">15,000</span></div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>C2 — مجرى التيار <span class="lab-tag">CURRENT FLOW</span></h3>
+        <p>سلك خفي أسفل الصف يسري فيه التيار عند المرور بلون القسم — الصف «يوصل» وأنت فوقه.</p>
+        <div class="lab-stage" style="flex-direction: column; gap: 10px">
+          <div class="pk-row pk-row--flow" style="--c-c: var(--f-cb)"><span><b>تقسيط متأخرات</b><small>CB0006 · بانتظار المصادقة</small></span><span class="val">240,000</span><svg class="wire" viewBox="0 0 330 14" preserveAspectRatio="none"><path d="M2 7 H328"/></svg></div>
+          <div class="pk-row pk-row--flow" style="--c-c: var(--f-ca)"><span><b>إبلاغ تلاعب بالمقياس</b><small>CA0001 · أُحيل للجنة</small></span><span class="val">—</span><svg class="wire" viewBox="0 0 330 14" preserveAspectRatio="none"><path d="M2 7 H328"/></svg></div>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">د — تقنيات عرض البطاقة</h2>
+    <p class="lab-sec-sub">أربع طبقات حركية تُركّب فوق أي بطاقة — العمق، الشعرة الضوئية، الضغطة، والعد الصاعد.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>D1 — الطبقات الخلفية <span class="lab-tag">STRATA</span></h3>
+        <p>المرور يرفع البطاقة فتنكشف تحتها ورقتان مرتبتان — عمق نوشن الهادئ بدل الظل الثقيل، وإيحاء بأن للخدمة طبقات (فورمة ← مراجعة ← أرشيف).</p>
+        <div class="lab-stage">
+          <button class="pk-card pk-strata" style="--c-c: var(--f-cs)">
+            <span class="pk-card__top"><span class="pk-card__ico"><svg class="ds-ico" width="20" height="20"><use href="#tdq-subscriptions"/></svg></span><span class="pk-card__code">CS0011</span></span>
+            <h4 class="pk-card__name">نقل ملكية اشتراك</h4>
+            <span class="pk-card__foot"><span>SLA 14ي</span><span class="pk-card__fee">25,000 IQD</span><span class="pk-card__go"><span class="material-symbols-outlined">arrow_back</span></span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>D2 — شعرة الفجر <span class="lab-tag">VERCEL HAIRLINE</span></h3>
+        <p>خيط ضوئي بسمك شعرة يعبر حافة البطاقة العليا ذهاباً وإياباً عند المرور — توقيع فيرسيل الصامت: لا تدرج فاقع، فقط ضوء يمر.</p>
+        <div class="lab-stage">
+          <button class="pk-card pk-aurora" style="--c-c: var(--f-ct)">
+            <span class="pk-card__top"><span class="pk-card__ico"><svg class="ds-ico" width="20" height="20"><use href="#tdq-meter"/></svg></span><span class="pk-card__code">CT0007</span></span>
+            <h4 class="pk-card__name">تغيير نوع المقياس — زيادة قوة</h4>
+            <span class="pk-card__foot"><span>SLA 10ي</span><span class="pk-card__fee">حسب الصنف</span><span class="pk-card__go"><span class="material-symbols-outlined">arrow_back</span></span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>D3 — ضغطة iOS <span class="lab-tag">PRESS PHYSICS</span></h3>
+        <p>البطاقة تستجيب للضغط كزر فيزيائي: تنغمر بظل داخلي عند النقر ثم تنطلق بارتداد spring يتجاوز الحجم الأصلي لحظة — جرّب النقر والإفلات.</p>
+        <div class="lab-stage">
+          <button class="pk-card pk-press" id="pressCard" style="--c-c: var(--f-cb)">
+            <span class="pk-card__top"><span class="pk-card__ico"><svg class="ds-ico" width="20" height="20"><use href="#tdq-billing"/></svg></span><span class="pk-card__code">CB0002</span></span>
+            <h4 class="pk-card__name">تقرير استهلاك مفصل</h4>
+            <span class="pk-card__foot"><span>SLA 3ي</span><span class="pk-card__fee">10,000 IQD</span><span class="pk-card__go"><span class="material-symbols-outlined">arrow_back</span></span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>D4 — العد الصاعد <span class="lab-tag">COUNT-UP</span></h3>
+        <p>الأجور لا تُعرض جامدة: عند المرور يتصاعد الرقم من الصفر إلى قيمته بتباطؤ في النهاية — العين تلتقط الرقم وهو يتكوّن فتثق به أكثر.</p>
+        <div class="lab-stage">
+          <button class="pk-card pk-count" id="countCard" style="--c-c: var(--f-ct)">
+            <span class="pk-card__top"><span class="pk-card__ico"><svg class="ds-ico" width="20" height="20"><use href="#tdq-meter"/></svg></span><span class="pk-card__code">CT0008</span></span>
+            <h4 class="pk-card__name">تغيير موقع المقياس داخل المبنى</h4>
+            <span class="pk-card__foot"><span>SLA 7ي</span><span class="pk-card__fee" data-target="35000">35,000</span><span class="pk-card__go"><span class="material-symbols-outlined">arrow_back</span></span></span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">هـ — الأيقونات: رسم وحركة وزوايا</h2>
+    <p class="lab-sec-sub">أربع تقنيات لحياة الأيقونة — الرسم الذاتي، الإمالة، فيزياء النقرة، ومسح الزاوية.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>E1 — الرسم الذاتي <span class="lab-tag">SELF-DRAW</span></h3>
+        <p>الأيقونة تُرسم أمامك خطاً خطاً عند المرور — كل مسار يلحق الذي قبله بتأخير خفيف، كأن قلماً يخطها لحظتها.</p>
+        <div class="lab-stage">
+          <span class="pk-ink" style="--c-c: var(--f-cs)"><svg class="pk-draw" width="24" height="24" viewBox="0 0 24 24"><path pathLength="100" d="M5 21 V8 L12 3 L19 8 V21"/><path pathLength="100" d="M9 21 V14 H15 V21"/></svg></span>
+          <span class="pk-ink" style="--c-c: var(--f-ct)"><svg class="pk-draw" width="24" height="24" viewBox="0 0 24 24"><path pathLength="100" d="M13 2 L5 13 H11 L9.5 22 L19 9.5 H12.5 Z"/></svg></span>
+          <span class="pk-ink" style="--c-c: var(--f-cb)"><svg class="pk-draw" width="24" height="24" viewBox="0 0 24 24"><path pathLength="100" d="M6 3 H15 L19 7 V21 H6 Z"/><path pathLength="100" d="M9.5 12 H15.5"/><path pathLength="100" d="M9.5 16 H13.5"/></svg></span>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>E2 — الإمالة الثلاثية <span class="lab-tag">TILT PARALLAX</span></h3>
+        <p>البلاطة تميل مع مؤشرك بزاوية محسوبة والأيقونة تطفو فوقها بعمق مستقل (translateZ) — برالاكس حقيقي دقيق.</p>
+        <div class="lab-stage" style="perspective: 500px">
+          <span class="pk-ink pk-tilt" data-tilt style="--c-c: var(--f-ct)"><svg class="ds-ico" width="24" height="24"><use href="#tdq-meter"/></svg></span>
+          <span class="pk-ink pk-tilt" data-tilt style="--c-c: var(--f-ca)"><svg class="ds-ico" width="24" height="24"><use href="#tdq-stamp"/></svg></span>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>E3 — العصر والمط <span class="lab-tag">SQUASH &amp; STRETCH</span></h3>
+        <p>قاعدة التحريك الأولى من ديزني: النقرة تعصر الأيقونة أفقياً ثم تمطها عمودياً قبل أن تستقر — حيوية ملموسة بلا أي مبالغة بصرية. انقرها.</p>
+        <div class="lab-stage">
+          <span class="pk-ink" data-boing style="--c-c: var(--f-cs)"><svg class="ds-ico" width="24" height="24"><use href="#tdq-subscriptions"/></svg></span>
+          <span class="pk-ink" data-boing style="--c-c: var(--f-cb)"><svg class="ds-ico" width="24" height="24"><use href="#tdq-billing"/></svg></span>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>E4 — مسح الفجر <span class="lab-tag">ANGLE SWEEP</span></h3>
+        <p>زاوية إضاءة البلاطة تدور دورة كاملة عند المرور (حركة زاوية حقيقية بـ @property) — كأن الشمس تدور حول الأيقونة فتغير سقوط الظل.</p>
+        <div class="lab-stage">
+          <span class="pk-ink pk-sweep" style="--c-c: var(--f-ct)"><svg class="ds-ico" width="24" height="24"><use href="#tdq-technical"/></svg></span>
+          <span class="pk-ink pk-sweep" style="--c-c: var(--f-ca)"><svg class="ds-ico" width="24" height="24"><use href="#tdq-stamp"/></svg></span>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">و — التوافقات اللونية الهادئة</h2>
+    <p class="lab-sec-sub">سلالم الألوان المنضبطة، توافقات الخلفية والحبر، ووضع منتصف الليل.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>F1 — سلّم الهدوء <span class="lab-tag">CALM LADDER</span></h3>
+        <p>كل لون قسم يعيش بخمس درجات فقط: 6% للخلفيات، 11% للبلاطات، 22% للحدود، 55% للحبر الثانوي، 100% للفعل — لا درجة سادسة مسموحة.</p>
+        <div class="lab-stage">
+          <div class="pk-ladder" id="pkLadder"></div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>F2 — توافقات نوشن <span class="lab-tag">QUIET PAIRING</span></h3>
+        <p>الوصفة الثابتة لأي خلفية ملونة: خلفية 6%، حد 22%، حبر أساسي ثابت، ولمسة واحدة 100% — هكذا تبقى الصفحة هادئة مهما كثرت الألوان.</p>
+        <div class="lab-stage">
+          <div class="pk-pair" style="background: color-mix(in srgb, var(--f-cs) 6%, var(--f-bg)); border-color: color-mix(in srgb, var(--f-cs) 22%, transparent); color: var(--f-ink)"><b>الاشتراكات</b><small>خلفية 6% · حد 22% · حبر ثابت</small><span class="chip" style="background: var(--f-cs)">CS 100%</span></div>
+          <div class="pk-pair" style="background: color-mix(in srgb, var(--f-ct) 6%, var(--f-bg)); border-color: color-mix(in srgb, var(--f-ct) 22%, transparent); color: var(--f-ink)"><b>الفنية</b><small>خلفية 6% · حد 22% · حبر ثابت</small><span class="chip" style="background: var(--f-ct)">CT 100%</span></div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>F3 — منتصف الليل <span class="lab-tag">MIDNIGHT iOS</span></h3>
+        <p>نفس بطاقة الخدمة بالوضع الداكن — الألوان ترتفع إشباعاً قليلاً لتعيش على الأسود (قاعدة iOS Dark)، والحدود بيضاء بشفافية 9% بدل الرمادي.</p>
+        <div class="lab-stage lab-stage--night">
+          <button class="pk-night" style="--c-c: var(--f-cs)">
+            <span class="pk-card__top"><span class="pk-card__ico"><svg class="ds-ico" width="20" height="20"><use href="#tdq-subscriptions"/></svg></span><span class="pk-card__code">CS0001</span></span>
+            <h4 class="pk-card__name">عمل الاشتراكات الجديدة</h4>
+            <span class="pk-card__foot"><span>SLA 14ي</span><span class="pk-card__fee">15,000 IQD</span></span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ز — الدمج الأسمى: زجاج × رسم ذاتي</h2>
+    <p class="lab-sec-sub">الأيقونة تُرسم خطاً خطاً داخل عدسة زجاجية، فإذا اكتمل الرسم مرّ لمعان على الزجاج — طقس من مرحلتين.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>G1 — العدسة الراسمة <span class="lab-tag">GLASS × SELF-DRAW</span></h3>
+        <p>مرّ لترى المرحلتين: الرسم تحت الزجاج ثم اللمعان يعبر العدسة مصادقةً على اكتماله — لمسة ساعات فاخرة بتقنية أبل.</p>
+        <div class="lab-stage">
+          <span class="pk-lens" style="--c-c: var(--f-cs)"><svg class="pk-draw" width="26" height="26" viewBox="0 0 24 24"><path pathLength="100" d="M5 21 V8 L12 3 L19 8 V21"/><path pathLength="100" d="M9 21 V14 H15 V21"/></svg></span>
+          <span class="pk-lens" style="--c-c: var(--f-ct)"><svg class="pk-draw" width="26" height="26" viewBox="0 0 24 24"><path pathLength="100" d="M13 2 L5 13 H11 L9.5 22 L19 9.5 H12.5 Z"/></svg></span>
+          <span class="pk-lens" style="--c-c: var(--f-cb)"><svg class="pk-draw" width="26" height="26" viewBox="0 0 24 24"><path pathLength="100" d="M6 3 H15 L19 7 V21 H6 Z"/><path pathLength="100" d="M9.5 12 H15.5"/><path pathLength="100" d="M9.5 16 H13.5"/></svg></span>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>G2 — بطاقة العدسة <span class="lab-tag">LENS CARD</span></h3>
+        <p>الدمج مطبّق على بطاقة الخدمة الفعلية: المرور على البطاقة كلها يطلق الرسم داخل العدسة ثم اللمعان — بلا أي تغيير آخر في البطاقة.</p>
+        <div class="lab-stage">
+          <button class="pk-card pk-card--lens" style="--c-c: var(--f-ct)">
+            <span class="pk-card__top"><span class="pk-lens"><svg class="pk-draw" width="20" height="20" viewBox="0 0 24 24"><path pathLength="100" d="M13 2 L5 13 H11 L9.5 22 L19 9.5 H12.5 Z"/></svg></span><span class="pk-card__code">CT0009</span></span>
+            <h4 class="pk-card__name">فحص مقياس / تبديل / صيانة</h4>
+            <span class="pk-card__foot"><span>SLA 5ي</span><span class="pk-card__fee">من 12,500</span><span class="pk-card__go"><span class="material-symbols-outlined">arrow_back</span></span></span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ح — أزرار جديدة كلياً</h2>
+    <p class="lab-sec-sub">القوس الراسم، عدسة تتبع المؤشر، ولفّة أبل العمودية.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>H1 — القوس الراسم <span class="lab-tag">ARC DRAW</span></h3>
+        <p>حدّ الزر يرسم نفسه حول المحيط عند المرور، فإذا اكتمل القوس امتلأ الزر باللون — نفس لغة الرسم الذاتي لكن للأفعال.</p>
+        <div class="lab-stage">
+          <button class="btn-arc" style="--ar-c: var(--f-navy)"><svg class="arc"><rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="22" pathLength="100"/></svg><span class="material-symbols-outlined">draft</span> فتح الفورمة</button>
+          <button class="btn-arc" style="--ar-c: var(--f-ct)"><svg class="arc"><rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="22" pathLength="100"/></svg><span class="material-symbols-outlined">bolt</span> بدء سريع</button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>H2 — عدسة المؤشر <span class="lab-tag">CURSOR LIGHT</span></h3>
+        <p>زر زجاجي يحمل بقعة ضوء تتبع مؤشرك أفقياً على حافته العليا — الزجاج يستجيب لموقعك لا لمجرد وجودك.</p>
+        <div class="lab-stage">
+          <button class="btn-lens" data-lens><span class="material-symbols-outlined">search</span> بحث في الخدمات</button>
+          <button class="btn-lens" data-lens><span class="material-symbols-outlined">tune</span> ترشيح النتائج</button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>H3 — اللفّة <span class="lab-tag">APPLE ROLL</span></h3>
+        <p>النص يلفّ عمودياً عند المرور كاشفاً صيغة الفعل الملونة — لفّة قوائم أبل الشهيرة بدقة spring.</p>
+        <div class="lab-stage">
+          <button class="btn-roll" style="--rl2-c: var(--f-ct)"><span class="material-symbols-outlined">visibility</span><span class="btn-roll__win"><span class="btn-roll__stack"><span>عرض الحالة</span><span>افتح الآن ←</span></span></span></button>
+          <button class="btn-roll" style="--rl2-c: var(--f-cb)"><span class="material-symbols-outlined">payments</span><span class="btn-roll__win"><span class="btn-roll__stack"><span>الأجور الكلية</span><span>31,000 IQD</span></span></span></button>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ط — العرض الساحر — ترتيب البطاقات</h2>
+    <p class="lab-sec-sub">ليس تأثير hover — بل طريقة عرض وترتيب كاملة تجذب العين.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>T1 — المعرض المتنفس <span class="lab-tag">BREATHING GALLERY</span></h3>
+        <p>الأقسام الأربعة ألواح متجاورة، واللوح الذي تمر عليه يتنفس ويتوسع كاشفاً تفاصيله بينما تنسحب البقية بهدوء — عرض حي للوحة الرئيسية.</p>
+        <div class="lab-stage">
+          <div class="pk-gal">
+            <div class="pk-pane" style="--c-c: var(--f-cs)"><span class="pk-pane__ico"><svg class="ds-ico" width="18" height="18"><use href="#tdq-subscriptions"/></svg></span><b>الاشتراكات</b><small>CS · 11</small><span class="pk-pane__more">اشتراك جديد · نقل ملكية · تغيير صنف · إيقاف مؤقت…</span></div>
+            <div class="pk-pane" style="--c-c: var(--f-ct)"><span class="pk-pane__ico"><svg class="ds-ico" width="18" height="18"><use href="#tdq-technical"/></svg></span><b>الفنية</b><small>CT · 9</small><span class="pk-pane__more">فحص مقياس · تجزئة · تغيير كابل · تعديل جهد…</span></div>
+            <div class="pk-pane" style="--c-c: var(--f-cb)"><span class="pk-pane__ico"><svg class="ds-ico" width="18" height="18"><use href="#tdq-billing"/></svg></span><b>الفواتير</b><small>CB · 6</small><span class="pk-pane__more">دفع قائمة · تقسيط · بدل مفقود · تقرير استهلاك…</span></div>
+            <div class="pk-pane" style="--c-c: var(--f-ca)"><span class="pk-pane__ico"><svg class="ds-ico" width="18" height="18"><use href="#tdq-stamp"/></svg></span><b>الإدارية</b><small>CA · 4</small><span class="pk-pane__more">إبلاغ تلاعب · حالات خطر · شكوى إدارية…</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>T2 — المروحة <span class="lab-tag">FAN DECK</span></h3>
+        <p>الخدمات الأحدث رزمة أوراق فوق بعضها، والمرور يفردها مروحةً بزوايا محسوبة — للمسودات والمعاملات الأخيرة.</p>
+        <div class="lab-stage">
+          <div class="pk-fan">
+            <button class="pk-card" style="--c-c: var(--f-cs)"><span class="pk-card__top"><span class="pk-card__ico"><svg class="ds-ico" width="20" height="20"><use href="#tdq-subscriptions"/></svg></span><span class="pk-card__code">CS0001</span></span><h4 class="pk-card__name">اشتراك جديد — مسودة</h4></button>
+            <button class="pk-card" style="--c-c: var(--f-ct)"><span class="pk-card__top"><span class="pk-card__ico"><svg class="ds-ico" width="20" height="20"><use href="#tdq-meter"/></svg></span><span class="pk-card__code">CT0009</span></span><h4 class="pk-card__name">فحص مقياس</h4></button>
+            <button class="pk-card" style="--c-c: var(--f-cb)"><span class="pk-card__top"><span class="pk-card__ico"><svg class="ds-ico" width="20" height="20"><use href="#tdq-billing"/></svg></span><span class="pk-card__code">CB0006</span></span><h4 class="pk-card__name">تقسيط</h4></button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ي — أنماط لونية بديلة</h2>
+    <p class="lab-sec-sub">ثلاثة أنظمة كاملة بديلة عن الحالي — كل نظام بخلفيته وحبره وألوان أقسامه الأربعة ولمسته، مطبقاً على صف خدمة حقيقي.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>P1 — الرمل والنحاس <span class="lab-tag">WARM EDITORIAL</span></h3>
+        <p>دفء تحريري بروح نوشن: رمل فاتح، حبر بني داكن، وأقسام طينية مطفأة — تراكوتا، زيتون، أزرق فولاذي، برقوق.</p>
+        <div class="lab-stage">
+          <div class="pk-pal" style="--p-bg: #faf6ee; --p-surface: #fffdf8; --p-line: #e7e0d2; --p-ink: #241f18; --p-ink3: #97907f; --p-a: #ad5c3f">
+            <div class="pk-pal__head"><b>الرمل والنحاس</b><span>#FAF6EE · #241F18</span></div>
+            <div class="pk-pal__dots">
+              <span class="pk-pal__dot" style="background: #ad5c3f"><i>CS</i></span>
+              <span class="pk-pal__dot" style="background: #6f7d4f"><i>CT</i></span>
+              <span class="pk-pal__dot" style="background: #4a6d8c"><i>CB</i></span>
+              <span class="pk-pal__dot" style="background: #8a5a74"><i>CA</i></span>
+            </div>
+            <div class="pk-pal__demo"><span class="ic"><svg class="ds-ico" width="17" height="17"><use href="#tdq-subscriptions"/></svg></span><span><b>عمل الاشتراكات الجديدة</b><small>CS0001 · SLA 14ي</small></span><button class="act">افتح</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>P2 — الجليد النوردي <span class="lab-tag">NORDIC FROST</span></h3>
+        <p>برودة فيرسيل المهنية: بورسلين مزرق، حبر فحمي، وأقسام باردة منضبطة — نيلي، تركواز عميق، صلب، ورد مطفأ.</p>
+        <div class="lab-stage">
+          <div class="pk-pal" style="--p-bg: #f4f6f9; --p-surface: #fdfdfe; --p-line: #dde3ea; --p-ink: #1b2127; --p-ink3: #8a949f; --p-a: #4f5d9e">
+            <div class="pk-pal__head"><b>الجليد النوردي</b><span>#F4F6F9 · #1B2127</span></div>
+            <div class="pk-pal__dots">
+              <span class="pk-pal__dot" style="background: #4f5d9e"><i>CS</i></span>
+              <span class="pk-pal__dot" style="background: #3e7f87"><i>CT</i></span>
+              <span class="pk-pal__dot" style="background: #5d7287"><i>CB</i></span>
+              <span class="pk-pal__dot" style="background: #a06478"><i>CA</i></span>
+            </div>
+            <div class="pk-pal__demo"><span class="ic"><svg class="ds-ico" width="17" height="17"><use href="#tdq-meter"/></svg></span><span><b>فحص مقياس — 3 أطوار</b><small>CT0009 · 25,000 IQD</small></span><button class="act">افتح</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>P3 — الغسق <span class="lab-tag">DUSK</span></h3>
+        <p>هدوء آخر النهار: رمادي بنفسجي فاتح، حبر برقوقي داكن، وأقسام بنفسج—بترول—مرسالا—برونز — أكثر الثلاثة جرأة وأفخمها.</p>
+        <div class="lab-stage">
+          <div class="pk-pal" style="--p-bg: #f6f4f8; --p-surface: #fdfcfe; --p-line: #e5e0ec; --p-ink: #251f2d; --p-ink3: #968fa1; --p-a: #6d5a93">
+            <div class="pk-pal__head"><b>الغسق</b><span>#F6F4F8 · #251F2D</span></div>
+            <div class="pk-pal__dots">
+              <span class="pk-pal__dot" style="background: #6d5a93"><i>CS</i></span>
+              <span class="pk-pal__dot" style="background: #3f7782"><i>CT</i></span>
+              <span class="pk-pal__dot" style="background: #96545f"><i>CB</i></span>
+              <span class="pk-pal__dot" style="background: #94703d"><i>CA</i></span>
+            </div>
+            <div class="pk-pal__demo"><span class="ic"><svg class="ds-ico" width="17" height="17"><use href="#tdq-billing"/></svg></span><span><b>تسوية مالية / تقسيط</b><small>CB0006 · حسب المبلغ</small></span><button class="act">افتح</button></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ك — بطاقات بمستوى جديد — مواد حقيقية</h2>
+    <p class="lab-sec-sub">ليست مستطيلات بتأثيرات — بل مواد من العالم الرسمي: تذكرة مثقوبة، ملف بلسان، وورق مختوم.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>K1 — التذكرة الرسمية <span class="lab-tag">PERFORATED TICKET</span></h3>
+        <p>الخدمة تذكرة بكعب مفصول بخط تثقيب وثقبين حقيقيين: الكعب يحمل الكود والأجور، وعند المرور ينحني كأنك ستقطعه — وشريط باركود يؤرّخ المعاملة.</p>
+        <div class="lab-stage">
+          <button class="tkt" style="--c-c: var(--f-cs)">
+            <span class="tkt__main">
+              <span class="tkt__head"><span class="tkt__ico"><svg class="ds-ico" width="19" height="19"><use href="#tdq-subscriptions"/></svg></span><b>عمل الاشتراكات الجديدة</b></span>
+              <span class="tkt__meta"><span>SLA 14 يوم</span><span>كشف موقعي</span><span>4 مستمسكات</span></span>
+              <span class="tkt__rail"></span>
+            </span>
+            <span class="tkt__perf"></span>
+            <span class="tkt__stub"><small>الرمز</small><b>CS0001</b><small>أجور الكشف</small><span class="fee">15,000</span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>K2 — الملف الرسمي <span class="lab-tag">DOSSIER TAB</span></h3>
+        <p>الخدمة ملف حقيقي بلسان ملون يحمل رمزها، وورقة داخلية تطل من الأعلى — المرور يسحب الورقة للخارج كاشفاً أول سطر من متطلباتها.</p>
+        <div class="lab-stage">
+          <button class="dos" style="--c-c: var(--f-ct)">
+            <span class="dos__tab"><svg class="ds-ico" width="11" height="11"><use href="#tdq-meter"/></svg> CT0009</span>
+            <span class="dos__paper">المستمسكات: هوية المشترك · <b>رقم الحساب</b> · آخر قائمة</span>
+            <span class="dos__body">
+              <span class="dos__head"><span class="dos__ico"><svg class="ds-ico" width="19" height="19"><use href="#tdq-meter"/></svg></span><b>فحص مقياس / تبديل / صيانة</b></span>
+              <span class="dos__foot"><span>6 حالات فحص</span><span>من 12,500 د.ع</span></span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>K3 — الختم البارز <span class="lab-tag">EMBOSSED SEAL</span></h3>
+        <p>ورق مراسلات فاخر: الأيقونة مطبوعة بالبروز (emboss) بلا لون في الزاوية، وختم شمعي وحيد يحمل لون القسم — المرور يدير الختم ويُظهر لوناً خفيفاً في البصمة.</p>
+        <div class="lab-stage">
+          <button class="emb" style="--c-c: var(--f-ca)">
+            <span class="emb__mark"><svg class="ds-ico" width="110" height="110"><use href="#tdq-stamp"/></svg></span>
+            <span class="emb__code">CA0001 · لجنة</span>
+            <b class="name">إبلاغ عن تلاعب في المقياس</b>
+            <span class="emb__seal">CA</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ل — القوس الراسم: أنماط وليكويد جلاس</h2>
+    <p class="lab-sec-sub">الزر الفائز بألوان الأنماط الجديدة، ثم نسخته الزجاجية السائلة فوق خلفية ملونة.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>L1 — القوس بالأنماط الجديدة <span class="lab-tag">ARC × PALETTES</span></h3>
+        <p>نفس طقس الرسم—ثم—الامتلاء بألوان الرمل والنحاس والجليد النوردي والغسق — النحاس للاعتماد، النيلي للفتح، والبترول للفحص.</p>
+        <div class="lab-stage">
+          <button class="btn-arc" style="--ar-c: #ad5c3f"><svg class="arc"><rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="22" pathLength="100"/></svg><span class="material-symbols-outlined">approval</span> اعتماد</button>
+          <button class="btn-arc" style="--ar-c: #4f5d9e"><svg class="arc"><rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="22" pathLength="100"/></svg><span class="material-symbols-outlined">draft</span> فتح الفورمة</button>
+          <button class="btn-arc" style="--ar-c: #3f7782"><svg class="arc"><rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="22" pathLength="100"/></svg><span class="material-symbols-outlined">search_check_2</span> فحص</button>
+          <button class="btn-arc" style="--ar-c: #6d5a93"><svg class="arc"><rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="22" pathLength="100"/></svg><span class="material-symbols-outlined">history_edu</span> أرشفة</button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>L2 — القوس السائل <span class="lab-tag">LIQUID GLASS ARC</span></h3>
+        <p>الدمج الكامل: جسم زجاجي سائل يكسر الخلفية الملونة خلفه، القوس يرسم نفسه، الزر يمتلئ بلون شفاف يبقي الإحساس الزجاجي، ثم لمعان يعبر مصادقة — ثلاث لغات في زر واحد.</p>
+        <div class="lab-stage lab-stage--aur">
+          <button class="btn-arc btn-arc--liquid" style="--ar-c: #ad5c3f"><svg class="arc"><rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="22" pathLength="100"/></svg><span class="material-symbols-outlined">approval</span> اعتماد الأجور</button>
+          <button class="btn-arc btn-arc--liquid" style="--ar-c: #6d5a93"><svg class="arc"><rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="22" pathLength="100"/></svg><span class="material-symbols-outlined">send</span> إرسال للمراجعة</button>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">م — الأيقونات الجانبية — بديلان للرسم</h2>
+    <p class="lab-sec-sub">للقائمة الجانبية لا يصلح الرسم الذاتي لكل عنصر — هذان نمطان هادئان للحالة النشطة. انقر للتبديل.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>M1 — الملء السائل <span class="lab-tag">LIQUID FILL</span></h3>
+        <p>العنصر النشط يمتلئ بصبغة القسم من الأسفل للأعلى كسائل يصعد بـ spring — حركة واحدة هادئة تكفي.</p>
+        <div class="lab-stage">
+          <div class="sb-demo" data-sbgroup>
+            <button class="sb-it sb-it--liq is-on" style="--c-c: var(--f-cs)"><span class="ic"><svg class="ds-ico" width="17" height="17"><use href="#tdq-subscriptions"/></svg></span><span class="lb">الاشتراكات</span><span class="n">11</span></button>
+            <button class="sb-it sb-it--liq" style="--c-c: var(--f-ct)"><span class="ic"><svg class="ds-ico" width="17" height="17"><use href="#tdq-technical"/></svg></span><span class="lb">الفنية</span><span class="n">9</span></button>
+            <button class="sb-it sb-it--liq" style="--c-c: var(--f-cb)"><span class="ic"><svg class="ds-ico" width="17" height="17"><use href="#tdq-billing"/></svg></span><span class="lb">الفواتير</span><span class="n">6</span></button>
+            <button class="sb-it sb-it--liq" style="--c-c: var(--f-ca)"><span class="ic"><svg class="ds-ico" width="17" height="17"><use href="#tdq-stamp"/></svg></span><span class="lb">الإدارية</span><span class="n">4</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>M2 — النبضة الجانبية <span class="lab-tag">SPRING PIP</span></h3>
+        <p>مؤشر عمودي نحيف يتمدد بـ spring عند التفعيل والأيقونة تنبض مرة واحدة في بلاطة ملونة — لغة iOS الصافية.</p>
+        <div class="lab-stage">
+          <div class="sb-demo" data-sbgroup>
+            <button class="sb-it sb-it--pip is-on" style="--c-c: var(--f-cs)"><span class="ic"><svg class="ds-ico" width="17" height="17"><use href="#tdq-subscriptions"/></svg></span><span class="lb">الاشتراكات</span><span class="n">11</span></button>
+            <button class="sb-it sb-it--pip" style="--c-c: var(--f-ct)"><span class="ic"><svg class="ds-ico" width="17" height="17"><use href="#tdq-technical"/></svg></span><span class="lb">الفنية</span><span class="n">9</span></button>
+            <button class="sb-it sb-it--pip" style="--c-c: var(--f-cb)"><span class="ic"><svg class="ds-ico" width="17" height="17"><use href="#tdq-billing"/></svg></span><span class="lb">الفواتير</span><span class="n">6</span></button>
+            <button class="sb-it sb-it--pip" style="--c-c: var(--f-ca)"><span class="ic"><svg class="ds-ico" width="17" height="17"><use href="#tdq-stamp"/></svg></span><span class="lb">الإدارية</span><span class="n">4</span></button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ن — لوحة التوزيع الحية — واجهة الأقسام الجديدة</h2>
+    <p class="lab-sec-sub">النقلة المقترحة للصفحة الرئيسية: الأقسام الأربعة محطات على ناقل تيار حي — انقر محطة لتغذيتها.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card lab-card--wide">
+        <h3>N1 — لوحة التوزيع <span class="lab-tag">LIVE SWITCHBOARD</span></h3>
+        <p>ناقل تيار يسري باستمرار فوق أربع محطات زجاجية. النقر يغذي المحطة: سلكها ينبض بلونها، حلقتها تكتمل، وخدماتها تتوافد في اللوح السفلي واحدةً واحدة — اللوحة الرئيسية تصبح محطة تحكم حقيقية لا قائمة بطاقات.</p>
+        <div class="swb" id="swb">
+          <div class="swb__bus"></div>
+          <div class="swb__sts">
+            <button class="swb-st is-on" data-dept="cs" style="--c-c: var(--f-cs)">
+              <span class="swb-st__wire"></span>
+              <span class="swb-st__node"><svg class="rg" viewBox="0 0 66 66"><circle class="tr" cx="33" cy="33" r="29"/><circle class="pr" cx="33" cy="33" r="29" pathLength="180"/></svg><span class="swb-st__glass"><svg class="ds-ico" width="20" height="20"><use href="#tdq-subscriptions"/></svg></span></span>
+              <b>الاشتراكات</b><small>CS · 11</small>
+            </button>
+            <button class="swb-st" data-dept="ct" style="--c-c: var(--f-ct)">
+              <span class="swb-st__wire"></span>
+              <span class="swb-st__node"><svg class="rg" viewBox="0 0 66 66"><circle class="tr" cx="33" cy="33" r="29"/><circle class="pr" cx="33" cy="33" r="29" pathLength="180"/></svg><span class="swb-st__glass"><svg class="ds-ico" width="20" height="20"><use href="#tdq-technical"/></svg></span></span>
+              <b>الفنية</b><small>CT · 9</small>
+            </button>
+            <button class="swb-st" data-dept="cb" style="--c-c: var(--f-cb)">
+              <span class="swb-st__wire"></span>
+              <span class="swb-st__node"><svg class="rg" viewBox="0 0 66 66"><circle class="tr" cx="33" cy="33" r="29"/><circle class="pr" cx="33" cy="33" r="29" pathLength="180"/></svg><span class="swb-st__glass"><svg class="ds-ico" width="20" height="20"><use href="#tdq-billing"/></svg></span></span>
+              <b>الفواتير</b><small>CB · 6</small>
+            </button>
+            <button class="swb-st" data-dept="ca" style="--c-c: var(--f-ca)">
+              <span class="swb-st__wire"></span>
+              <span class="swb-st__node"><svg class="rg" viewBox="0 0 66 66"><circle class="tr" cx="33" cy="33" r="29"/><circle class="pr" cx="33" cy="33" r="29" pathLength="180"/></svg><span class="swb-st__glass"><svg class="ds-ico" width="20" height="20"><use href="#tdq-stamp"/></svg></span></span>
+              <b>الإدارية</b><small>CA · 4</small>
+            </button>
+          </div>
+          <div class="swb__panel" id="swbPanel">
+            <div class="swb__panel-head"><b id="swbTitle"></b><span id="swbSub"></span><a>عرض الكل ←</a></div>
+            <div class="swb__chips" id="swbChips"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">س — استراتيجية الألوان: أين وكيف تُطبّق</h2>
+    <p class="lab-sec-sub">بدّل النمط وراقب انتقال المنصة كاملة — خمسة توكنز فقط تحكم كل شيء، وألوان الأقسام تبقى على سلّم 6/11/22/55/100.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card lab-card--wide">
+        <h3>S1 — المحاكاة الحية <span class="lab-tag">LIVE THEME SWITCH</span></h3>
+        <p>مصغّر المنصة الحقيقي: قائمة جانبية، أقسام، صف حالة، وزر أساسي — جرّب الأنماط الأربعة ولاحظ أن التغيير كله يمر عبر التوكنز لا عبر لمس المكونات.</p>
+        <div class="pal-switch" id="palSwitch">
+          <button class="is-on" data-pal="current">الحالي</button>
+          <button data-pal="sand">الرمل والنحاس</button>
+          <button data-pal="nordic">الجليد النوردي</button>
+          <button data-pal="dusk">الغسق</button>
+        </div>
+        <div class="pal-app" id="palApp">
+          <div class="pal-app__side">
+            <span class="pal-app__brand">تدفّق الخير</span>
+            <span class="pal-app__it is-on"><span class="dot"></span>الرئيسية</span>
+            <span class="pal-app__it"><span class="dot"></span>الخدمات</span>
+            <span class="pal-app__it"><span class="dot"></span>الحالات</span>
+            <span class="pal-app__it"><span class="dot"></span>الأسعار</span>
+          </div>
+          <div class="pal-app__main">
+            <div class="pal-app__bar"><b>لوحة الخدمات</b><button class="pal-app__cta">+ معاملة جديدة</button></div>
+            <div class="pal-app__depts">
+              <span class="pal-dept" data-k="cs"><span class="sw"><i></i></span><b>الاشتراكات</b><small>CS · 11</small></span>
+              <span class="pal-dept" data-k="ct"><span class="sw"><i></i></span><b>الفنية</b><small>CT · 9</small></span>
+              <span class="pal-dept" data-k="cb"><span class="sw"><i></i></span><b>الفواتير</b><small>CB · 6</small></span>
+              <span class="pal-dept" data-k="ca"><span class="sw"><i></i></span><b>الإدارية</b><small>CA · 4</small></span>
+            </div>
+            <div class="pal-app__row"><span><b>فحص مقياس — 3 أطوار</b><br/><small>CT0009 · الكرادة · أمس</small></span><span class="st" style="--st-c: oklch(0.62 0.13 75)">بانتظار الكشف</span></div>
+            <div class="pal-app__row"><span><b>اشتراك جديد — منزلي</b><br/><small>CS0001 · الجادرية · اليوم</small></span><span class="st" style="--st-c: oklch(0.52 0.1 155)">مكتمل</span></div>
+          </div>
+        </div>
+        <div class="pal-map">
+          <div class="pal-map__it"><span class="k" style="background: var(--f-bg); border: 0.5px solid var(--f-border-2)"></span><span><b>الخلفية + الأسطح</b>تتبدل بالكامل مع النمط — كل بطاقة وقائمة وفورمة ترثها تلقائياً</span></div>
+          <div class="pal-map__it"><span class="k" style="background: var(--f-ink)"></span><span><b>الحبر (3 درجات)</b>العناوين والنصوص والثانوي — تتبدل معاً لحفظ التباين</span></div>
+          <div class="pal-map__it"><span class="k" style="background: linear-gradient(135deg, var(--f-cs) 25%, var(--f-ct) 25% 50%, var(--f-cb) 50% 75%, var(--f-ca) 75%)"></span><span><b>ألوان الأقسام ×4</b>تتبدل كمجموعة واحدة لكن السلّم ثابت: 6% خلفية · 11% بلاطة · 22% حد · 55% حبر · 100% فعل</span></div>
+          <div class="pal-map__it"><span class="k" style="background: var(--f-navy)"></span><span><b>لون الفعل الأساسي</b>الأزرار الرئيسية والعنصر النشط — في الرمل يصير نحاساً، في الجليد نيلياً، في الغسق بنفسجاً</span></div>
+          <div class="pal-map__it"><span class="k" style="background: linear-gradient(135deg, oklch(0.52 0.1 155) 33%, oklch(0.62 0.13 75) 33% 66%, oklch(0.55 0.19 25) 66%)"></span><span><b>ألوان الحالات</b>نجاح / انتظار / خطر — ثابتة في كل الأنماط لأنها لغة سلامة لا هوية</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ع — التجربة الدلالية + قوانين UX — للقرار قبل التطبيق</h2>
+    <p class="lab-sec-sub">كل شيء هنا تجريبي — المنصة الأساسية لم تُلمس. قارن وقرر، ثم نطبق المعتمد فقط.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card lab-card--wide">
+        <h3>S2 — الألوان الدلالية: الحالي مقابل المقترح <span class="lab-tag">SEMANTIC TRIAL</span></h3>
+        <p>المقترح الوحيد: تبادل لوني الفنية والفواتير — التيل للدقة الفنية (لغة الأجهزة)، والبرونز الذهبي للمال (لغة العملة). البقية ثابتة. بدّل وقارن:</p>
+        <div class="pal-switch" id="semSwitch">
+          <button class="is-on" data-mode="current">التوزيع الحالي</button>
+          <button data-mode="semantic">المقترح الدلالي (CT↔CB)</button>
+        </div>
+        <div class="sem-note" id="semNote"></div>
+        <div class="pal-app" id="semApp">
+          <div class="pal-app__side">
+            <span class="pal-app__brand">تدفّق الخير</span>
+            <span class="pal-app__it is-on"><span class="dot"></span>الرئيسية</span>
+            <span class="pal-app__it"><span class="dot"></span>الخدمات</span>
+            <span class="pal-app__it"><span class="dot"></span>الحالات</span>
+          </div>
+          <div class="pal-app__main">
+            <div class="pal-app__bar"><b>لوحة الخدمات</b><button class="pal-app__cta">+ معاملة جديدة</button></div>
+            <div class="pal-app__depts">
+              <span class="pal-dept" data-k="cs"><span class="sw"><i></i></span><b>الاشتراكات</b><small>CS · ثقة</small></span>
+              <span class="pal-dept" data-k="ct"><span class="sw"><i></i></span><b>الفنية</b><small id="semCtTag">CT</small></span>
+              <span class="pal-dept" data-k="cb"><span class="sw"><i></i></span><b>الفواتير</b><small id="semCbTag">CB</small></span>
+              <span class="pal-dept" data-k="ca"><span class="sw"><i></i></span><b>الإدارية</b><small>CA · جدية</small></span>
+            </div>
+            <div class="pal-app__row"><span><b>فحص مقياس — 3 أطوار</b><br/><small>CT0009 · فنية ميدانية</small></span><span class="st" style="--st-c: oklch(0.62 0.13 75)">بانتظار الكشف</span></div>
+            <div class="pal-app__row"><span><b>تقسيط متأخرات — 240,000</b><br/><small>CB0006 · مالية</small></span><span class="st" style="--st-c: oklch(0.52 0.1 155)">موافق عليه</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>U1 — قانون Hick <span class="lab-tag">PROGRESSIVE DISCLOSURE</span></h3>
+        <p>يساراً: 31 خدمة دفعة واحدة — شلل الاختيار. يميناً: 4 أبواب ثم الكشف التدريجي — انقر قسماً ولاحظ الفرق في الحمل الذهني.</p>
+        <div class="lab-stage">
+          <div class="uxd">
+            <div class="uxd__half">
+              <small>بدون القانون — كل شيء معاً</small>
+              <div class="uxd-chips" id="hickAll"></div>
+            </div>
+            <div class="uxd__half uxd__half--good">
+              <small>بالقانون — 4 ثم اكشف</small>
+              <div class="uxd-depts">
+                <button class="uxd-dept is-on" data-h="cs" style="--c-c: var(--f-cs)">اشتراكات</button>
+                <button class="uxd-dept" data-h="ct" style="--c-c: var(--f-ct)">فنية</button>
+                <button class="uxd-dept" data-h="cb" style="--c-c: var(--f-cb)">فواتير</button>
+                <button class="uxd-dept" data-h="ca" style="--c-c: var(--f-ca)">إدارية</button>
+              </div>
+              <div class="uxd-out" id="hickOut"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>U2 — قانون Fitts <span class="lab-tag">TARGET SIZE</span></h3>
+        <p>جرّب إصابة الأزرار الصغيرة ثم الكبيرة بسرعة — الهدف ≥ 44px يُصاب أسرع وبأخطاء أقل، وهو المعتمد في المنصة لكل أهداف اللمس.</p>
+        <div class="lab-stage">
+          <div class="uxd">
+            <div class="uxd__half">
+              <small>28px — مرهق</small>
+              <div class="uxd-row"><button class="uxd-btn uxd-btn--xs">حفظ</button><button class="uxd-btn uxd-btn--xs">طباعة</button><button class="uxd-btn uxd-btn--xs">إرسال</button></div>
+            </div>
+            <div class="uxd__half uxd__half--good">
+              <small>≥ 44px — المعتمد</small>
+              <div class="uxd-row"><button class="uxd-btn uxd-btn--lg">حفظ</button><button class="uxd-btn uxd-btn--lg">طباعة</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>U3 — قانون Von Restorff <span class="lab-tag">ONE ACCENT</span></h3>
+        <p>عندما تصرخ كل الأزرار لا يُسمع أحد — زر بارز واحد لكل شاشة يقود العين فوراً للفعل الصحيح.</p>
+        <div class="lab-stage">
+          <div class="uxd">
+            <div class="uxd__half">
+              <small>الكل يصرخ</small>
+              <div class="uxd-loud">
+                <button class="uxd-btn" style="background: var(--f-cs)">حفظ</button>
+                <button class="uxd-btn" style="background: var(--f-ca)">طباعة</button>
+                <button class="uxd-btn" style="background: var(--f-cb)">إلغاء</button>
+                <button class="uxd-btn" style="background: var(--f-ct)">إرسال</button>
+              </div>
+            </div>
+            <div class="uxd__half uxd__half--good">
+              <small>صوت واحد — المعتمد</small>
+              <div class="uxd-row">
+                <button class="uxd-btn" style="font-size: 0.6rem; padding: 9px 14px">حفظ</button>
+                <button class="uxd-btn" style="font-size: 0.6rem; padding: 9px 14px">طباعة</button>
+                <button class="uxd-btn" style="font-size: 0.6rem; padding: 9px 14px; background: var(--f-navy); color: #fff; border: 0">إرسال الفورمة</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>U4 — عتبة Doherty <span class="lab-tag">&lt;400ms</span></h3>
+        <p>انقر الزرين: الأول يرد خلال 180ms (سبرنغ + تأكيد) والثاني يتأخر 900ms — التأخير يكسر الإحساس بالسيطرة حتى لو نجح الإجراء.</p>
+        <div class="lab-stage">
+          <div class="uxd">
+            <div class="uxd__half uxd__half--good">
+              <small>فوري — المعتمد</small>
+              <div class="uxd-row"><button class="uxd-btn uxd-btn--lg" id="dohFast">حفظ المسودة</button><span class="uxd-fb" id="dohFastFb">—</span></div>
+            </div>
+            <div class="uxd__half">
+              <small>متأخر 900ms</small>
+              <div class="uxd-row"><button class="uxd-btn uxd-btn--lg" id="dohSlow">حفظ المسودة</button><span class="uxd-fb" id="dohSlowFb">—</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ف — الخلاصة الإبداعية — أبل × نوشن × فيرسيل</h2>
+    <p class="lab-sec-sub">دمج كل ما سبق: أيقونات تروي معناها، بطاقة بمقياس حي، سكة زجاجية للحالات، جدول نوشن، ونبض فيرسيل.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>Q1 — أيقونات تروي معناها <span class="lab-tag">STORY ICONS</span></h3>
+        <p>ليست أيقونات تتحرك — بل تؤدي معناها: إبرة العدّاد تمسح القراءة، شرارة تسري في كابل العامود، وختم يهبط على الفاتورة — بنفس لغة الرسم 24×24 ستروك 1.75.</p>
+        <div class="lab-stage">
+          <span class="qik qik--meter" style="--c-c: var(--f-ct)" title="فحص مقياس">
+            <svg width="26" height="26" viewBox="0 0 26 26">
+              <path d="M4 19 A 9.5 9.5 0 1 1 22 19"/>
+              <line class="tick" x1="5.5" y1="11" x2="7.3" y2="11.9"/><line class="tick" x1="13" y1="5.5" x2="13" y2="7.5"/><line class="tick" x1="20.5" y1="11" x2="18.7" y2="11.9"/>
+              <g class="needle"><line x1="13" y1="15" x2="13" y2="8.2"/><circle class="s" cx="13" cy="15" r="1.4"/></g>
+            </svg>
+          </span>
+          <span class="qik qik--pole" style="--c-c: var(--f-cs)" title="اشتراك جديد">
+            <svg width="26" height="26" viewBox="0 0 26 26">
+              <line x1="13" y1="4" x2="13" y2="23"/><line x1="7" y1="7" x2="19" y2="7"/>
+              <path d="M3 8 C 9 12, 17 12, 23 8" opacity="0.5"/>
+              <circle class="spark" r="1.8"/>
+            </svg>
+          </span>
+          <span class="qik qik--bill" style="--c-c: var(--f-cb)" title="دفع قائمة">
+            <svg width="26" height="26" viewBox="0 0 26 26">
+              <path d="M6 3.5 H17 L20.5 7 V22.5 H6 Z"/><line x1="9.5" y1="11" x2="16.5" y2="11" opacity="0.55"/><line x1="9.5" y1="14.5" x2="14.5" y2="14.5" opacity="0.55"/>
+              <g class="stamp"><circle cx="17" cy="17" r="4.6"/><path d="M15 17 L16.4 18.5 L19 15.8"/></g>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>Q2 — بطاقة المقياس الحي <span class="lab-tag">LIVE GAUGE</span></h3>
+        <p>عدّاد مصغّر مدمج في البطاقة يمسح إلى قيمته عند المرور — الطلب على الخدمة، سرعة الإنجاز، أو نسبة اكتمال المعاملة — رقم حي لا زخرفة.</p>
+        <div class="lab-stage">
+          <button class="gau-card" style="--c-c: var(--f-ct)">
+            <span class="gau">
+              <svg width="74" height="60" viewBox="0 0 74 60">
+                <path class="arc-t" d="M9 52 A 30 30 0 1 1 65 52" pathLength="100"/>
+                <path class="arc-v" d="M9 52 A 30 30 0 1 1 65 52" pathLength="100"/>
+              </svg>
+              <b>72%</b>
+            </span>
+            <span class="gau-card__txt"><span class="cd">CT0009</span><b>فحص مقياس / صيانة</b><small>الأعلى طلباً هذا الشهر · SLA 5 أيام</small></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card lab-card--wide">
+        <h3>Q3 — سكة الحالة الزجاجية <span class="lab-tag">GLASS RAIL</span></h3>
+        <p>متابعة الحالة بروح أبل: عقدة زجاجية تنزلق بـ spring على سكة المراحل — انقر أي محطة ولاحظ الامتلاء يلحقها والعقدة تقفز لموقعها.</p>
+        <div class="lab-stage">
+          <div class="rail" id="railDemo" style="--rail-c: var(--f-cs)">
+            <div class="rail__track">
+              <span class="rail__line"></span>
+              <span class="rail__fill" id="railFill"></span>
+              <span class="rail__knob" id="railKnob"></span>
+            </div>
+            <div class="rail__sts">
+              <button class="rail-st is-cur" data-i="0"><i></i><b>التقديم</b><small>06/10</small></button>
+              <button class="rail-st" data-i="1"><i></i><b>الكشف</b><small>—</small></button>
+              <button class="rail-st" data-i="2"><i></i><b>الأجور</b><small>—</small></button>
+              <button class="rail-st" data-i="3"><i></i><b>الإنجاز</b><small>—</small></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-card lab-card--wide">
+        <h3>Q4 — جدول نوشن للخدمات <span class="lab-tag">DATABASE VIEW</span></h3>
+        <p>عرض بديل لصفحة الخدمات للموظف المتمرس: قاعدة بيانات بخصائص — القسم كـ chip، SLA كشريط تقدم، والفعل يظهر عند المرور فقط — كثافة معلومات بلا ضجيج.</p>
+        <div class="lab-stage">
+          <div class="ntb">
+            <div class="ntb__row"><span>الخدمة</span><span>القسم</span><span>SLA</span><span>الأجور</span><span></span></div>
+            <div class="ntb__row" style="--c-c: var(--f-cs)"><span class="ntb__name"><span class="ic"><svg class="ds-ico" width="14" height="14"><use href="#tdq-subscriptions"/></svg></span>عمل الاشتراكات الجديدة</span><span class="ntb__chip">اشتراكات</span><span class="ntb__sla"><i style="--p: 70%"></i>14d</span><span class="ntb__fee">15,000</span><span class="ntb__open">افتح ←</span></div>
+            <div class="ntb__row" style="--c-c: var(--f-ct)"><span class="ntb__name"><span class="ic"><svg class="ds-ico" width="14" height="14"><use href="#tdq-meter"/></svg></span>فحص مقياس / تبديل</span><span class="ntb__chip">فنية</span><span class="ntb__sla"><i style="--p: 35%"></i>5d</span><span class="ntb__fee">12,500+</span><span class="ntb__open">افتح ←</span></div>
+            <div class="ntb__row" style="--c-c: var(--f-cb)"><span class="ntb__name"><span class="ic"><svg class="ds-ico" width="14" height="14"><use href="#tdq-billing"/></svg></span>تسوية مالية / تقسيط</span><span class="ntb__chip">فواتير</span><span class="ntb__sla"><i style="--p: 50%"></i>7d</span><span class="ntb__fee">حسب المبلغ</span><span class="ntb__open">افتح ←</span></div>
+            <div class="ntb__row" style="--c-c: var(--f-ca)"><span class="ntb__name"><span class="ic"><svg class="ds-ico" width="14" height="14"><use href="#tdq-stamp"/></svg></span>إبلاغ عن حالة خطر</span><span class="ntb__chip">إدارية</span><span class="ntb__sla"><i style="--p: 95%"></i>1d</span><span class="ntb__fee">—</span><span class="ntb__open">افتح ←</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>Q5 — نبض فيرسيل للحالات <span class="lab-tag">DEPLOY FEED</span></h3>
+        <p>المعاملات كـ deployments: نقطة حالة تنبض للجاري، خط أنابيب من ثلاث مراحل يضيء تباعاً، وكود مونو لكل معاملة — لغة غرف العمليات.</p>
+        <div class="lab-stage">
+          <div class="vfeed">
+            <div class="vf-row"><span class="vf-dot vf-dot--ok"></span><span><b>اشتراك جديد — الجادرية</b><small>CS0001-7841</small></span><span class="vf-pipe"><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="vf-time">2h</span></div>
+            <div class="vf-row vf-row--run"><span class="vf-dot vf-dot--run"></span><span><b>فحص مقياس — الكرادة</b><small>CT0009-2210</small></span><span class="vf-pipe"><i class="on"></i><i></i><i></i></span><span class="vf-time">9m</span></div>
+            <div class="vf-row"><span class="vf-dot vf-dot--err"></span><span><b>تقسيط — ناقص مستمسك</b><small>CB0006-0904</small></span><span class="vf-pipe"><i class="on"></i><i></i><i></i></span><span class="vf-time">1d</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ص — الفخر الرسمي — على هوية تدفّق الخير</h2>
+    <p class="lab-sec-sub">جولة جديدة راسخة في الهوية الرسمية: أيقونات أقسام بدلالة حرفية (توقيع/أدوات/ميزان/جرس) وبطاقات تتعامل مع الخدمة كوثيقة رسمية.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card lab-card--wide">
+        <h3>R1 — شارات الأقسام الدلالية <span class="lab-tag">DEPT EMBLEMS</span></h3>
+        <p>أربع شارات رسمت من جديد بدلالة حرفية: الاشتراكات توقيع (بداية العلاقة)، الفنية مفك يدور، الفواتير ميزان يميل، والإدارية جرس يرن. كلها داخل دائرة زجاجية وحلقة تكتمل عند المرور.</p>
+        <div class="lab-stage" style="gap: 28px">
+          <span class="sig" style="--c-c: var(--f-cs)">
+            <svg class="sig__ring" viewBox="0 0 90 90"><circle class="t" cx="45" cy="45" r="43.5"/><circle class="p" cx="45" cy="45" r="43.5" pathLength="100"/></svg>
+            <span class="sig__core">
+              <svg class="sig--cs" width="36" height="36" viewBox="0 0 36 36">
+                <path d="M5 27 H31" opacity="0.4"/>
+                <path class="sig-line" pathLength="100" d="M5 22 C 9 17, 12 25, 16 19 C 19 15, 23 25, 27 18 C 29 14, 31 19, 32 19"/>
+              </svg>
+            </span>
+          </span>
+          <span class="sig" style="--c-c: var(--f-ct)">
+            <svg class="sig__ring" viewBox="0 0 90 90"><circle class="t" cx="45" cy="45" r="43.5"/><circle class="p" cx="45" cy="45" r="43.5" pathLength="100"/></svg>
+            <span class="sig__core">
+              <svg class="sig--ct" width="36" height="36" viewBox="0 0 36 36">
+                <g class="tool">
+                  <path d="M11 25 L9 27"/>
+                  <path d="M9 27 L7 29 A 2.5 2.5 0 0 0 10.5 32.5 L 12.5 30.5"/>
+                  <path d="M11 25 L20 16"/>
+                  <path d="M20 16 L23 13 A 4 4 0 1 0 26.5 16.5 L 23.5 19.5 L 21.5 17.5 Z"/>
+                </g>
+              </svg>
+            </span>
+          </span>
+          <span class="sig" style="--c-c: var(--f-cb)">
+            <svg class="sig__ring" viewBox="0 0 90 90"><circle class="t" cx="45" cy="45" r="43.5"/><circle class="p" cx="45" cy="45" r="43.5" pathLength="100"/></svg>
+            <span class="sig__core">
+              <svg class="sig--cb" width="36" height="36" viewBox="0 0 36 36">
+                <line x1="18" y1="14" x2="18" y2="30"/>
+                <path d="M12 30 H24"/>
+                <g class="scale-bar">
+                  <line x1="7" y1="14" x2="29" y2="14"/>
+                  <path d="M9 14 L7 22 A 3 3 0 0 0 13 22 Z"/>
+                  <path d="M27 14 L25 22 A 3 3 0 0 0 31 22 Z"/>
+                </g>
+              </svg>
+            </span>
+          </span>
+          <span class="sig" style="--c-c: var(--f-ca)">
+            <svg class="sig__ring" viewBox="0 0 90 90"><circle class="t" cx="45" cy="45" r="43.5"/><circle class="p" cx="45" cy="45" r="43.5" pathLength="100"/></svg>
+            <span class="sig__core">
+              <svg class="sig--ca" width="36" height="36" viewBox="0 0 36 36">
+                <g class="bell">
+                  <path d="M11 24 C 11 16, 13 12, 18 12 C 23 12, 25 16, 25 24 Z"/>
+                  <path d="M9 24 H27"/>
+                  <circle class="f" cx="18" cy="28" r="1.6"/>
+                  <line x1="18" y1="8" x2="18" y2="11"/>
+                </g>
+              </svg>
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>R2 — بطاقة البراءة الرسمية <span class="lab-tag">CHARTER CARD</span></h3>
+        <p>لغة الوثائق الرسمية بتوقيع بصري: شريط علوي بتدرج الهوية الكاملة (كحلي → لون القسم → ذهبي)، خط فاصل رسمي، وختم أحمر رسمي (Tadfuq Al-Khayr) يميل عند المرور.</p>
+        <div class="lab-stage lab-stage--brand">
+          <button class="crt" style="--c-c: var(--f-cs)">
+            <span class="crt__head"><span class="crt__mark"><svg class="ds-ico" width="19" height="19"><use href="#tdq-subscriptions"/></svg></span><span class="crt__code">CS0001 · اشتراكات</span></span>
+            <span class="crt__rule"></span>
+            <h4 class="crt__name">عمل الاشتراكات الجديدة</h4>
+            <span class="crt__meta"><span>SLA <b>14d</b></span><span>أجور الكشف <b>15,000</b></span></span>
+            <svg class="crt__seal" viewBox="0 0 42 42">
+              <circle class="w" cx="21" cy="21" r="19.5"/><circle cx="21" cy="21" r="15.5" fill="none" stroke="#c1121f" stroke-width="0.6"/>
+              <text x="21" y="15" text-anchor="middle">TADFUQ</text>
+              <text x="21" y="24" text-anchor="middle" style="font-size:5px">AL-KHAYR</text>
+              <text x="21" y="31" text-anchor="middle" style="font-size:8px">★</text>
+            </svg>
+          </button>
+          <button class="crt" style="--c-c: var(--f-ct)">
+            <span class="crt__head"><span class="crt__mark"><svg class="ds-ico" width="19" height="19"><use href="#tdq-meter"/></svg></span><span class="crt__code">CT0009 · فنية</span></span>
+            <span class="crt__rule"></span>
+            <h4 class="crt__name">فحص مقياس / صيانة</h4>
+            <span class="crt__meta"><span>SLA <b>5d</b></span><span>من <b>12,500</b></span></span>
+            <svg class="crt__seal" viewBox="0 0 42 42">
+              <circle class="w" cx="21" cy="21" r="19.5"/><circle cx="21" cy="21" r="15.5" fill="none" stroke="#c1121f" stroke-width="0.6"/>
+              <text x="21" y="15" text-anchor="middle">TADFUQ</text>
+              <text x="21" y="24" text-anchor="middle" style="font-size:5px">AL-KHAYR</text>
+              <text x="21" y="31" text-anchor="middle" style="font-size:8px">★</text>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>R3 — المراسلة المختومة <span class="lab-tag">SEALED ENVELOPE</span></h3>
+        <p>أعلى مستوى إبداعي: الخدمة مراسلة حقيقية — غلاف بثلاث طيّات وختم شمع أحمر ينفتح عند المرور (تدوير 3D حقيقي)، ورقة داخلية تصعد كاشفةً عن بيانات الخدمة. المرور حدث حقيقي لا تأثير.</p>
+        <div class="lab-stage" style="min-height: 230px">
+          <div class="env" style="--c-c: var(--f-cb)">
+            <div class="env__body">
+              <span class="env__back"></span>
+              <span class="env__paper">
+                <b class="cd">CB0006 · فواتير</b>
+                <b class="nm">تسوية مالية / تقسيط</b>
+                <span class="ln"></span>
+                <small>SLA 7 · حسب المبلغ · بـ spring</small>
+              </span>
+              <span class="env__flap"></span>
+              <span class="env__wax">ت</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ق — بطاقات تكسر المستطيل + أيقونات جديدة</h2>
+    <p class="lab-sec-sub">توقف التفكير داخل مستطيل: البطاقة ساعة ودائرة إلكترونية وصورة لحظية وعمود خدمة — أربع معماريات جديدة، وأربع أيقونات تروي معناها.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>W1 — ساعة أبل التعقيدية <span class="lab-tag">WATCH COMPLICATION</span></h3>
+        <p>البطاقة وجه ساعة: حلقة تكتمل بلون القسم تعبر عن الإنجاز، ووجه داخلي يحمل الأجور بحجم mono كبير، ونقاط تقدم أسفل — لغة Apple Watch حيث كل بكسل له وظيفة.</p>
+        <div class="lab-stage">
+          <button class="wch" style="--c-c: var(--f-ct)">
+            <svg class="ring" viewBox="0 0 100 100"><circle class="ring-t" cx="50" cy="50" r="47"/><circle class="ring-p" cx="50" cy="50" r="47" pathLength="100"/></svg>
+            <span class="wch__face">
+              <span class="wch__cd">CT0009</span>
+              <span class="wch__nm">فحص مقياس</span>
+              <span class="wch__fee">12,500</span>
+              <span class="wch__sub">أجور الحد الأدنى · SLA 5d</span>
+            </span>
+            <span class="wch__pip"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>W2 — وحدة دائرة مطبوعة <span class="lab-tag">PCB MODULE</span></h3>
+        <p>للخدمة الفنية تحديداً: البطاقة وحدة PCB بأرجل رقائق ومسارات نحاسية تُرسم حياً عند المرور، ثم وسائد تلحيم ذهبية تضيء. الرقائق لغة الأجهزة.</p>
+        <div class="lab-stage">
+          <button class="pcb">
+            <svg class="pcb__traces" viewBox="0 0 290 130" preserveAspectRatio="none">
+              <path pathLength="100" d="M260 18 H 200 V 38 H 130 V 60 H 220"/>
+              <path pathLength="100" d="M30 90 H 100 V 70 H 180"/>
+              <path pathLength="100" d="M14 110 H 160 V 95 H 240"/>
+              <circle class="pad" cx="260" cy="18" r="2.4"/>
+              <circle class="pad" cx="30" cy="90" r="2.4"/>
+              <circle class="pad" cx="14" cy="110" r="2.4"/>
+              <circle class="pad" cx="240" cy="95" r="2.4"/>
+            </svg>
+            <div class="pcb__head"><span class="pcb__chip"><svg class="ds-ico" width="19" height="19"><use href="#tdq-meter"/></svg></span><span class="pcb__cd">CT-0009 · v3</span></div>
+            <div class="pcb__nm">فحص 3 أطوار — موقع العمل</div>
+            <div class="pcb__meta"><span>SLA <b>5d</b></span><span>FEE <b>37,500</b></span><span>QTY <b>06</b></span></div>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>W3 — الصورة اللحظية <span class="lab-tag">POLAROID</span></h3>
+        <p>للخدمات الإدارية والبلاغات: الصورة تحكي الحادثة، والتعليق بخط خلفية العمل — بولارويد مائل 1.5° يستوي عند المرور، وصورة داخلية بلون القسم وتعليق بخط يد.</p>
+        <div class="lab-stage">
+          <button class="pol" style="--c-c: var(--f-ca)">
+            <span class="pol__shot"><svg class="ds-ico" viewBox="0 0 24 24"><use href="#tdq-stamp"/></svg></span>
+            <span class="pol__cap">حالة خطر · فورية<small>CA0002 · تم إحالتها</small></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>W4 — عمود الخدمة <span class="lab-tag">VERTICAL POD</span></h3>
+        <p>بروح فيرسيل: الخدمة عمود رأسي بحجم المحتوى فقط، الاسم عمودي ، ومصباح سفلي يعلن حالة الخدمة. ترص لوح تحكم بـ 8 خدمات في عرض بطاقة واحدة.</p>
+        <div class="lab-stage" style="gap: 10px">
+          <button class="pod" style="--c-c: var(--f-cs)"><span class="pod__cap"></span><span class="pod__ico"><svg class="ds-ico" width="21" height="21"><use href="#tdq-subscriptions"/></svg></span><span class="pod__vrt">اشتراك</span><span class="pod__cd">CS01</span><span class="pod__bot">LIVE</span></button>
+          <button class="pod" style="--c-c: var(--f-ct)"><span class="pod__cap"></span><span class="pod__ico"><svg class="ds-ico" width="21" height="21"><use href="#tdq-meter"/></svg></span><span class="pod__vrt">فحص</span><span class="pod__cd">CT09</span><span class="pod__bot">LIVE</span></button>
+          <button class="pod" style="--c-c: var(--f-cb)"><span class="pod__cap"></span><span class="pod__ico"><svg class="ds-ico" width="21" height="21"><use href="#tdq-billing"/></svg></span><span class="pod__vrt">تقسيط</span><span class="pod__cd">CB06</span><span class="pod__bot">LIVE</span></button>
+        </div>
+      </div>
+
+      <div class="lab-card lab-card--wide">
+        <h3>X+ — الدورة الثانية لأيقونات Q1 <span class="lab-tag">STORY ICONS × 2</span></h3>
+        <p>توسيع لمجموعة الأيقونات التي تروي معناها: تقسيط، خطر، نقل ملكية، دفع قائمة. بنفس اللغة — وبنفس الحرفية.</p>
+        <div class="lab-stage" style="gap: 22px">
+          <span class="qik qik2 qik2--abacus" style="--c-c: var(--f-cb)" title="تقسيط">
+            <svg width="26" height="26" viewBox="0 0 26 26">
+              <rect class="s" x="3.5" y="4" width="19" height="18" rx="1.5"/>
+              <line x1="3.5" y1="9.5" x2="22.5" y2="9.5" opacity="0.45"/>
+              <line x1="3.5" y1="14.5" x2="22.5" y2="14.5" opacity="0.45"/>
+              <line x1="3.5" y1="19" x2="22.5" y2="19" opacity="0.45"/>
+              <g class="ab">
+                <circle class="f bead b1" cx="10" cy="9.5" r="1.6"/>
+                <circle class="f bead b2" cx="14" cy="14.5" r="1.6"/>
+                <circle class="f bead b3" cx="12" cy="19" r="1.6"/>
+              </g>
+            </svg>
+          </span>
+          <span class="qik qik2 qik2--siren" style="--c-c: var(--f-ca)" title="حالة خطر">
+            <svg width="30" height="30" viewBox="0 0 30 30">
+              <circle class="pulse" cx="15" cy="15" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <circle class="pulse" cx="15" cy="15" r="11" fill="none" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M15 7 L 17.4 13 L 23 13.5 L 18.5 17 L 20 23 L 15 19.5 L 10 23 L 11.5 17 L 7 13.5 L 12.6 13 Z" fill="currentColor" stroke="none"/>
+            </svg>
+          </span>
+          <span class="qik qik2 qik2--key" style="--c-c: var(--f-cs)" title="نقل ملكية">
+            <svg width="28" height="28" viewBox="0 0 28 28">
+              <path d="M3 21 C 6 19, 8 19, 10.5 21"/>
+              <path d="M17.5 21 C 20 19, 22 19, 25 21"/>
+              <g class="key">
+                <circle class="s" cx="10" cy="12" r="3.4"/>
+                <line x1="13" y1="12" x2="22" y2="12"/>
+                <line x1="18" y1="12" x2="18" y2="15"/>
+                <line x1="21" y1="12" x2="21" y2="15"/>
+              </g>
+            </svg>
+          </span>
+          <span class="qik qik2 qik2--receipt" style="--c-c: var(--f-cb)" title="دفع قائمة">
+            <svg width="26" height="26" viewBox="0 0 26 26">
+              <path d="M6 3 H20 V18"/>
+              <path class="tear" pathLength="100" d="M6 3 V21 L 8 19.5 L 10 21 L 12 19.5 L 14 21 L 16 19.5 L 18 21 L 20 19.5"/>
+              <line x1="9" y1="8" x2="17" y2="8" opacity="0.55"/>
+              <line x1="9" y1="12" x2="15" y2="12" opacity="0.55"/>
+            </svg>
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ر — التحفة — صقل نهائي</h2>
+    <p class="lab-sec-sub">ثلاث بطاقات صُقلت حتى العظم — تجمع أفضل ما في البنك في ثلاث لغات بصرية متميزة: التحفة الرسمية، العمق الثلاثي، والمحفورة.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>Y1 — بطاقة التحفة <span class="lab-tag">MASTERPIECE</span></h3>
+        <p>الدمج الأسمى: زجاج سائل + شريط هوية رسمي + ختم بحلقة تكتمل + خط فاصل بنقطة متوهجة + توقيع خط يد بورق الخلفية + أجور بحجم mono بارز. ست تقنيات في بطاقة واحدة دون ازدحام.</p>
+        <div class="lab-stage lab-stage--show" style="--c-c: var(--f-cs)">
+          <button class="mst" style="--c-c: var(--f-cs)">
+            <span class="mst__ribbon"></span>
+            <span class="mst__head">
+              <span class="mst__seal">
+                <svg class="tr" viewBox="0 0 48 48"><circle class="tr-t" cx="24" cy="24" r="22"/><circle class="tr-p" cx="24" cy="24" r="22" pathLength="100"/></svg>
+                <span class="mst__seal-c"><svg class="ds-ico" width="19" height="19"><use href="#tdq-subscriptions"/></svg></span>
+              </span>
+              <span class="mst__cd">CS0001</span>
+            </span>
+            <h4 class="mst__nm">عمل الاشتراكات الجديدة</h4>
+            <span class="mst__rule"></span>
+            <span class="mst__meta"><span>SLA <b>14d</b></span><span class="fee">15,000</span></span>
+            <span class="mst__sig">تدفّق الخير</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>Y2 — العمق الثلاثي <span class="lab-tag">PARALLAX DEPTH</span></h3>
+        <p>ثلاث طبقات تتحرك بسرعات مختلفة مع مؤشرك: الخلفية، الشبكة الهندسية، والأيقونة الزجاجية الأعلى — عمق حقيقي يجعل البطاقة تتفاعل مع حركتك لا مجرد تواجدك.</p>
+        <div class="lab-stage">
+          <button class="par" id="parCard" style="--c-c: var(--f-ct)">
+            <span class="par__layer par__bg" data-depth="4"></span>
+            <span class="par__layer par__grid" data-depth="8"></span>
+            <span class="par__txt">
+              <span class="par__cd">CT0009 · فنية</span>
+              <h4 class="par__nm">فحص مقياس بجودة ميدانية</h4>
+              <span class="par__meta"><span>SLA <b>5d</b></span><span>من <b>12,500</b></span></span>
+            </span>
+            <span class="par__ico par__layer" data-depth="-14"><svg class="ds-ico" width="23" height="23"><use href="#tdq-meter"/></svg></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card">
+        <h3>Y3 — المحفورة <span class="lab-tag">ENGRAVED</span></h3>
+        <p>فئة جديدة كلياً: الاسم والأرقام محفورة في سطح البطاقة بظلال العلوي والسفلي (أعلى وأعمق لغة بصرية في ديزاين توبوغرافي) — روح خاتم رسمي منقوش بلا أي تأثيرات صاخبة.</p>
+        <div class="lab-stage">
+          <button class="eng" style="--c-c: var(--f-cb)">
+            <span class="eng__cd">CB0006 · فواتير</span>
+            <h4 class="eng__nm">تسوية مالية</h4>
+            <span class="eng__divider"></span>
+            <span class="eng__bottom"><small>SLA 7d · حسب المبلغ</small><b>240,000</b></span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 class="lab-sec-title">ش — للموظف — بسيط، سريع، دون تعقيد</h2>
+    <p class="lab-sec-sub">بطاقات لموظف يفتح 60 خدمة في اليوم: لا زجاج، لا توهج، لا حركات ملفتة — فقط العلامات التي تحتاجها لتختار سريعاً.</p>
+    <div class="lab-grid">
+
+      <div class="lab-card">
+        <h3>Z1 — البطاقة العملية <span class="lab-tag">WORK CARD</span></h3>
+        <p>أيقونة صغيرة بلون القسم + كود + اسم + سطر أسفل بـ SLA والأجور. فوق المرور تغيير لون الحد فقط — صفر تحريك. تقرأ البطاقة في بصرة ثانية.</p>
+        <div class="lab-stage">
+          <button class="wrk" style="--c-c: var(--f-cs)">
+            <span class="wrk__top"><span class="wrk__ico"><svg class="ds-ico" width="16" height="16"><use href="#tdq-subscriptions"/></svg></span><span class="wrk__cd">CS0001</span></span>
+            <h4 class="wrk__nm">عمل الاشتراكات الجديدة</h4>
+            <span class="wrk__foot"><span>SLA <b>14d</b></span><span>أجور <b>15,000</b></span></span>
+          </button>
+          <button class="wrk" style="--c-c: var(--f-ct)">
+            <span class="wrk__top"><span class="wrk__ico"><svg class="ds-ico" width="16" height="16"><use href="#tdq-meter"/></svg></span><span class="wrk__cd">CT0009</span></span>
+            <h4 class="wrk__nm">فحص مقياس / تبديل</h4>
+            <span class="wrk__foot"><span>SLA <b>5d</b></span><span>من <b>12,500</b></span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="lab-card lab-card--wide">
+        <h3>Z2 — الصف السريع <span class="lab-tag">QUICK LIST</span></h3>
+        <p>عرض القائمة للموظف المتمرس: صف واحد لكل خدمة بأربع أعمدة فقط (كود · اسم · SLA · أجور). 8 خدمات في عرض بطاقة تقليدية، واختيار بنقرة واحدة.</p>
+        <div class="lab-stage">
+          <div class="qlst">
+            <div class="qrow" style="--c-c: var(--f-cs)"><span class="qrow__cd">CS0001</span><span class="qrow__nm">اشتراك جديد</span><span class="qrow__sla">14d</span><span class="qrow__fee">15,000</span></div>
+            <div class="qrow" style="--c-c: var(--f-cs)"><span class="qrow__cd">CS0011</span><span class="qrow__nm">نقل ملكية</span><span class="qrow__sla">14d</span><span class="qrow__fee">25,000</span></div>
+            <div class="qrow" style="--c-c: var(--f-ct)"><span class="qrow__cd">CT0009</span><span class="qrow__nm">فحص مقياس</span><span class="qrow__sla">5d</span><span class="qrow__fee">12,500</span></div>
+            <div class="qrow" style="--c-c: var(--f-ct)"><span class="qrow__cd">CT0008</span><span class="qrow__nm">نقل موقع مقياس</span><span class="qrow__sla">7d</span><span class="qrow__fee">35,000</span></div>
+            <div class="qrow" style="--c-c: var(--f-cb)"><span class="qrow__cd">CB0001</span><span class="qrow__nm">دفع قائمة</span><span class="qrow__sla">—</span><span class="qrow__fee">—</span></div>
+            <div class="qrow" style="--c-c: var(--f-cb)"><span class="qrow__cd">CB0006</span><span class="qrow__nm">تسوية / تقسيط</span><span class="qrow__sla">7d</span><span class="qrow__fee">—</span></div>
+            <div class="qrow" style="--c-c: var(--f-ca)"><span class="qrow__cd">CA0002</span><span class="qrow__nm">إبلاغ حالة خطر</span><span class="qrow__sla">1d</span><span class="qrow__fee">—</span></div>
+            <div class="qrow" style="--c-c: var(--f-ca)"><span class="qrow__cd">CA0001</span><span class="qrow__nm">إبلاغ تلاعب</span><span class="qrow__sla">3d</span><span class="qrow__fee">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lab-card lab-card--wide">
+        <h3>Z3 — البلاطة الصلبة <span class="lab-tag">SOLID TILE</span></h3>
+        <p>خط جانبي 3px بلون القسم (لغة بريد الموظف المألوفة) · كود · اسم · أجور سفلى. ست بلاطات في صف واحد.</p>
+        <div class="lab-stage" style="gap: 10px; flex-wrap: wrap">
+          <button class="tile" style="--c-c: var(--f-cs)"><span class="tile__cd">CS0001</span><h4 class="tile__nm">اشتراك جديد</h4><span class="tile__fee">15,000 د.ع</span></button>
+          <button class="tile" style="--c-c: var(--f-cs)"><span class="tile__cd">CS0011</span><h4 class="tile__nm">نقل ملكية</h4><span class="tile__fee">25,000 د.ع</span></button>
+          <button class="tile" style="--c-c: var(--f-ct)"><span class="tile__cd">CT0009</span><h4 class="tile__nm">فحص مقياس</h4><span class="tile__fee">من 12,500</span></button>
+          <button class="tile" style="--c-c: var(--f-ct)"><span class="tile__cd">CT0008</span><h4 class="tile__nm">نقل مقياس</h4><span class="tile__fee">35,000 د.ع</span></button>
+          <button class="tile" style="--c-c: var(--f-cb)"><span class="tile__cd">CB0006</span><h4 class="tile__nm">تسوية / تقسيط</h4><span class="tile__fee">حسب المبلغ</span></button>
+          <button class="tile" style="--c-c: var(--f-ca)"><span class="tile__cd">CA0002</span><h4 class="tile__nm">حالة خطر</h4><span class="tile__fee">بلاغ فوري</span></button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="ds_icons.js"></script>
+  <script>
+    // D3 — iOS press physics
+    (function () {
+      const c = document.getElementById('pressCard');
+      c.addEventListener('pointerdown', () => { c.classList.remove('is-up'); c.classList.add('is-down'); });
+      const up = () => {
+        if (!c.classList.contains('is-down')) return;
+        c.classList.remove('is-down'); c.classList.add('is-up');
+        setTimeout(() => c.classList.remove('is-up'), 500);
+      };
+      c.addEventListener('pointerup', up);
+      c.addEventListener('pointerleave', up);
+    })();
+
+    // D4 — count-up fee
+    (function () {
+      const card = document.getElementById('countCard');
+      const fee = card.querySelector('[data-target]');
+      const target = +fee.dataset.target;
+      let raf = null;
+      card.addEventListener('pointerenter', () => {
+        cancelAnimationFrame(raf);
+        const t0 = performance.now(), dur = 800;
+        (function tick(t) {
+          const p = Math.min((t - t0) / dur, 1);
+          const e = 1 - Math.pow(1 - p, 3);
+          fee.textContent = Math.round(target * e).toLocaleString('en-US');
+          if (p < 1) raf = requestAnimationFrame(tick);
+        })(t0);
+      });
+    })();
+
+    // E2 — tilt parallax
+    document.querySelectorAll('[data-tilt]').forEach((el) => {
+      el.addEventListener('pointermove', (e) => {
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        el.style.transition = 'transform 90ms linear';
+        el.style.transform = 'rotateY(' + (x * 22) + 'deg) rotateX(' + (-y * 22) + 'deg)';
+      });
+      el.addEventListener('pointerleave', () => {
+        el.style.transition = 'transform 520ms var(--f-spring)';
+        el.style.transform = '';
+      });
+    });
+
+    // E3 — squash & stretch
+    document.querySelectorAll('[data-boing]').forEach((el) => {
+      el.addEventListener('pointerdown', () => {
+        el.classList.remove('is-boing');
+        void el.offsetWidth;
+        el.classList.add('is-boing');
+      });
+    });
+
+    // H2 — cursor light
+    document.querySelectorAll('[data-lens]').forEach((b) => {
+      b.addEventListener('pointermove', (e) => {
+        const r = b.getBoundingClientRect();
+        b.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+      });
+    });
+
+    // م — sidebar active toggle
+    document.querySelectorAll('[data-sbgroup]').forEach((g) => {
+      g.querySelectorAll('.sb-it').forEach((it) => {
+        it.addEventListener('click', () => {
+          g.querySelectorAll('.sb-it').forEach((x) => x.classList.remove('is-on'));
+          it.classList.add('is-on');
+        });
+      });
+    });
+
+    // ن — live switchboard
+    (function () {
+      const data = {
+        cs: { name: 'خدمات الاشتراكات', sub: '11 خدمة · الأكثر طلباً', items: [
+          ['CS0001', 'اشتراك جديد', '15,000'], ['CS0011', 'نقل ملكية', '25,000'],
+          ['CS0003', 'تغيير صنف', '—'], ['CS0004', 'إيقاف مؤقت', '—'], ['CS0009', 'قراءة مقياس', '25,000']
+        ]},
+        ct: { name: 'الشكاوى والطلبات الفنية', sub: '9 خدمات · تحويل للفنية', items: [
+          ['CT0009', 'فحص مقياس', 'من 12,500'], ['CT0004', 'تجزئة اشتراك', '—'],
+          ['CT0003', 'تغيير كابل', '—'], ['CT0008', 'نقل مقياس', '35,000'], ['CT0001', 'تغيير عامود', '1,000,000']
+        ]},
+        cb: { name: 'خدمات الفواتير', sub: '6 خدمات · مالية', items: [
+          ['CB0001', 'دفع قائمة', '—'], ['CB0006', 'تقسيط / تسوية', '—'],
+          ['CB0004', 'بدل مفقود', '—'], ['CB0002', 'تقرير استهلاك', '10,000']
+        ]},
+        ca: { name: 'الشكاوى الإدارية', sub: '4 خدمات · سرية', items: [
+          ['CA0001', 'إبلاغ تلاعب', '—'], ['CA0002', 'حالة خطر', 'فوري'],
+          ['CA0003', 'أضرار شبكة', '—'], ['CA0004', 'شكوى إدارية', '—']
+        ]}
+      };
+      const colors = { cs: 'var(--f-cs)', ct: 'var(--f-ct)', cb: 'var(--f-cb)', ca: 'var(--f-ca)' };
+      const panel = document.getElementById('swbPanel');
+      const title = document.getElementById('swbTitle');
+      const sub = document.getElementById('swbSub');
+      const chips = document.getElementById('swbChips');
+      const sts = [...document.querySelectorAll('.swb-st')];
+      function feed(key) {
+        sts.forEach((s) => s.classList.toggle('is-on', s.dataset.dept === key));
+        const d = data[key];
+        panel.style.setProperty('--sw-c', colors[key]);
+        title.textContent = d.name;
+        sub.textContent = d.sub;
+        chips.innerHTML = '';
+        d.items.forEach(([code, name, fee], i) => {
+          const c = document.createElement('button');
+          c.className = 'swb-chip';
+          c.style.setProperty('--d', (i * 70) + 'ms');
+          const ic = document.createElement('i'); ic.textContent = code;
+          const nm = document.createElement('span'); nm.textContent = name;
+          c.appendChild(ic); c.appendChild(nm);
+          if (fee !== '—') { const f = document.createElement('span'); f.className = 'fee'; f.textContent = fee; c.appendChild(f); }
+          chips.appendChild(c);
+        });
+      }
+      sts.forEach((s) => s.addEventListener('click', () => feed(s.dataset.dept)));
+      feed('cs');
+    })();
+
+    // س — live theme switch
+    (function () {
+      const pals = {
+        current: { bg: '#f4f2ee', surface: '#fcfbf9', line: '#e5e2db', ink: '#1f1d1a', ink3: '#9a958c', a: '#3d4a5c',
+          cs: getComputedStyle(document.documentElement).getPropertyValue('--f-cs') || '#5b6b8c', ct: '#3f7782', cb: '#67737d', ca: '#9a6a4f' },
+        sand: { bg: '#faf6ee', surface: '#fffdf8', line: '#e7e0d2', ink: '#241f18', ink3: '#97907f', a: '#ad5c3f',
+          cs: '#ad5c3f', ct: '#6f7d4f', cb: '#4a6d8c', ca: '#8a5a74' },
+        nordic: { bg: '#f4f6f9', surface: '#fdfdfe', line: '#dde3ea', ink: '#1b2127', ink3: '#8a949f', a: '#4f5d9e',
+          cs: '#4f5d9e', ct: '#3e7f87', cb: '#5d7287', ca: '#a06478' },
+        dusk: { bg: '#f6f4f8', surface: '#fdfcfe', line: '#e5e0ec', ink: '#251f2d', ink3: '#968fa1', a: '#6d5a93',
+          cs: '#6d5a93', ct: '#3f7782', cb: '#96545f', ca: '#94703d' }
+      };
+      // الحالي: خذ ألوان الأقسام الفعلية من التوكنز
+      const cs = getComputedStyle(document.body);
+      ['cs', 'ct', 'cb', 'ca'].forEach((k) => {
+        const v = cs.getPropertyValue('--f-' + k).trim();
+        if (v) pals.current[k] = v;
+      });
+      ['bg', 'surface', 'ink'].forEach((k) => {
+        const map = { bg: '--f-bg', surface: '--f-surface', ink: '--f-ink' };
+        const v = cs.getPropertyValue(map[k]).trim();
+        if (v) pals.current[k] = v;
+      });
+      const app = document.getElementById('palApp');
+      const sw = document.getElementById('palSwitch');
+      function apply(key) {
+        const p = pals[key];
+        app.style.setProperty('--t-bg', p.bg);
+        app.style.setProperty('--t-surface', p.surface);
+        app.style.setProperty('--t-line', p.line || 'rgba(0,0,0,0.08)');
+        app.style.setProperty('--t-ink', p.ink);
+        app.style.setProperty('--t-ink3', p.ink3 || 'rgba(0,0,0,0.45)');
+        app.style.setProperty('--t-a', p.a);
+        app.querySelectorAll('.pal-dept').forEach((d) => d.style.setProperty('--d-c', p[d.dataset.k]));
+        sw.querySelectorAll('button').forEach((b) => b.classList.toggle('is-on', b.dataset.pal === key));
+      }
+      sw.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => apply(b.dataset.pal)));
+      apply('current');
+    })();
+
+    // ع — semantic trial + UX laws
+    (function () {
+      // S2 semantic toggle
+      const app = document.getElementById('semApp');
+      const sw2 = document.getElementById('semSwitch');
+      const note = document.getElementById('semNote');
+      const ctTag = document.getElementById('semCtTag');
+      const cbTag = document.getElementById('semCbTag');
+      const live = getComputedStyle(document.body);
+      const cur = {};
+      ['cs', 'ct', 'cb', 'ca'].forEach((k) => { cur[k] = live.getPropertyValue('--f-' + k).trim(); });
+      const base = { bg: live.getPropertyValue('--f-bg').trim(), surface: live.getPropertyValue('--f-surface').trim(), ink: live.getPropertyValue('--f-ink').trim() };
+      function applySem(mode) {
+        const p = mode === 'semantic' ? { cs: cur.cs, ct: cur.cb, cb: cur.ct, ca: cur.ca } : cur;
+        app.style.setProperty('--t-bg', base.bg);
+        app.style.setProperty('--t-surface', base.surface);
+        app.style.setProperty('--t-line', 'rgba(0,0,0,0.08)');
+        app.style.setProperty('--t-ink', base.ink);
+        app.style.setProperty('--t-ink3', 'rgba(0,0,0,0.42)');
+        app.style.setProperty('--t-a', '#1e2a4d');
+        app.querySelectorAll('.pal-dept').forEach((d) => d.style.setProperty('--d-c', p[d.dataset.k]));
+        ctTag.textContent = mode === 'semantic' ? 'CT · دقة فنية (تيل)' : 'CT · حالياً برونز';
+        cbTag.textContent = mode === 'semantic' ? 'CB · مال (برونز ذهبي)' : 'CB · حالياً تيل';
+        note.innerHTML = '';
+        const items = mode === 'semantic'
+          ? [[p.ct, 'التيل → الفنية: لغة الأجهزة والدقة'], [p.cb, 'البرونز الذهبي → الفواتير: لغة العملة'], ['#1e2a4d', 'الكحلي: الفعل الأساسي الوحيد']]
+          : [[cur.ct, 'الفنية حالياً برونز — معنى المال في غير مكانه'], [cur.cb, 'الفواتير حالياً تيل — معنى الدقة في غير مكانه']];
+        items.forEach(([c, t]) => {
+          const s = document.createElement('span');
+          const i = document.createElement('i'); i.style.background = c;
+          s.appendChild(i); s.appendChild(document.createTextNode(t));
+          note.appendChild(s);
+        });
+        sw2.querySelectorAll('button').forEach((b) => b.classList.toggle('is-on', b.dataset.mode === mode));
+      }
+      sw2.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => applySem(b.dataset.mode)));
+      applySem('current');
+
+      // U1 Hick
+      const all = ['اشتراك جديد', 'نقل ملكية', 'تغيير صنف', 'إيقاف مؤقت', 'تفعيل موقوف', 'إلغاء اشتراك', 'اعتراض', 'تعديل عنوان', 'قراءة مقياس', 'اشتراك مؤقت', 'فحص مقياس', 'تجزئة', 'تغيير كابل', 'تجميع أحمال', 'تعديل جهد', 'نقل مقياس', 'تغيير عامود', 'دفع قائمة', 'تقسيط', 'بدل مفقود', 'تقرير استهلاك', 'مراجعة قائمة', 'قسيمة متأخرة', 'إبلاغ تلاعب', 'حالة خطر', 'أضرار شبكة', 'شكوى إدارية', 'إيصال مؤقت', 'فحص أرض', 'تغيير اسم', 'ركيزة محولة'];
+      const hickAll = document.getElementById('hickAll');
+      all.forEach((n) => { const c = document.createElement('span'); c.className = 'uxd-chip'; c.textContent = n; hickAll.appendChild(c); });
+      const hickData = {
+        cs: ['اشتراك جديد', 'نقل ملكية', 'تغيير صنف', 'إيقاف مؤقت'],
+        ct: ['فحص مقياس', 'تجزئة', 'تغيير كابل', 'تعديل جهد'],
+        cb: ['دفع قائمة', 'تقسيط', 'بدل مفقود'],
+        ca: ['إبلاغ تلاعب', 'حالة خطر', 'شكوى إدارية']
+      };
+      const hickOut = document.getElementById('hickOut');
+      function hick(k) {
+        hickOut.innerHTML = '';
+        hickData[k].forEach((n, i) => {
+          const c = document.createElement('span');
+          c.className = 'uxd-chip'; c.style.setProperty('--d', (i * 60) + 'ms'); c.textContent = n;
+          hickOut.appendChild(c);
+        });
+        document.querySelectorAll('[data-h]').forEach((b) => b.classList.toggle('is-on', b.dataset.h === k));
+      }
+      document.querySelectorAll('[data-h]').forEach((b) => b.addEventListener('click', () => hick(b.dataset.h)));
+      hick('cs');
+
+      // U4 Doherty
+      function doh(btnId, fbId, delay) {
+        const b = document.getElementById(btnId), fb = document.getElementById(fbId);
+        let t0 = 0;
+        b.addEventListener('click', () => {
+          t0 = performance.now();
+          fb.textContent = '…';
+          b.classList.remove('is-ok');
+          setTimeout(() => {
+            b.classList.add('is-ok');
+            fb.textContent = Math.round(performance.now() - t0) + 'ms ✓';
+            setTimeout(() => { b.classList.remove('is-ok'); fb.textContent = '—'; }, 1600);
+          }, delay);
+        });
+      }
+      doh('dohFast', 'dohFastFb', 160);
+      doh('dohSlow', 'dohSlowFb', 900);
+    })();
+
+    // Q3 — glass rail
+    (function () {
+      const sts = [...document.querySelectorAll('#railDemo .rail-st')];
+      const fill = document.getElementById('railFill');
+      const knob = document.getElementById('railKnob');
+      const rail = document.getElementById('railDemo');
+      const colors = ['var(--f-cs)', 'var(--f-ct)', 'var(--f-cb)', 'var(--f-ok, #3a7a55)'];
+      function go(i) {
+        const pct = i / (sts.length - 1);
+        fill.style.width = 'calc((100% - 44px) * ' + pct + ')';
+        knob.style.insetInlineStart = 'calc(22px + (100% - 44px) * ' + pct + ')';
+        rail.style.setProperty('--rail-c', colors[i]);
+        sts.forEach((s, j) => {
+          s.classList.toggle('is-done', j < i);
+          s.classList.toggle('is-cur', j === i);
+        });
+      }
+      sts.forEach((s) => s.addEventListener('click', () => go(+s.dataset.i)));
+      go(0);
+    })();
+
+    // Y2 — parallax
+    (function () {
+      const card = document.getElementById('parCard');
+      const layers = [...card.querySelectorAll('[data-depth]')];
+      card.addEventListener('pointermove', (e) => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        layers.forEach((l) => {
+          const d = +l.dataset.depth;
+          l.style.transform = 'translate(' + (x * d) + 'px, ' + (y * d) + 'px)';
+        });
+      });
+      card.addEventListener('pointerleave', () => { layers.forEach((l) => { l.style.transform = ''; }); });
+    })();
+
+    // F1 — calm ladder
+    (function () {
+      const host = document.getElementById('pkLadder');
+      const secs = [
+        ['الاشتراكات', '--f-cs'], ['الفنية', '--f-ct'],
+        ['الفواتير', '--f-cb'], ['الإدارية', '--f-ca']
+      ];
+      const steps = [6, 11, 22, 55, 100];
+      secs.forEach(([name, tok]) => {
+        const row = document.createElement('div'); row.className = 'pk-ladder__row';
+        const label = document.createElement('span'); label.className = 'pk-ladder__name'; label.textContent = name;
+        const cells = document.createElement('div'); cells.className = 'pk-ladder__cells';
+        steps.forEach((s) => {
+          const c = document.createElement('span');
+          c.className = 'pk-cell' + (s >= 55 ? ' pk-cell--deep' : '');
+          c.style.background = 'color-mix(in srgb, var(' + tok + ') ' + s + '%, var(--f-bg))';
+          const t = document.createElement('span'); t.textContent = s + '%';
+          c.appendChild(t); cells.appendChild(c);
+        });
+        row.appendChild(label); row.appendChild(cells); host.appendChild(row);
+      });
+    })();
+  </script>
+  <script src="lab_tools.js"></script>
+</body>
+</html>
