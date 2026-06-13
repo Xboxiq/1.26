@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>تدفّق الخير</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: linear-gradient(160deg, #fafaf7, #f0ebe3); color: #161513;
+    }
+    .card {
+      max-width: 520px; width: 100%; padding: 32px 28px; border-radius: 20px;
+      background: #fff; border: 1px solid rgba(22,21,19,0.1);
+      box-shadow: 0 20px 50px -20px rgba(22,21,19,0.2); text-align: center;
+    }
+    h1 { margin: 0 0 8px; font-size: 1.6rem; }
+    p { margin: 0 0 20px; color: #666; line-height: 1.7; font-size: 0.95rem; }
+    .btns { display: flex; flex-direction: column; gap: 10px; }
+    a.btn {
+      display: block; padding: 14px 20px; border-radius: 12px; text-decoration: none;
+      font-weight: 700; font-size: 0.95rem; transition: transform 0.2s;
+    }
+    a.btn:hover { transform: translateY(-2px); }
+    a.primary { background: #1e2a4d; color: #fff; }
+    a.secondary { background: #f4f4f5; color: #161513; border: 1px solid #e4e4e7; }
+    small { display: block; margin-top: 20px; color: #999; font-size: 0.75rem; line-height: 1.6; }
+  </style>
+  <script>
+    // إذا كنت على GitHub Pages ولست في صفحة معروفة — حوّل للبوابة
+    if (!/portal|final|compare|Adoption|Lab|Design|Concept|v2|vercel/i.test(location.pathname)) {
+      location.replace(location.pathname.replace(/\/?$/, '/') + 'portal.html');
+    }
+  </script>
+</head>
+<body>
+  <div class="card">
+    <h1>تدفّق الخير</h1>
+    <p>الصفحة غير موجودة — اختر أين تريد الذهاب:</p>
+    <div class="btns">
+      <a class="btn primary" href="portal.html">بوابة المشروع</a>
+      <a class="btn secondary" href="final3d.html">المنصة المعتمدة</a>
+      <a class="btn secondary" href="اتجاهات التصميم.html">اتجاهات التصميم</a>
+    </div>
+    <small>لا تفتح ملفات HTML من صفحة GitHub مباشرة — استخدم الروابط أعلاه على xboxiq.github.io</small>
+  </div>
+</body>
+</html>
