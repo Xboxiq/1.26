@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>الطبقات الحية — STRATA LIVE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Readex+Pro:wght@400;500;600;700&family=Alexandria:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="final.css" />
+  <link rel="stylesheet" href="lab_tools.css" />
+  <style>
+    body { margin: 0; background: var(--f-bg); font-family: var(--f-arab); color: var(--f-ink); }
+    .sl { max-width: 1140px; margin: 0 auto; padding: 40px 24px 140px; }
+    .sl-hero { margin-bottom: 36px; }
+    .sl-hero h1 { margin: 0 0 8px; font-family: var(--f-disp, Alexandria); font-size: 2rem; font-weight: 800; }
+    .sl-hero p { margin: 0; max-width: 72ch; font-size: 0.88rem; line-height: 1.85; color: var(--f-ink-3); }
+    .sl-hero .codename {
+      display: inline-block; margin-top: 14px; padding: 6px 14px; border-radius: 999px;
+      font-family: var(--f-mono); font-size: 0.58rem; letter-spacing: 0.1em;
+      background: color-mix(in srgb, #14161c 8%, var(--f-surface));
+      border: 0.5px solid color-mix(in srgb, #14161c 22%, var(--f-border));
+      color: #14161c;
+    }
+    .sl-map {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin: 28px 0 40px;
+    }
+    .sl-map span {
+      font-size: 0.66rem; padding: 8px 12px; border-radius: 10px;
+      background: var(--f-surface); border: 0.5px solid var(--f-border);
+      color: var(--f-ink-2); line-height: 1.5;
+    }
+    .sl-map b { color: var(--f-ink); font-family: var(--f-mono); font-size: 0.56rem; }
+    .lab-sec-title { margin: 48px 0 6px; font-family: var(--f-disp, Alexandria); font-size: 1.15rem; font-weight: 800; scroll-margin-top: 72px; }
+    .lab-sec-sub { margin: 0 0 18px; font-size: 0.76rem; color: var(--f-ink-3); line-height: 1.75; }
+
+    /* ===== I3 — المسرح الفاخر ===== */
+    .sl-stage {
+      position: relative; border-radius: 26px; overflow: hidden; padding: 22px 22px 18px;
+      background:
+        radial-gradient(60% 85% at 10% -5%, oklch(0.52 0.055 262 / 0.4), transparent 60%),
+        radial-gradient(50% 70% at 90% 15%, oklch(0.52 0.055 12 / 0.3), transparent 60%),
+        radial-gradient(70% 90% at 55% 115%, oklch(0.55 0.05 205 / 0.32), transparent 60%),
+        #14161c;
+      box-shadow: 0 28px 60px -24px rgba(0,0,0,0.55);
+    }
+    .sl-stage::after {
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.4;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+    .sl-stage > * { position: relative; z-index: 1; }
+
+    /* ===== D1+H1 — الجزيرة الحية الموحّدة ===== */
+    .sl-island {
+      font-family: var(--f-arab); cursor: pointer; color: #fff;
+      background: #0c0c0e; border: 0.5px solid rgba(255,255,255,0.1);
+      border-radius: 999px; padding: 9px 16px; margin: 0 auto 18px;
+      width: min(340px, 100%); max-width: 100%;
+      box-shadow: 0 14px 34px -14px rgba(0,0,0,0.6), inset 0 0.5px 0 rgba(255,255,255,0.12);
+      transition: border-radius 520ms var(--f-spring), padding 520ms var(--f-spring), width 560ms var(--f-spring), transform 480ms var(--f-spring);
+    }
+    .sl-island:active { transform: scale(0.97); }
+    .sl-island.is-live { border-radius: 24px; padding: 16px 18px; width: min(380px, 100%); }
+    .sl-island__row { display: flex; align-items: center; gap: 9px; }
+    .sl-island__dot {
+      width: 32px; height: 32px; border-radius: 50%; flex: none;
+      display: grid; place-items: center;
+      background: color-mix(in srgb, var(--is-c, var(--f-ct)) 70%, #000 6%);
+      box-shadow: 0 0 14px -2px color-mix(in srgb, var(--is-c, var(--f-ct)) 70%, transparent);
+      transition: transform 400ms var(--f-spring);
+    }
+    .sl-island__dot i {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #fff; box-shadow: 0 0 8px #fff;
+      animation: sl-breathe 2.4s var(--f-ease) infinite;
+    }
+    @keyframes sl-breathe { 50% { opacity: 0.45; } }
+    @media (prefers-reduced-motion: reduce) { .sl-island__dot i { animation: none; } }
+    .sl-island.is-live .sl-island__dot { transform: scale(1.06); }
+    .sl-island__t { font-size: 0.78rem; font-weight: 600; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .sl-island__code { font-family: var(--f-mono); font-size: 0.58rem; color: rgba(255,255,255,0.5); direction: ltr; transition: opacity 200ms; }
+    .sl-island.is-live .sl-island__code { opacity: 0; width: 0; overflow: hidden; }
+    .sl-island__body { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 480ms var(--f-spring), opacity 300ms, margin 480ms var(--f-spring); margin-top: 0; }
+    .sl-island.is-live .sl-island__body { grid-template-rows: 1fr; opacity: 1; margin-top: 13px; }
+    .sl-island__inner { overflow: hidden; display: flex; flex-direction: column; gap: 11px; }
+    .sl-island__stages { display: flex; align-items: center; gap: 5px; }
+    .sl-island__seg { flex: 1; height: 4px; border-radius: 99px; background: rgba(255,255,255,0.14); position: relative; overflow: hidden; }
+    .sl-island__seg.is-done::after { content: ""; position: absolute; inset: 0; background: var(--is-c, var(--f-ct)); border-radius: 99px; }
+    .sl-island__seg.is-now::after {
+      content: ""; position: absolute; inset: 0; width: 55%; border-radius: 99px;
+      background: linear-gradient(90deg, var(--is-c, var(--f-ct)), color-mix(in srgb, var(--is-c, var(--f-ct)) 55%, #fff));
+      animation: sl-flow 1.8s var(--f-ease) infinite alternate;
+    }
+    @keyframes sl-flow { to { width: 70%; } }
+    @media (prefers-reduced-motion: reduce) { .sl-island__seg.is-now::after { animation: none; } }
+    .sl-island__rows { display: flex; flex-direction: column; gap: 5px; font-size: 0.68rem; color: rgba(255,255,255,0.72); }
+    .sl-island__rows b { font-family: var(--f-mono); font-size: 0.64rem; font-weight: 600; color: #fff; direction: ltr; float: left; }
+    .sl-island__meta { display: flex; align-items: center; justify-content: space-between; font-size: 0.64rem; color: rgba(255,255,255,0.55); }
+    .sl-island__meta b { color: #fff; font-weight: 600; }
+    .sl-island__go {
+      align-self: flex-start; border: 0; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 16px; border-radius: 999px;
+      font-family: var(--f-arab); font-size: 0.7rem; font-weight: 700; color: #161513;
+      background: linear-gradient(180deg, #fff, #ece9e0);
+      box-shadow: inset 0 1px 0 #fff, 0 4px 10px -4px rgba(0,0,0,0.6);
+    }
+    .sl-island__go .material-symbols-outlined { font-size: 13px; }
+
+    /* ===== G2 — تبويب زجاجي ===== */
+    .sl-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+    .sl-toolbar h2 { margin: 0; font-family: var(--f-disp, Alexandria); font-size: 1rem; font-weight: 800; color: #fff; }
+    .sl-toolbar small { display: block; font-size: 0.62rem; color: rgba(255,255,255,0.45); margin-top: 2px; }
+    .seg-glass {
+      position: relative; display: inline-flex; padding: 4px; border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      -webkit-backdrop-filter: blur(14px) saturate(1.7); backdrop-filter: blur(14px) saturate(1.7);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.4), inset 0 0 0 0.5px rgba(255,255,255,0.2);
+    }
+    .seg-glass__bubble {
+      position: absolute; inset-block: 4px; width: var(--seg-w, 0px); inset-inline-start: var(--seg-x, 4px);
+      border-radius: 999px; background: rgba(255,255,255,0.88);
+      box-shadow: inset 0 1px 0 #fff, 0 3px 10px -3px rgba(0,0,0,0.35);
+      transition: inset-inline-start 420ms var(--f-spring), width 420ms var(--f-spring);
+    }
+    .seg-glass button {
+      position: relative; z-index: 1; border: 0; background: transparent; cursor: pointer;
+      padding: 8px 16px; border-radius: 999px;
+      font-family: var(--f-arab); font-size: 0.74rem; font-weight: 600; color: rgba(255,255,255,0.55);
+      transition: color 250ms var(--f-ease);
+    }
+    .seg-glass button.is-on { color: var(--f-ink); font-weight: 700; }
+
+    /* ===== A3 + A4 + I1 — بطاقات طبقات × عدسة موقّعة ===== */
+    .sl-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 18px; }
+    .sl-card {
+      position: relative; padding: 14px; border-radius: 18px; cursor: pointer; text-align: start;
+      background: rgba(255,255,255,0.06);
+      border: 0.5px solid rgba(255,255,255,0.12);
+      font-family: var(--f-arab); display: flex; flex-direction: column; gap: 9px;
+      transition: transform 480ms var(--f-spring), border-color 300ms, background 300ms;
+    }
+    .sl-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--c-c) 35%, rgba(255,255,255,0.2)); background: rgba(255,255,255,0.09); }
+    .sl-card__top { display: flex; align-items: center; gap: 10px; }
+    .sl-strata {
+      position: relative; width: 50px; height: 50px; flex: none;
+      display: grid; place-items: center;
+    }
+    .sl-strata__plate {
+      position: absolute; inset: 5px; border-radius: 38%;
+      background: linear-gradient(165deg,
+        color-mix(in srgb, var(--c-c) 22%, transparent),
+        color-mix(in srgb, var(--c-c) 9%, transparent));
+      border: 0.5px solid color-mix(in srgb, var(--c-c) 28%, transparent);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+      transition: transform 380ms var(--f-spring);
+    }
+    @supports (corner-shape: squircle) { .sl-strata__plate { corner-shape: squircle; } }
+    .sl-strata__lens {
+      position: relative; z-index: 1; width: 44px; height: 44px; border-radius: 38%;
+      display: grid; place-items: center; color: var(--c-c);
+      background:
+        radial-gradient(90% 70% at 50% 8%, rgba(255,255,255,0.35), transparent 55%),
+        rgba(255,255,255,0.08);
+      -webkit-backdrop-filter: blur(10px) saturate(1.6); backdrop-filter: blur(10px) saturate(1.6);
+      border: 0.5px solid rgba(255,255,255,0.22);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.35), 0 6px 16px -10px color-mix(in srgb, var(--c-c) 50%, transparent);
+      transition: transform 380ms var(--f-spring);
+    }
+    @supports (corner-shape: squircle) { .sl-strata__lens { corner-shape: squircle; } }
+    .sl-strata svg { position: relative; z-index: 2; transition: transform 380ms var(--f-spring), filter 380ms; }
+    .sl-strata svg path, .sl-strata svg line, .sl-strata svg circle.s {
+      fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 100; stroke-dashoffset: 0;
+    }
+    .sl-card:hover .sl-strata svg { transform: translateY(-4px) scale(1.06); filter: drop-shadow(0 6px 6px color-mix(in srgb, var(--c-c) 38%, transparent)); }
+    .sl-card:hover .sl-strata__plate { transform: scale(0.92); }
+    .sl-card:hover .sl-strata__lens { transform: scale(1.04); }
+    .sl-card:hover .sl-strata svg path { animation: sl-redraw 900ms var(--f-ease) forwards; }
+    .sl-card:hover .sl-strata svg path:nth-child(2) { animation-delay: 80ms; }
+    .sl-card:hover .sl-strata svg path:nth-child(3) { animation-delay: 160ms; }
+    @keyframes sl-redraw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+    @media (prefers-reduced-motion: reduce) { .sl-card:hover .sl-strata svg path { animation: none; } }
+    .sl-card code { font-family: var(--f-mono); font-size: 0.5rem; color: rgba(255,255,255,0.45); direction: ltr; }
+    .sl-card h4 { margin: 0; font-size: 0.76rem; font-weight: 700; color: #fff; line-height: 1.45; }
+    .sl-card foot { font-family: var(--f-mono); font-size: 0.52rem; color: rgba(255,255,255,0.5); direction: ltr; }
+    .sl-card__sig {
+      margin-top: 2px; height: 1.5px; border-radius: 99px;
+      background: linear-gradient(-90deg, var(--c-c), transparent 85%);
+      transform: scaleX(0); transform-origin: 100% 50%;
+      transition: transform 650ms var(--f-ease) 80ms;
+    }
+    .sl-card:hover .sl-card__sig { transform: scaleX(1); }
+
+    /* ===== G1 + G4 + K6 — شريط الأفعال ===== */
+    .sl-actions {
+      display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;
+      padding-top: 6px; border-top: 0.5px solid rgba(255,255,255,0.08);
+    }
+    .btn-infuse {
+      position: relative; overflow: hidden; isolation: isolate;
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 12px 24px; border-radius: 999px; border: 0;
+      background: rgba(255,255,255,0.12);
+      -webkit-backdrop-filter: blur(14px) saturate(1.8); backdrop-filter: blur(14px) saturate(1.8);
+      color: #fff; font-family: var(--f-arab); font-size: 0.84rem; font-weight: 700; cursor: pointer;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.45), 0 10px 28px -12px rgba(0,0,0,0.45);
+      transition: color 380ms var(--f-ease), transform 320ms var(--f-spring);
+    }
+    .btn-infuse::before {
+      content: ""; position: absolute; inset: 0; z-index: -1;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--in-c, var(--f-cb)) 78%, #fff 6%), color-mix(in srgb, var(--in-c, var(--f-cb)) 92%, #000));
+      transform: translateY(101%);
+      border-radius: 50% 50% 0 0 / 28% 28% 0 0;
+      transition: transform 520ms var(--f-spring), border-radius 520ms var(--f-ease);
+    }
+    .btn-infuse:hover { color: #fff; transform: scale(1.04); }
+    .btn-infuse:hover::before { transform: translateY(0); border-radius: 0; }
+    .btn-infuse:active { transform: scale(0.95); }
+    .btn-infuse .material-symbols-outlined { font-size: 17px; }
+    .btn-droplet {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0;
+      height: 48px; min-width: 48px; padding: 0 14px; border-radius: 999px; border: 0; cursor: pointer;
+      background: rgba(255,255,255,0.1);
+      -webkit-backdrop-filter: blur(14px) saturate(1.8); backdrop-filter: blur(14px) saturate(1.8);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.45);
+      color: rgba(255,255,255,0.85); font-family: var(--f-arab); font-size: 0.82rem; font-weight: 700;
+      transition: transform 320ms var(--f-spring);
+    }
+    .btn-droplet .material-symbols-outlined { font-size: 18px; }
+    .btn-droplet .dp-label {
+      max-width: 0; overflow: hidden; white-space: nowrap; opacity: 0;
+      transition: max-width 460ms var(--f-spring), opacity 300ms var(--f-ease) 80ms, margin 460ms var(--f-spring);
+    }
+    .btn-droplet:hover { transform: scale(1.05); }
+    .btn-droplet:hover .dp-label { max-width: 120px; opacity: 1; margin-inline-start: 8px; }
+    .btn-droplet:active { transform: scale(0.93); }
+    .undo { display: inline-grid; place-items: center; font-family: var(--f-arab); }
+    .undo > * { grid-area: 1 / 1; }
+    .undo__send {
+      display: inline-flex; align-items: center; gap: 8px; border: 0; cursor: pointer;
+      padding: 12px 24px; border-radius: 999px;
+      font-family: var(--f-arab); font-size: 0.84rem; font-weight: 700; color: #fff;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--in-c, var(--f-cb)) 80%, #fff 8%), color-mix(in srgb, var(--in-c, var(--f-cb)) 90%, #000));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 8px 18px -9px color-mix(in srgb, var(--in-c, var(--f-cb)) 55%, transparent);
+      transition: transform 320ms var(--f-spring);
+    }
+    .undo__send:active { transform: scale(0.95); }
+    .undo__send .material-symbols-outlined { font-size: 17px; }
+    .undo__wait {
+      position: relative; display: none; align-items: center; gap: 11px; overflow: hidden;
+      padding: 10px 11px 10px 18px; border-radius: 999px;
+      background: #0c0c0e; color: #fff;
+      border: 0.5px solid rgba(255,255,255,0.1);
+      font-size: 0.76rem; font-weight: 600;
+      box-shadow: 0 12px 28px -12px rgba(0,0,0,0.55);
+    }
+    .undo.is-wait .undo__send { visibility: hidden; }
+    .undo.is-wait .undo__wait { display: inline-flex; animation: sl-pop 420ms var(--f-spring); }
+    @keyframes sl-pop { from { transform: scale(0.85); opacity: 0; } to { transform: none; opacity: 1; } }
+    .undo__cnt { font-family: var(--f-mono); font-size: 0.7rem; color: var(--f-ct); min-width: 1.2em; text-align: center; direction: ltr; }
+    .undo__cancel {
+      border: 0.5px solid rgba(255,255,255,0.22); background: rgba(255,255,255,0.08); color: #fff;
+      border-radius: 999px; padding: 6px 15px; cursor: pointer;
+      font-family: var(--f-arab); font-size: 0.68rem; font-weight: 700;
+      transition: background 200ms;
+    }
+    .undo__cancel:hover { background: rgba(255,255,255,0.16); }
+    .undo__bar {
+      position: absolute; inset-block-end: 0; inset-inline-start: 0;
+      height: 2.5px; width: 100%; background: var(--f-ct); border-radius: 99px;
+    }
+    .undo.is-wait .undo__bar { animation: sl-drain 5s linear forwards; }
+    @keyframes sl-drain { to { width: 0%; } }
+    .undo__sent {
+      display: none; align-items: center; gap: 7px;
+      padding: 11px 20px; border-radius: 999px;
+      color: oklch(0.5 0.1 155); font-size: 0.8rem; font-weight: 700;
+      background: oklch(0.5 0.1 155 / 0.12); border: 0.5px solid oklch(0.5 0.1 155 / 0.25);
+    }
+    .undo.is-sent .undo__send { visibility: hidden; }
+    .undo.is-sent .undo__sent { display: inline-flex; animation: sl-pop 420ms var(--f-spring); }
+    .undo__sent .material-symbols-outlined { font-size: 16px; }
+
+    /* ===== وصفة التطوير ===== */
+    .sl-recipe {
+      margin-top: 40px; padding: 22px 24px; border-radius: 18px;
+      background: linear-gradient(135deg, color-mix(in srgb, #14161c 5%, var(--f-surface)), var(--f-surface));
+      border: 0.5px solid var(--f-border);
+    }
+    .sl-recipe h3 { margin: 0 0 12px; font-size: 0.92rem; font-weight: 800; }
+    .sl-recipe ol { margin: 0; padding-inline-start: 20px; font-size: 0.74rem; line-height: 1.9; color: var(--f-ink-2); }
+    .sl-recipe li b { color: var(--f-ink); }
+    .sl-note {
+      margin-top: 20px; padding: 16px 18px; border-radius: 14px;
+      background: color-mix(in srgb, var(--f-ct) 6%, var(--f-bg));
+      border: 0.5px solid color-mix(in srgb, var(--f-ct) 22%, var(--f-border));
+      font-size: 0.74rem; line-height: 1.85; color: var(--f-ink-2);
+    }
+    .sl-note strong { color: var(--f-ink); font-size: 0.78rem; }
+  </style>
+</head>
+<body>
+  <div class="sl">
+    <header class="sl-hero">
+      <h1>الطبقات الحية</h1>
+      <p>دمج اختياراتك العشر في نظام واحد: <strong>الجزيرة الطبقية</strong> — مسرح فاخر يحمل حالة المعاملة، بطاقات بعمق حقيقي، أيقونات تُرسم ذاتياً داخل عدسة زجاجية، وأزرار زجاجية تتنفّس مع كل فعل. ليس عرضاً منفصلاً — كل تقنية تخدم <em>العمق والحالة والتفاعل</em>.</p>
+      <span class="codename">CODENAME: STRATA LIVE · A3+A4+D1+H1+I1+I3+G1+G2+G4+K6</span>
+    </header>
+
+    <div class="sl-map">
+      <span><b>I3</b> المسرح الفاخر — خلفية mesh + grain</span>
+      <span><b>D1+H1</b> جزيرة حية واحدة — حالة + توسّع</span>
+      <span><b>A3</b> الطبقات — عمق البطاقة</span>
+      <span><b>A4+I1</b> رسم ذاتي × عدسة موقّعة</span>
+      <span><b>G2</b> تبويب زجاجي — فلتر الأقسام</span>
+      <span><b>G1</b> زجاج منصهر — CTA أساسي</span>
+      <span><b>G4</b> قطرة متحوّلة — مساعدة سريعة</span>
+      <span><b>K6</b> نافذة تراجع — بعد كل إرسال</span>
+    </div>
+
+    <h2 class="lab-sec-title" id="sec-demo">المعاينة الكاملة — STRATA LIVE</h2>
+    <p class="lab-sec-sub">انقر الجزيرة لتوسّع حالة المعاملة. بدّل القسم من التبويب الزجاجي. مرّر على البطاقات لترى الطبقات والرسم الذاتي. اضغط «إرسال» لتجربة نافذة التراجع.</p>
+
+    <div class="sl-stage" id="slStage">
+      <div class="sl-island" id="slIsland" role="button" tabindex="0" style="--is-c: var(--f-ct)">
+        <div class="sl-island__row">
+          <span class="sl-island__dot"><i></i></span>
+          <span class="sl-island__t" id="islTitle">فحص مقياس — قيد المعالجة</span>
+          <span class="sl-island__code" id="islCode">CT-2847</span>
+        </div>
+        <div class="sl-island__body">
+          <div class="sl-island__inner">
+            <div class="sl-island__stages" id="islStages">
+              <span class="sl-island__seg is-done"></span>
+              <span class="sl-island__seg is-done"></span>
+              <span class="sl-island__seg is-now"></span>
+              <span class="sl-island__seg"></span>
+            </div>
+            <div class="sl-island__rows">
+              <span>المرحلة <b>الفحص الميداني</b></span>
+              <span>المحطة <b>الرصافة · 47</b></span>
+              <span>آخر تحديث <b>منذ 12 د</b></span>
+            </div>
+            <div class="sl-island__meta"><span>الموظف: أحمد ك.</span><b>اليوم 14:32</b></div>
+            <button type="button" class="sl-island__go"><span class="material-symbols-outlined">open_in_new</span> تفاصيل الحالة</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sl-toolbar">
+        <div>
+          <h2 id="deptTitle">الخدمات الفنية</h2>
+          <small>مركز الرصافة · الكرادة</small>
+        </div>
+        <div class="seg-glass" id="segGlass">
+          <span class="seg-glass__bubble"></span>
+          <button type="button" data-i="0" class="is-on">فنية</button>
+          <button type="button" data-i="1">اشتراكات</button>
+          <button type="button" data-i="2">فواتير</button>
+          <button type="button" data-i="3">شكاوى</button>
+        </div>
+      </div>
+
+      <div class="sl-cards" id="slCards"></div>
+
+      <div class="sl-actions">
+        <span class="undo" id="undoDemo">
+          <button type="button" class="undo__send" style="--in-c: var(--f-cb)"><span class="material-symbols-outlined">send</span> إرسال الطلب</button>
+          <span class="undo__wait">أُرسل خلال <span class="undo__cnt">5</span><button type="button" class="undo__cancel">تراجع</button><span class="undo__bar"></span></span>
+          <span class="undo__sent"><span class="material-symbols-outlined">check_circle</span> تم الإرسال</span>
+        </span>
+        <button type="button" class="btn-infuse" style="--in-c: var(--f-cs)"><span class="material-symbols-outlined">add_home</span> اشتراك جديد</button>
+        <button type="button" class="btn-droplet"><span class="material-symbols-outlined">help</span><span class="dp-label">مساعدة</span></button>
+      </div>
+    </div>
+
+    <div class="sl-recipe">
+      <h3>وصفة الدمج — لماذا يعمل معاً</h3>
+      <ol>
+        <li><b>المسرح (I3):</b> خلفية mesh + grain تحلّ محل السطح الأبيض المسطّح — الواجهة «مكان» لا «صفحة».</li>
+        <li><b>الجزيرة (D1 + H1):</b> pill واحد يتتبّع المعاملة النشطة ويتوسّع لبطاقة مراحل — بديل شريط الحالة الثابت.</li>
+        <li><b>الطبقات (A3):</b> كل بطاقة خدمة لها عمق: الصفيحة تنكمش والأيقونة ترتفع — إحساس بالأهمية دون زخرفة.</li>
+        <li><b>العدسة الموقّعة (A4 + I1):</b> الأيقونة تُرسم ذاتياً داخل زجاج موقّع — المعنى يظهر عند التفاعل لا عند التحميل.</li>
+        <li><b>الزجاج (G1 + G2 + G4):</b> نفس مادة iOS: تبويب للأقسام، زر منصهر للفعل الأساسي، قطرة للمساعدة — ثلاثة أدوار، مادة واحدة.</li>
+        <li><b>التراجع (K6):</b> كل إرسال يفتح نافذة 5 ثوانٍ — أمان بصري بدون حوار منبثق مزعج.</li>
+      </ol>
+
+      <div class="sl-note">
+        <strong>ملاحظة تطويرية — أين يُطبَّق في المنصة الحقيقية</strong><br />
+        <b>I3</b> → خلفية لوحة التحكم الرئيسية وصفحات الأقسام ·
+        <b>D1+H1</b> → شريط علوي عائم يتبع آخر معاملة مفتوحة ·
+        <b>A3+A4+I1</b> → بطاقات الـ 31 خدمة في <code>final3d.html</code> ·
+        <b>G2</b> → فلتر الأقسام الأربعة ·
+        <b>G1+K6</b> → نماذج التقديم والحفظ التلقائي ·
+        <b>G4</b> → زر مساعدة عائم يتوسّع عند المرور.<br />
+        الفرق عن <em>تدفّق الطاقة</em>: المجموعة الأولى تركّز على الهوية والأقسام؛ <em>STRATA LIVE</em> تركّز على العمق والحالة والتفاعل — يمكن دمجهما لاحقاً في طبقة <code>final_strata.css</code>.
+      </div>
+    </div>
+
+    <h2 class="lab-sec-title" id="sec-next">الخطوة التالية</h2>
+    <p class="lab-sec-sub">إذا اعتمدت هذا الاتجاه، يُطبَّق كطبقة <code>final_strata.css</code> على <code>final3d.html</code> — مع الإبقاء على <code>الخلاصة الاحترافية.html</code> (ENERGY FLOW) كمرجع للهوية.</p>
+  </div>
+
+  <script>
+    (function () {
+      const DEPTS = [
+        { code: 'CT', name: 'الخدمات الفنية', c: 'var(--f-ct)', island: 'فحص مقياس — قيد المعالجة', islCode: 'CT-2847', stage: 2,
+          svcs: [
+            { code: 'CT0009', name: 'فحص مقياس / تبديل', fee: '12,500+', icon: 'meter' },
+            { code: 'CT0008', name: 'نقل موقع مقياس', fee: '35,000', icon: 'meter' },
+          ]},
+        { code: 'CS', name: 'اشتراكات', c: 'var(--f-cs)', island: 'اشتراك جديد — بانتظار الدفع', islCode: 'CS-1092', stage: 1,
+          svcs: [
+            { code: 'CS0001', name: 'عمل اشتراك جديد', fee: '15,000+', icon: 'pole' },
+            { code: 'CS0011', name: 'نقل ملكية', fee: 'حسب الحالة', icon: 'key' },
+          ]},
+        { code: 'CB', name: 'فواتير وأجور', c: 'var(--f-cb)', island: 'تسوية أجور — قيد المراجعة', islCode: 'CB-7731', stage: 3,
+          svcs: [
+            { code: 'CB0001', name: 'دفع قائمة أجور', fee: '—', icon: 'bill' },
+            { code: 'CB0006', name: 'تسوية / تقسيط', fee: 'حسب المبلغ', icon: 'receipt' },
+          ]},
+        { code: 'CA', name: 'شكاوى', c: 'var(--f-ca)', island: 'إبلاغ خطر — تم الاستلام', islCode: 'CA-0044', stage: 0,
+          svcs: [
+            { code: 'CA0002', name: 'إبلاغ حالة خطر', fee: '—', icon: 'bell' },
+            { code: 'CA0001', name: 'إبلاغ تلاعب', fee: '—', icon: 'bell' },
+          ]},
+      ];
+
+      const ICONS = {
+        meter: '<svg width="20" height="20" viewBox="0 0 22 22"><path pathLength="100" d="M3 16 A 8 8 0 1 1 19 16"/><path pathLength="100" d="M11 13 V7"/><circle class="s" cx="11" cy="13" r="1.2"/></svg>',
+        pole: '<svg width="20" height="20" viewBox="0 0 22 22"><path pathLength="100" d="M11 3 V19"/><path pathLength="100" d="M6 6 H16"/><path pathLength="100" d="M2 7 C 8 10, 14 10, 20 7" opacity="0.5"/></svg>',
+        bill: '<svg width="20" height="20" viewBox="0 0 22 22"><path pathLength="100" d="M5 3 H15 L18 6 V19 H5 Z"/><path pathLength="100" d="M8 9 H14" opacity="0.5"/></svg>',
+        key: '<svg width="20" height="20" viewBox="0 0 22 22"><path pathLength="100" d="M2 17 C 5 15, 7 15, 9 17"/><circle class="s" cx="8" cy="10" r="2.8"/><path pathLength="100" d="M10.5 10 H17"/><path pathLength="100" d="M14 10 V12.5"/></svg>',
+        receipt: '<svg width="20" height="20" viewBox="0 0 22 22"><path pathLength="100" d="M5 2 H17 V15"/><path pathLength="100" d="M5 2 V18 L 7 16.5 L 9 18 L 11 16.5 L 13 18 L 15 16.5 L 17 18"/></svg>',
+        bell: '<svg width="20" height="20" viewBox="0 0 22 22"><path pathLength="100" d="M7 16 C 7 11, 9 9, 11 9 C 13 9, 15 11, 15 16"/><path pathLength="100" d="M6 16 H16"/><path pathLength="100" d="M11 7 V5"/></svg>',
+      };
+
+      const cards = document.getElementById('slCards');
+      const island = document.getElementById('slIsland');
+      const islTitle = document.getElementById('islTitle');
+      const islCode = document.getElementById('islCode');
+      const islStages = document.getElementById('islStages');
+      const deptTitle = document.getElementById('deptTitle');
+      const seg = document.getElementById('segGlass');
+      const bubble = seg.querySelector('.seg-glass__bubble');
+      const segBtns = [...seg.querySelectorAll('button')];
+
+      function placeBubble(b) {
+        bubble.style.setProperty('--seg-w', b.offsetWidth + 'px');
+        const start = getComputedStyle(seg).direction === 'rtl'
+          ? seg.getBoundingClientRect().right - b.getBoundingClientRect().right
+          : b.getBoundingClientRect().left - seg.getBoundingClientRect().left;
+        bubble.style.setProperty('--seg-x', start + 'px');
+      }
+
+      function renderStages(stage, color) {
+        islStages.innerHTML = [0,1,2,3].map(i => {
+          let cls = 'sl-island__seg';
+          if (i < stage) cls += ' is-done';
+          else if (i === stage) cls += ' is-now';
+          return '<span class="' + cls + '"></span>';
+        }).join('');
+        island.style.setProperty('--is-c', color);
+      }
+
+      function renderDept(i) {
+        const d = DEPTS[i];
+        deptTitle.textContent = d.name;
+        islTitle.textContent = d.island;
+        islCode.textContent = d.islCode;
+        renderStages(d.stage, d.c);
+        document.querySelector('.btn-infuse').style.setProperty('--in-c', d.c);
+        document.querySelector('.undo__send').style.setProperty('--in-c', d.c);
+        cards.innerHTML = d.svcs.map(s =>
+          '<article class="sl-card" style="--c-c:' + d.c + '">' +
+          '<div class="sl-card__top">' +
+          '<span class="sl-strata"><span class="sl-strata__plate"></span><span class="sl-strata__lens">' + (ICONS[s.icon] || ICONS.meter) + '</span></span>' +
+          '<code>' + s.code + '</code></div>' +
+          '<h4>' + s.name + '</h4>' +
+          '<foot>' + s.fee + ' د.ع</foot>' +
+          '<span class="sl-card__sig"></span>' +
+          '</article>'
+        ).join('');
+      }
+
+      segBtns.forEach((b) => b.addEventListener('click', () => {
+        segBtns.forEach((x) => x.classList.remove('is-on'));
+        b.classList.add('is-on');
+        placeBubble(b);
+        renderDept(+b.dataset.i);
+      }));
+
+      const flipIsland = () => island.classList.toggle('is-live');
+      island.addEventListener('click', (e) => {
+        if (e.target.closest('.sl-island__go')) return;
+        flipIsland();
+      });
+      island.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flipIsland(); }
+      });
+
+      const u = document.getElementById('undoDemo');
+      const send = u.querySelector('.undo__send');
+      const cancel = u.querySelector('.undo__cancel');
+      const cnt = u.querySelector('.undo__cnt');
+      let t = null, iv = null, left = 5;
+      send.addEventListener('click', () => {
+        left = 5; cnt.textContent = left;
+        u.classList.add('is-wait');
+        iv = setInterval(() => { left--; cnt.textContent = Math.max(left, 0); }, 1000);
+        t = setTimeout(() => {
+          clearInterval(iv);
+          u.classList.remove('is-wait'); u.classList.add('is-sent');
+          setTimeout(() => u.classList.remove('is-sent'), 2400);
+        }, 5000);
+      });
+      cancel.addEventListener('click', () => {
+        clearTimeout(t); clearInterval(iv);
+        u.classList.remove('is-wait');
+      });
+
+      requestAnimationFrame(() => placeBubble(seg.querySelector('.is-on')));
+      renderDept(0);
+    })();
+  </script>
+  <script src="lab_tools.js"></script>
+</body>
+</html>
