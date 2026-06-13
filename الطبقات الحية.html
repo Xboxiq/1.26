@@ -35,18 +35,20 @@
     .lab-sec-title { margin: 48px 0 6px; font-family: var(--f-disp, Alexandria); font-size: 1.15rem; font-weight: 800; scroll-margin-top: 72px; }
     .lab-sec-sub { margin: 0 0 18px; font-size: 0.76rem; color: var(--f-ink-3); line-height: 1.75; }
 
-    /* ===== I3 — المسرح الفاخر ===== */
+    /* ===== I3 — المسرح (mesh هادئ + grain خفيف) ===== */
     .sl-stage {
       position: relative; border-radius: 26px; overflow: hidden; padding: 22px 22px 18px;
+      --sl-mesh-a: var(--f-ct);
+      --sl-mesh-b: var(--f-cs);
       background:
-        radial-gradient(60% 85% at 10% -5%, oklch(0.52 0.055 262 / 0.4), transparent 60%),
-        radial-gradient(50% 70% at 90% 15%, oklch(0.52 0.055 12 / 0.3), transparent 60%),
-        radial-gradient(70% 90% at 55% 115%, oklch(0.55 0.05 205 / 0.32), transparent 60%),
-        #14161c;
-      box-shadow: 0 28px 60px -24px rgba(0,0,0,0.55);
+        radial-gradient(48% 72% at 14% -8%, color-mix(in srgb, var(--sl-mesh-a) 13%, transparent), transparent 68%),
+        radial-gradient(42% 58% at 92% 18%, color-mix(in srgb, var(--sl-mesh-b) 9%, transparent), transparent 68%),
+        linear-gradient(168deg, #181a1f 0%, #12141a 100%);
+      box-shadow: 0 24px 52px -26px rgba(0,0,0,0.48), inset 0 0.5px 0 rgba(255,255,255,0.06);
+      transition: background 600ms var(--f-ease);
     }
     .sl-stage::after {
-      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.4;
+      content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.22;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
       mix-blend-mode: overlay;
     }
@@ -133,66 +135,97 @@
     }
     .seg-glass button.is-on { color: var(--f-ink); font-weight: 700; }
 
-    /* ===== A3 + A4 + I1 — بطاقات طبقات × عدسة موقّعة ===== */
-    .sl-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 18px; }
+    /* ===== A3 + A4 + I1 — عدسة Apple: إطار موقّع + رسم متسلسل ===== */
+    .sl-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(228px, 1fr)); gap: 10px; margin-bottom: 18px; }
     .sl-card {
-      position: relative; padding: 14px; border-radius: 18px; cursor: pointer; text-align: start;
-      background: rgba(255,255,255,0.06);
-      border: 0.5px solid rgba(255,255,255,0.12);
-      font-family: var(--f-arab); display: flex; flex-direction: column; gap: 9px;
-      transition: transform 480ms var(--f-spring), border-color 300ms, background 300ms;
+      position: relative; padding: 15px 15px 14px 17px; border-radius: 16px; cursor: pointer; text-align: start;
+      background: rgba(255,255,255,0.035);
+      border: 0.5px solid rgba(255,255,255,0.09);
+      font-family: var(--f-arab); display: flex; flex-direction: column; gap: 8px;
+      transition: transform 420ms var(--f-spring), border-color 280ms, background 280ms;
     }
-    .sl-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--c-c) 35%, rgba(255,255,255,0.2)); background: rgba(255,255,255,0.09); }
-    .sl-card__top { display: flex; align-items: center; gap: 10px; }
-    .sl-strata {
-      position: relative; width: 50px; height: 50px; flex: none;
-      display: grid; place-items: center;
+    .sl-card::before {
+      content: ""; position: absolute; inset-inline-start: 0; inset-block: 14px;
+      width: 2px; border-radius: 99px; background: var(--sl-accent, var(--f-ct));
+      opacity: 0; transform: scaleY(0.35); transition: opacity 280ms, transform 420ms var(--f-spring);
     }
-    .sl-strata__plate {
-      position: absolute; inset: 5px; border-radius: 38%;
-      background: linear-gradient(165deg,
-        color-mix(in srgb, var(--c-c) 22%, transparent),
-        color-mix(in srgb, var(--c-c) 9%, transparent));
-      border: 0.5px solid color-mix(in srgb, var(--c-c) 28%, transparent);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
-      transition: transform 380ms var(--f-spring);
+    .sl-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.055);
     }
-    @supports (corner-shape: squircle) { .sl-strata__plate { corner-shape: squircle; } }
-    .sl-strata__lens {
-      position: relative; z-index: 1; width: 44px; height: 44px; border-radius: 38%;
-      display: grid; place-items: center; color: var(--c-c);
+    .sl-card:hover::before { opacity: 0.9; transform: none; }
+    .sl-card__top { display: flex; align-items: center; gap: 11px; }
+    .sl-card__meta { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+    .sl-card code {
+      font-family: var(--f-mono); font-size: 0.48rem; color: rgba(255,255,255,0.38); direction: ltr;
+      letter-spacing: 0.04em;
+    }
+    .sl-card h4 { margin: 0; font-size: 0.76rem; font-weight: 700; color: rgba(255,255,255,0.94); line-height: 1.45; }
+    .sl-card foot { font-family: var(--f-mono); font-size: 0.52rem; color: rgba(255,255,255,0.42); direction: ltr; }
+    .sl-card__line {
+      height: 1px; border-radius: 99px; margin-top: 1px;
+      background: linear-gradient(-90deg, color-mix(in srgb, var(--sl-accent) 55%, transparent), transparent 88%);
+      transform: scaleX(0); transform-origin: 100% 50%;
+      transition: transform 620ms var(--f-ease) 180ms;
+    }
+    .sl-card:hover .sl-card__line { transform: scaleX(1); }
+
+    /* أيقونة: زجاج محايد + إطار منظم + عمق طبقي خفيف */
+    .sl-icon {
+      position: relative; width: 46px; height: 46px; flex: none;
+      display: grid; place-items: center; color: color-mix(in srgb, var(--sg-c) 62%, #fff);
+      border-radius: 30%;
       background:
-        radial-gradient(90% 70% at 50% 8%, rgba(255,255,255,0.35), transparent 55%),
-        rgba(255,255,255,0.08);
-      -webkit-backdrop-filter: blur(10px) saturate(1.6); backdrop-filter: blur(10px) saturate(1.6);
-      border: 0.5px solid rgba(255,255,255,0.22);
-      box-shadow: inset 0 1px 1px rgba(255,255,255,0.35), 0 6px 16px -10px color-mix(in srgb, var(--c-c) 50%, transparent);
-      transition: transform 380ms var(--f-spring);
+        radial-gradient(88% 68% at 50% 10%, rgba(255,255,255,0.16), transparent 58%),
+        rgba(255,255,255,0.055);
+      border: 0.5px solid rgba(255,255,255,0.14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
+      transition: transform 420ms var(--f-spring);
     }
-    @supports (corner-shape: squircle) { .sl-strata__lens { corner-shape: squircle; } }
-    .sl-strata svg { position: relative; z-index: 2; transition: transform 380ms var(--f-spring), filter 380ms; }
-    .sl-strata svg path, .sl-strata svg line, .sl-strata svg circle.s {
-      fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round;
+    @supports (corner-shape: squircle) { .sl-icon { corner-shape: squircle; } }
+    .sl-icon__depth {
+      position: absolute; inset: 7px; border-radius: 30%; z-index: 0;
+      background: rgba(0,0,0,0.22);
+      box-shadow: 0 3px 8px -4px rgba(0,0,0,0.45);
+      transition: transform 420ms var(--f-spring), opacity 280ms;
+      opacity: 0.55;
+    }
+    @supports (corner-shape: squircle) { .sl-icon__depth { corner-shape: squircle; } }
+    .sl-card:hover .sl-icon__depth { transform: scale(0.9) translateY(1px); opacity: 0.3; }
+    .sl-card:hover .sl-icon { transform: translateY(-2px); }
+    .sig-frame {
+      position: absolute; inset: -3px; width: calc(100% + 6px); height: calc(100% + 6px);
+      pointer-events: none; overflow: visible; z-index: 2;
+    }
+    .sig-frame path { fill: none; stroke: currentColor; stroke-width: 1.65; stroke-linecap: round; }
+    .sig-frame .track { opacity: 0.1; }
+    .sig-frame .draw {
+      stroke-dasharray: 100; stroke-dashoffset: 100;
+      transition: stroke-dashoffset 680ms var(--f-ease);
+    }
+    .sl-card:hover .sig-frame .draw { stroke-dashoffset: 0; }
+    .sl-glyph {
+      position: relative; z-index: 1;
+      color: rgba(255,255,255,0.88);
+    }
+    .sl-glyph path, .sl-glyph line, .sl-glyph circle.s {
+      fill: none; stroke: currentColor; stroke-width: 1.55;
+      stroke-linecap: round; stroke-linejoin: round;
       stroke-dasharray: 100; stroke-dashoffset: 0;
     }
-    .sl-card:hover .sl-strata svg { transform: translateY(-4px) scale(1.06); filter: drop-shadow(0 6px 6px color-mix(in srgb, var(--c-c) 38%, transparent)); }
-    .sl-card:hover .sl-strata__plate { transform: scale(0.92); }
-    .sl-card:hover .sl-strata__lens { transform: scale(1.04); }
-    .sl-card:hover .sl-strata svg path { animation: sl-redraw 900ms var(--f-ease) forwards; }
-    .sl-card:hover .sl-strata svg path:nth-child(2) { animation-delay: 80ms; }
-    .sl-card:hover .sl-strata svg path:nth-child(3) { animation-delay: 160ms; }
-    @keyframes sl-redraw { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
-    @media (prefers-reduced-motion: reduce) { .sl-card:hover .sl-strata svg path { animation: none; } }
-    .sl-card code { font-family: var(--f-mono); font-size: 0.5rem; color: rgba(255,255,255,0.45); direction: ltr; }
-    .sl-card h4 { margin: 0; font-size: 0.76rem; font-weight: 700; color: #fff; line-height: 1.45; }
-    .sl-card foot { font-family: var(--f-mono); font-size: 0.52rem; color: rgba(255,255,255,0.5); direction: ltr; }
-    .sl-card__sig {
-      margin-top: 2px; height: 1.5px; border-radius: 99px;
-      background: linear-gradient(-90deg, var(--c-c), transparent 85%);
-      transform: scaleX(0); transform-origin: 100% 50%;
-      transition: transform 650ms var(--f-ease) 80ms;
+    .sl-card:hover .sl-glyph .g {
+      animation: sl-glyph 560ms var(--f-ease) forwards;
     }
-    .sl-card:hover .sl-card__sig { transform: scaleX(1); }
+    .sl-card:hover .sl-glyph .g:nth-child(2) { animation-delay: 90ms; }
+    .sl-card:hover .sl-glyph .g:nth-child(3) { animation-delay: 170ms; }
+    .sl-card:hover .sl-glyph .g:nth-child(4) { animation-delay: 240ms; }
+    @keyframes sl-glyph { from { stroke-dashoffset: 100; } to { stroke-dashoffset: 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      .sig-frame .draw { transition: none; stroke-dashoffset: 0; opacity: 0.45; }
+      .sl-card:hover .sl-glyph .g { animation: none; }
+      .sl-card:hover .sl-icon { transform: none; }
+    }
 
     /* ===== G1 + G4 + K6 — شريط الأفعال ===== */
     .sl-actions {
@@ -306,7 +339,7 @@
   <div class="sl">
     <header class="sl-hero">
       <h1>الطبقات الحية</h1>
-      <p>دمج اختياراتك العشر في نظام واحد: <strong>الجزيرة الطبقية</strong> — مسرح فاخر يحمل حالة المعاملة، بطاقات بعمق حقيقي، أيقونات تُرسم ذاتياً داخل عدسة زجاجية، وأزرار زجاجية تتنفّس مع كل فعل. ليس عرضاً منفصلاً — كل تقنية تخدم <em>العمق والحالة والتفاعل</em>.</p>
+      <p>دمج اختياراتك العشر في نظام واحد: <strong>الجزيرة الطبقية</strong> — مسرح هادئ، جزيرة حالة، بطاقات بعمق خفيف، وأيقونات بروح Apple: إطار موقّع منظم يُرسم أولاً ثم الخط الداخلي. اللون للتأكيد فقط — لا للخلفية.</p>
       <span class="codename">CODENAME: STRATA LIVE · A3+A4+D1+H1+I1+I3+G1+G2+G4+K6</span>
     </header>
 
@@ -314,7 +347,7 @@
       <span><b>I3</b> المسرح الفاخر — خلفية mesh + grain</span>
       <span><b>D1+H1</b> جزيرة حية واحدة — حالة + توسّع</span>
       <span><b>A3</b> الطبقات — عمق البطاقة</span>
-      <span><b>A4+I1</b> رسم ذاتي × عدسة موقّعة</span>
+      <span><b>A4+I1</b> إطار squircle ثم رسم — تسلسل Apple</span>
       <span><b>G2</b> تبويب زجاجي — فلتر الأقسام</span>
       <span><b>G1</b> زجاج منصهر — CTA أساسي</span>
       <span><b>G4</b> قطرة متحوّلة — مساعدة سريعة</span>
@@ -322,7 +355,7 @@
     </div>
 
     <h2 class="lab-sec-title" id="sec-demo">المعاينة الكاملة — STRATA LIVE</h2>
-    <p class="lab-sec-sub">انقر الجزيرة لتوسّع حالة المعاملة. بدّل القسم من التبويب الزجاجي. مرّر على البطاقات لترى الطبقات والرسم الذاتي. اضغط «إرسال» لتجربة نافذة التراجع.</p>
+    <p class="lab-sec-sub">انقر الجزيرة لتوسّع حالة المعاملة. بدّل القسم — يتغيّر لون المسرح بلطف. مرّر على البطاقة: الإطار يُرسم أولاً (680ms) ثم الأيقونة بالتتابع.</p>
 
     <div class="sl-stage" id="slStage">
       <div class="sl-island" id="slIsland" role="button" tabindex="0" style="--is-c: var(--f-ct)">
@@ -382,21 +415,23 @@
       <ol>
         <li><b>المسرح (I3):</b> خلفية mesh + grain تحلّ محل السطح الأبيض المسطّح — الواجهة «مكان» لا «صفحة».</li>
         <li><b>الجزيرة (D1 + H1):</b> pill واحد يتتبّع المعاملة النشطة ويتوسّع لبطاقة مراحل — بديل شريط الحالة الثابت.</li>
-        <li><b>الطبقات (A3):</b> كل بطاقة خدمة لها عمق: الصفيحة تنكمش والأيقونة ترتفع — إحساس بالأهمية دون زخرفة.</li>
-        <li><b>العدسة الموقّعة (A4 + I1):</b> الأيقونة تُرسم ذاتياً داخل زجاج موقّع — المعنى يظهر عند التفاعل لا عند التحميل.</li>
+        <li><b>الطبقات (A3):</b> ظل عمق محايد خلف العدسة — يرتفع 2px عند المرور، بدون تدرج ملون مبالغ.</li>
+        <li><b>العدسة الموقّعة (A4 + I1):</b> إطار squircle منظم يُرسم أولاً، ثم خط الأيقونة — تسلسل Apple واضح.</li>
         <li><b>الزجاج (G1 + G2 + G4):</b> نفس مادة iOS: تبويب للأقسام، زر منصهر للفعل الأساسي، قطرة للمساعدة — ثلاثة أدوار، مادة واحدة.</li>
         <li><b>التراجع (K6):</b> كل إرسال يفتح نافذة 5 ثوانٍ — أمان بصري بدون حوار منبثق مزعج.</li>
       </ol>
 
       <div class="sl-note">
-        <strong>ملاحظة تطويرية — أين يُطبَّق في المنصة الحقيقية</strong><br />
-        <b>I3</b> → خلفية لوحة التحكم الرئيسية وصفحات الأقسام ·
-        <b>D1+H1</b> → شريط علوي عائم يتبع آخر معاملة مفتوحة ·
-        <b>A3+A4+I1</b> → بطاقات الـ 31 خدمة في <code>final3d.html</code> ·
-        <b>G2</b> → فلتر الأقسام الأربعة ·
-        <b>G1+K6</b> → نماذج التقديم والحفظ التلقائي ·
-        <b>G4</b> → زر مساعدة عائم يتوسّع عند المرور.<br />
-        الفرق عن <em>تدفّق الطاقة</em>: المجموعة الأولى تركّز على الهوية والأقسام؛ <em>STRATA LIVE</em> تركّز على العمق والحالة والتفاعل — يمكن دمجهما لاحقاً في طبقة <code>final_strata.css</code>.
+        <strong>استراتيجية الألوان — قاعدة 10%</strong><br />
+        اللون يظهر في ثلاثة مواضع فقط: <b>إطار الأيقونة</b> · <b>شريط البطاقة الجانبي</b> · <b>خط التوقيع</b>. الخلفية والعدسة محايدة (أبيض 5–8%). المسرح يأخذ لون القسم بنسبة 9–13% في mesh واحد.<br /><br />
+        <strong>أين يُطبَّق في المنصة</strong><br />
+        <b>I3</b> → خلفية لوحة التحكم ·
+        <b>D1+H1</b> → شريط المعاملة النشطة ·
+        <b>A3+A4+I1</b> → بطاقات الخدمات ·
+        <b>G2</b> → فلتر الأقسام ·
+        <b>G1+K6</b> → نماذج التقديم ·
+        <b>G4</b> → مساعدة عائمة.<br />
+        يكمّل <em>تدفّق الطاقة</em> (الهوية) ولا يستبدله — الدمج في <code>final_strata.css</code>.
       </div>
     </div>
 
@@ -406,23 +441,29 @@
 
   <script>
     (function () {
+      const SIG = '<svg class="sig-frame" viewBox="0 0 66 66" aria-hidden="true"><path class="track" d="M33 2.5 C55 2.5 63.5 11 63.5 33 C63.5 55 55 63.5 33 63.5 C11 63.5 2.5 55 2.5 33 C2.5 11 11 2.5 33 2.5 Z" pathLength="100"/><path class="draw" d="M33 2.5 C55 2.5 63.5 11 63.5 33 C63.5 55 55 63.5 33 63.5 C11 63.5 2.5 55 2.5 33 C2.5 11 11 2.5 33 2.5 Z" pathLength="100"/></svg>';
+
       const DEPTS = [
-        { code: 'CT', name: 'الخدمات الفنية', c: 'var(--f-ct)', island: 'فحص مقياس — قيد المعالجة', islCode: 'CT-2847', stage: 2,
+        { code: 'CT', name: 'الخدمات الفنية', c: 'var(--f-ct)', accent: 'var(--f-ct)', meshA: 'var(--f-ct)', meshB: 'var(--f-cs)',
+          island: 'فحص مقياس — قيد المعالجة', islCode: 'CT-2847', stage: 2,
           svcs: [
             { code: 'CT0009', name: 'فحص مقياس / تبديل', fee: '12,500+', icon: 'meter' },
             { code: 'CT0008', name: 'نقل موقع مقياس', fee: '35,000', icon: 'meter' },
           ]},
-        { code: 'CS', name: 'اشتراكات', c: 'var(--f-cs)', island: 'اشتراك جديد — بانتظار الدفع', islCode: 'CS-1092', stage: 1,
+        { code: 'CS', name: 'اشتراكات', c: 'var(--f-cs)', accent: 'var(--f-cs)', meshA: 'var(--f-cs)', meshB: 'var(--f-ct)',
+          island: 'اشتراك جديد — بانتظار الدفع', islCode: 'CS-1092', stage: 1,
           svcs: [
             { code: 'CS0001', name: 'عمل اشتراك جديد', fee: '15,000+', icon: 'pole' },
             { code: 'CS0011', name: 'نقل ملكية', fee: 'حسب الحالة', icon: 'key' },
           ]},
-        { code: 'CB', name: 'فواتير وأجور', c: 'var(--f-cb)', island: 'تسوية أجور — قيد المراجعة', islCode: 'CB-7731', stage: 3,
+        { code: 'CB', name: 'فواتير وأجور', c: 'var(--f-cb)', accent: 'var(--f-cb)', meshA: 'var(--f-cb)', meshB: 'var(--f-ct)',
+          island: 'تسوية أجور — قيد المراجعة', islCode: 'CB-7731', stage: 3,
           svcs: [
             { code: 'CB0001', name: 'دفع قائمة أجور', fee: '—', icon: 'bill' },
             { code: 'CB0006', name: 'تسوية / تقسيط', fee: 'حسب المبلغ', icon: 'receipt' },
           ]},
-        { code: 'CA', name: 'شكاوى', c: 'var(--f-ca)', island: 'إبلاغ خطر — تم الاستلام', islCode: 'CA-0044', stage: 0,
+        { code: 'CA', name: 'شكاوى', c: 'var(--f-ca)', accent: 'var(--f-ca)', meshA: 'var(--f-ca)', meshB: 'var(--f-cs)',
+          island: 'إبلاغ خطر — تم الاستلام', islCode: 'CA-0044', stage: 0,
           svcs: [
             { code: 'CA0002', name: 'إبلاغ حالة خطر', fee: '—', icon: 'bell' },
             { code: 'CA0001', name: 'إبلاغ تلاعب', fee: '—', icon: 'bell' },
@@ -430,14 +471,21 @@
       ];
 
       const ICONS = {
-        meter: '<svg width="20" height="20" viewBox="0 0 22 22"><path pathLength="100" d="M3 16 A 8 8 0 1 1 19 16"/><path pathLength="100" d="M11 13 V7"/><circle class="s" cx="11" cy="13" r="1.2"/></svg>',
-        pole: '<svg width="20" height="20" viewBox="0 0 22 22"><path pathLength="100" d="M11 3 V19"/><path pathLength="100" d="M6 6 H16"/><path pathLength="100" d="M2 7 C 8 10, 14 10, 20 7" opacity="0.5"/></svg>',
-        bill: '<svg width="20" height="20" viewBox="0 0 22 22"><path pathLength="100" d="M5 3 H15 L18 6 V19 H5 Z"/><path pathLength="100" d="M8 9 H14" opacity="0.5"/></svg>',
-        key: '<svg width="20" height="20" viewBox="0 0 22 22"><path pathLength="100" d="M2 17 C 5 15, 7 15, 9 17"/><circle class="s" cx="8" cy="10" r="2.8"/><path pathLength="100" d="M10.5 10 H17"/><path pathLength="100" d="M14 10 V12.5"/></svg>',
-        receipt: '<svg width="20" height="20" viewBox="0 0 22 22"><path pathLength="100" d="M5 2 H17 V15"/><path pathLength="100" d="M5 2 V18 L 7 16.5 L 9 18 L 11 16.5 L 13 18 L 15 16.5 L 17 18"/></svg>',
-        bell: '<svg width="20" height="20" viewBox="0 0 22 22"><path pathLength="100" d="M7 16 C 7 11, 9 9, 11 9 C 13 9, 15 11, 15 16"/><path pathLength="100" d="M6 16 H16"/><path pathLength="100" d="M11 7 V5"/></svg>',
+        meter: '<svg class="sl-glyph" width="18" height="18" viewBox="0 0 22 22"><path class="g" pathLength="100" d="M3 16 A 8 8 0 1 1 19 16"/><path class="g" pathLength="100" d="M11 13 V7"/><circle class="s g" cx="11" cy="13" r="1.1"/></svg>',
+        pole: '<svg class="sl-glyph" width="18" height="18" viewBox="0 0 22 22"><path class="g" pathLength="100" d="M11 3 V19"/><path class="g" pathLength="100" d="M6 6 H16"/><path class="g" pathLength="100" d="M2 7 C 8 10, 14 10, 20 7" opacity="0.55"/></svg>',
+        bill: '<svg class="sl-glyph" width="18" height="18" viewBox="0 0 22 22"><path class="g" pathLength="100" d="M5 3 H15 L18 6 V19 H5 Z"/><path class="g" pathLength="100" d="M8 9 H14" opacity="0.55"/></svg>',
+        key: '<svg class="sl-glyph" width="18" height="18" viewBox="0 0 22 22"><circle class="s g" pathLength="100" cx="8" cy="10" r="2.6"/><path class="g" pathLength="100" d="M10.5 10 H17"/><path class="g" pathLength="100" d="M14 10 V12.5"/></svg>',
+        receipt: '<svg class="sl-glyph" width="18" height="18" viewBox="0 0 22 22"><path class="g" pathLength="100" d="M5 2 H17 V15"/><path class="g" pathLength="100" d="M5 2 V18 L 7 16.5 L 9 18 L 11 16.5 L 13 18 L 15 16.5 L 17 18"/></svg>',
+        bell: '<svg class="sl-glyph" width="18" height="18" viewBox="0 0 22 22"><path class="g" pathLength="100" d="M7 16 C 7 11, 9 9, 11 9 C 13 9, 15 11, 15 16"/><path class="g" pathLength="100" d="M6 16 H16"/><path class="g" pathLength="100" d="M11 7 V5"/></svg>',
       };
 
+      function iconHtml(color, name) {
+        return '<span class="sl-icon" style="--sg-c:' + color + '">' +
+          '<span class="sl-icon__depth" aria-hidden="true"></span>' +
+          SIG + (ICONS[name] || ICONS.meter) + '</span>';
+      }
+
+      const stage = document.getElementById('slStage');
       const cards = document.getElementById('slCards');
       const island = document.getElementById('slIsland');
       const islTitle = document.getElementById('islTitle');
@@ -456,11 +504,11 @@
         bubble.style.setProperty('--seg-x', start + 'px');
       }
 
-      function renderStages(stage, color) {
+      function renderStages(stageIdx, color) {
         islStages.innerHTML = [0,1,2,3].map(i => {
           let cls = 'sl-island__seg';
-          if (i < stage) cls += ' is-done';
-          else if (i === stage) cls += ' is-now';
+          if (i < stageIdx) cls += ' is-done';
+          else if (i === stageIdx) cls += ' is-now';
           return '<span class="' + cls + '"></span>';
         }).join('');
         island.style.setProperty('--is-c', color);
@@ -472,16 +520,16 @@
         islTitle.textContent = d.island;
         islCode.textContent = d.islCode;
         renderStages(d.stage, d.c);
+        stage.style.setProperty('--sl-mesh-a', d.meshA);
+        stage.style.setProperty('--sl-mesh-b', d.meshB);
         document.querySelector('.btn-infuse').style.setProperty('--in-c', d.c);
         document.querySelector('.undo__send').style.setProperty('--in-c', d.c);
         cards.innerHTML = d.svcs.map(s =>
-          '<article class="sl-card" style="--c-c:' + d.c + '">' +
-          '<div class="sl-card__top">' +
-          '<span class="sl-strata"><span class="sl-strata__plate"></span><span class="sl-strata__lens">' + (ICONS[s.icon] || ICONS.meter) + '</span></span>' +
-          '<code>' + s.code + '</code></div>' +
-          '<h4>' + s.name + '</h4>' +
+          '<article class="sl-card" style="--sl-accent:' + d.accent + '">' +
+          '<div class="sl-card__top">' + iconHtml(d.accent, s.icon) +
+          '<div class="sl-card__meta"><code>' + s.code + '</code><h4>' + s.name + '</h4></div></div>' +
           '<foot>' + s.fee + ' د.ع</foot>' +
-          '<span class="sl-card__sig"></span>' +
+          '<span class="sl-card__line" aria-hidden="true"></span>' +
           '</article>'
         ).join('');
       }
