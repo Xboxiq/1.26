@@ -29,9 +29,10 @@
     small { display: block; margin-top: 20px; color: #999; font-size: 0.75rem; line-height: 1.6; }
   </style>
   <script>
-    // إذا كنت على GitHub Pages ولست في صفحة معروفة — حوّل للبوابة
-    if (!/portal|final|compare|Adoption|Lab|Design|Concept|v2|vercel/i.test(location.pathname)) {
-      location.replace(location.pathname.replace(/\/?$/, '/') + 'portal.html');
+    // المسار المعتمد للعرض هو المنصة الرئيسية فقط.
+    if (!/\/final3d\.html$/i.test(location.pathname)) {
+      const base = location.pathname.includes('/1.26/') ? '/1.26/' : '/';
+      location.replace(base + 'final3d.html');
     }
   </script>
 </head>
@@ -40,11 +41,9 @@
     <h1>تدفّق الخير</h1>
     <p>الصفحة غير موجودة — اختر أين تريد الذهاب:</p>
     <div class="btns">
-      <a class="btn primary" href="portal.html">بوابة المشروع</a>
-      <a class="btn secondary" href="final3d.html">المنصة المعتمدة</a>
-      <a class="btn secondary" href="اتجاهات التصميم.html">اتجاهات التصميم</a>
+      <a class="btn primary" href="final3d.html">فتح المنصة الرئيسية</a>
     </div>
-    <small>لا تفتح ملفات HTML من صفحة GitHub مباشرة — استخدم الروابط أعلاه على xboxiq.github.io</small>
+    <small>المسار المعتمد للعرض هو المنصة الرئيسية فقط.</small>
   </div>
 </body>
 </html>
