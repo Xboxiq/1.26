@@ -3,135 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>تدفّق الخير — بوابة المشروع</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Readex+Pro:wght@400;500;600;700&family=Alexandria:wght@600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..600,0..1,0" />
-  <link rel="stylesheet" href="final.css" />
+  <title>تدفّق الخير — المنصة الرئيسية</title>
+  <meta http-equiv="refresh" content="0; url=final3d.html" />
+  <link rel="canonical" href="final3d.html" />
+  <script>location.replace('final3d.html');</script>
   <style>
-    body { margin: 0; min-height: 100vh; background: var(--f-bg); font-family: var(--f-arab); color: var(--f-ink); }
-    .portal { max-width: 1080px; margin: 0 auto; padding: 48px 24px 80px; }
-    .portal__hero { text-align: center; margin-bottom: 48px; }
-    .portal__logo { width: 64px; height: 64px; border-radius: 16px; margin-bottom: 16px; box-shadow: var(--f-shadow-sm); }
-    .portal__hero h1 { margin: 0 0 8px; font-family: var(--f-disp, Alexandria); font-size: 2.2rem; font-weight: 800; }
-    .portal__hero p { margin: 0 auto; max-width: 52ch; font-size: 0.9rem; color: var(--f-ink-3); line-height: 1.85; }
-    .portal__badge {
-      display: inline-block; margin-top: 14px; padding: 5px 14px; border-radius: 999px;
-      font-family: var(--f-mono); font-size: 0.58rem; letter-spacing: 0.06em;
-      background: color-mix(in srgb, var(--f-ct) 10%, var(--f-surface)); color: var(--f-ct);
-      border: 0.5px solid color-mix(in srgb, var(--f-ct) 25%, transparent);
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: #fafaf7;
+      color: #161513;
+      text-align: center;
     }
-    .portal__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-    .portal__sec { margin: 40px 0 16px; font-family: var(--f-disp, Alexandria); font-size: 1rem; font-weight: 800; color: var(--f-ink-2); }
-    .portal__card {
-      display: flex; flex-direction: column; gap: 8px; padding: 20px 22px; border-radius: 18px;
-      background: var(--f-surface); border: 0.5px solid var(--f-border);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), var(--f-shadow-xs);
-      text-decoration: none; color: inherit;
-      transition: transform 420ms var(--f-spring), border-color 300ms, box-shadow 300ms;
-    }
-    .portal__card:hover { transform: translateY(-3px); border-color: var(--f-border-2); box-shadow: var(--f-shadow-sm); }
-    .portal__card--primary { border-color: color-mix(in srgb, var(--f-navy) 30%, var(--f-border)); background: linear-gradient(135deg, var(--f-surface), color-mix(in srgb, var(--f-navy) 4%, var(--f-surface))); }
-    .portal__card--new::after {
-      content: "جديد"; font-family: var(--f-mono); font-size: 0.48rem; font-weight: 700;
-      padding: 2px 7px; border-radius: 999px; background: var(--f-ct); color: #fff;
-      align-self: flex-start;
-    }
-    .portal__card-top { display: flex; align-items: center; gap: 10px; }
-    .portal__ico {
-      width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center;
-      background: color-mix(in srgb, var(--c, var(--f-navy)) 11%, transparent);
-      color: var(--c, var(--f-navy));
-    }
-    .portal__ico .material-symbols-outlined { font-size: 20px; }
-    .portal__card h2 { margin: 0; font-size: 0.95rem; font-weight: 700; }
-    .portal__card p { margin: 0; font-size: 0.74rem; line-height: 1.75; color: var(--f-ink-3); flex: 1; }
-    .portal__card foot {
-      display: flex; align-items: center; gap: 4px; margin-top: 4px;
-      font-size: 0.66rem; font-weight: 700; color: var(--f-navy);
-    }
-    .portal__card foot .material-symbols-outlined { font-size: 14px; }
-    .portal__foot { margin-top: 48px; text-align: center; font-size: 0.68rem; color: var(--f-ink-3); }
-    .portal__foot a { color: var(--f-ink-2); }
+    a { color: #1e2a4d; font-weight: 800; }
   </style>
 </head>
 <body>
-  <div class="portal">
-    <header class="portal__hero">
-      <img class="portal__logo" src="assets/logo.png" alt="تدفّق الخير" />
-      <h1>تدفّق الخير</h1>
-      <p>منصة خدمات المشتركين — مركز الرصافة · الكرادة<br>٣١ خدمة · ٤ أقسام · نظام تصميم متكامل</p>
-      <span class="portal__badge">REPO v2 — مستقل عن 1.26</span>
-    </header>
-
-    <h2 class="portal__sec">المنصة</h2>
-    <div class="portal__grid">
-      <a class="portal__card portal__card--primary" href="final3d.html" style="--c:#1e2a4d">
-        <div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">bolt</span></div><h2>المنصة المعتمدة</h2></div>
-        <p>final3d — النسخة الحالية مع طبقة 3D tilt. ابدأ العمل اليومي من هنا.</p>
-        <foot>فتح final3d <span class="material-symbols-outlined">arrow_back</span></foot>
-      </a>
-      <a class="portal__card" href="final.html" style="--c:#4a6285">
-        <div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">dashboard</span></div><h2>بدون 3D</h2></div>
-        <p>نفس التطبيق بدون تأثير الميل — أخف على الأجهزة الضعيفة.</p>
-        <foot>فتح final <span class="material-symbols-outlined">arrow_back</span></foot>
-      </a>
-      <a class="portal__card" href="v2/index.html" style="--c:#8b1a1a">
-        <div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">account_balance</span></div><h2>نسخة ديوان v2</h2></div>
-        <p>اتجاه بصري حكومي تجريبي — Cairo + زوايا حادة.</p>
-        <foot>فتح v2 <span class="material-symbols-outlined">arrow_back</span></foot>
-      </a>
-    </div>
-
-    <h2 class="portal__sec">اختيار التصميم</h2>
-    <div class="portal__grid">
-      <a class="portal__card portal__card--new" href="الطبقات الحية.html" style="--c:#14161c">
-        <div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">layers</span></div><h2>الطبقات الحية</h2></div>
-        <p>STRATA LIVE — عمق، جزيرة حالة، مسرح فاخر، وتراجع ذكي.</p><foot>فتح <span class="material-symbols-outlined">arrow_back</span></foot>
-      </a>
-      <a class="portal__card portal__card--new" href="الخلاصة الاحترافية.html" style="--c:#1e2a4d">
-        <div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">auto_awesome</span></div><h2>الخلاصة الاحترافية</h2></div>
-        <p>دمج اختياراتك: B1+R1+N1+Q1+X+ — نظام تدفّق الطاقة.</p>
-        <foot>افتح المعاينة <span class="material-symbols-outlined">arrow_back</span></foot>
-      </a>
-      <a class="portal__card portal__card--new" href="اتجاهات التصميم.html" style="--c:#b8861b">
-        <div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">palette</span></div><h2>اتجاهات التصميم</h2></div>
-        <p>١٠ هويات بصرية كاملة + ٤ تركيبات. رشّح بالنجمة ☆ ما يعجبك.</p>
-        <foot>اختر الهوية <span class="material-symbols-outlined">arrow_back</span></foot>
-      </a>
-      <a class="portal__card" href="كل المقترحات.html" style="--c:#4e7a7d">
-        <div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">folder_open</span></div><h2>كل المقترحات</h2></div>
-        <p>أرشيف المختبرات في صفحة واحدة — بنك الاعتماد، الأيقونات، الأزرار، المسرح.</p>
-        <foot>فتح الأرشيف <span class="material-symbols-outlined">arrow_back</span></foot>
-      </a>
-      <a class="portal__card" href="compare.html" style="--c:#8a5560">
-        <div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">compare</span></div><h2>مقارنة التصاميم</h2></div>
-        <p>قارن المنصة الحالية مع النسخ البديلة جنباً إلى جنب.</p>
-        <foot>فتح المقارنة <span class="material-symbols-outlined">arrow_back</span></foot>
-      </a>
-    </div>
-
-    <h2 class="portal__sec">مختبرات التطوير</h2>
-    <div class="portal__grid">
-      <a class="portal__card" href="Adoption Bank.html" style="--c:#4a6285"><div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">star</span></div><h2>بنك الاعتماد</h2></div><p>أفكار قابلة للتطبيق على البطاقات والأقسام الحقيقية.</p><foot>فتح <span class="material-symbols-outlined">arrow_back</span></foot></a>
-      <a class="portal__card" href="Icons and Cards Lab.html" style="--c:#8a7350"><div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">grid_view</span></div><h2>الأيقونات والبطاقات</h2></div><p>١١ موجة تصميم للبطاقات والرموز.</p><foot>فتح <span class="material-symbols-outlined">arrow_back</span></foot></a>
-      <a class="portal__card" href="Buttons Lab.html" style="--c:#1e2a4d"><div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">touch_app</span></div><h2>الأزرار والطقوس</h2></div><p>أنماط CTA والتفاعلات والاحتفالات.</p><foot>فتح <span class="material-symbols-outlined">arrow_back</span></foot></a>
-      <a class="portal__card" href="Concept Theater.html" style="--c:#0e7490"><div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">theater_comedy</span></div><h2>مسرح المفاهيم</h2></div><p>٥ مشاهد تفاعلية من عالم الكهرباء.</p><foot>فتح <span class="material-symbols-outlined">arrow_back</span></foot></a>
-      <a class="portal__card" href="Design System.html" style="--c:#37352f"><div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">design_services</span></div><h2>نظام التصميم</h2></div><p>الدليل البصري الحي — توكنز، خطوط، حركة.</p><foot>فتح <span class="material-symbols-outlined">arrow_back</span></foot></a>
-    </div>
-
-    <h2 class="portal__sec">التوثيق</h2>
-    <div class="portal__grid">
-      <a class="portal__card" href="DESIGN_SYSTEM.md" style="--c:#666"><div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">description</span></div><h2>DESIGN_SYSTEM.md</h2></div><p>مرجع المعمارية والتوكنز وقواعد الألوان.</p><foot>فتح <span class="material-symbols-outlined">arrow_back</span></foot></a>
-      <a class="portal__card" href="CLAUDE.md" style="--c:#666"><div class="portal__card-top"><div class="portal__ico"><span class="material-symbols-outlined">smart_toy</span></div><h2>CLAUDE.md</h2></div><p>قواعد التطوير للمساعدين الآليين.</p><foot>فتح <span class="material-symbols-outlined">arrow_back</span></foot></a>
-    </div>
-
-    <footer class="portal__foot">
-      <strong>الرابط المباشر:</strong>
-      <a href="https://xboxiq.github.io/1.26/portal.html">xboxiq.github.io/1.26</a>
-      · لا تفتح HTML من صفحة كود GitHub
-    </footer>
-  </div>
+  <p>جاري فتح <a href="final3d.html">منصة تدفّق الخير الرئيسية</a>…</p>
 </body>
 </html>

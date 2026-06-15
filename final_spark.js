@@ -11,7 +11,7 @@
 
   function sparkify(root) {
     root.querySelectorAll(TARGETS).forEach((el) => {
-      if (el.querySelector(':scope > .spark-edge')) return;
+      if (Array.prototype.some.call(el.children, (child) => child.classList.contains('spark-edge'))) return;
       el.classList.add('spark-host');
       const s = document.createElement('span');
       s.className = 'spark-edge';
@@ -23,11 +23,13 @@
 
   function start() {
     sparkify(document);
-    const mo = new MutationObserver(() => {
-      clearTimeout(start._t);
-      start._t = setTimeout(() => sparkify(document), 150);
-    });
-    mo.observe(document.body, { childList: true, subtree: true });
+    if ('MutationObserver' in window) {
+      const mo = new MutationObserver(() => {
+        clearTimeout(start._t);
+        start._t = setTimeout(() => sparkify(document), 150);
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+    }
   }
 
   if (document.readyState === 'loading') {
