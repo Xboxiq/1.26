@@ -63,5 +63,4 @@ versions/v1-approved ← snapshot محفوظ للمراجعة فقط، غير م
 ## التوثيق
 
 - [`DESIGN_SYSTEM.md`](DESIGN_SYSTEM.md)
-- [`DESIGN_AUDIT_REPORT.md`](DESIGN_AUDIT_REPORT.md) — تقرير فحص UI/UX تنفيذي جاهز للعرض
 - [`CLAUDE.md`](CLAUDE.md)

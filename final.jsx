@@ -603,14 +603,6 @@ function App() {
         {page}
       </main>
       <window.SpotlightOverlay open={spot} onClose={() => setSpot(false)} nav={nav} />
-      <a className="f-floatcompare f-floatcompare--stack" href="portal.html">
-        البوابة
-        <span className="f-floatcompare__btn"><Icon name="home" /> الكل</span>
-      </a>
-      <a className="f-floatcompare" href="اتجاهات التصميم.html">
-        اتجاهات التصميم
-        <span className="f-floatcompare__btn"><Icon name="palette" /> اختر</span>
-      </a>
     </div>
   );
 }
